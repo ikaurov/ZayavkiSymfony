@@ -1,0 +1,166 @@
+acme_zayavki_homepage:
+    pattern:  /index
+    defaults: { _controller: AcmeZayavkiBundle:Default:index }
+bye:
+    path:     /bye/{name}
+    defaults: { _controller: AcmeZayavkiBundle:Default:index }
+# Main view routes
+login:
+    pattern:   /login
+    defaults:  { _controller: AcmeZayavkiBundle:Security:login }
+logout:
+    pattern:   /logout	
+login_check:
+    pattern:   /login_check	
+title:
+    path:     /title
+    defaults: { _controller: AcmeZayavkiBundle:Default:title }
+tickets:
+    path:     /tickets
+    defaults: { _controller: AcmeZayavkiBundle:Default:tickets }
+alerts:
+    path:     /alerts
+    defaults: { _controller: AcmeZayavkiBundle:Default:alerts }
+ftickets:
+    path:     /ftickets
+    defaults: { _controller: AcmeZayavkiBundle:Default:ftickets }	
+filter_info:
+    path:     /filter_info/{params}
+    defaults: { _controller: AcmeZayavkiBundle:Default:filter_info }	
+filter_more:
+    path:     /filter_more/{params}
+    defaults: { _controller: AcmeZayavkiBundle:Default:filter_more }	
+filter_act:
+    path:     /filter_act/{params}
+    defaults: { _controller: AcmeZayavkiBundle:Default:filter_act }	
+# Organizations routes
+tsgs:
+    path:     /tsgs
+    defaults: { _controller: AcmeZayavkiBundle:Tsgs:index }	
+tsgs_data:
+    path:     /tsgs_data
+    defaults: { _controller: AcmeZayavkiBundle:Tsgs:data }	
+tsgs_id:
+    path:     /tsgs_id/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Tsgs:entity }	
+tsgs_oplist:
+    path:     /tsgs_oplist/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Tsgs:oplist }	
+tsgs_worklist:
+    path:     /tsgs_worklist/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Tsgs:worklist }	
+tsgs_setlk:
+    path:     /tsgs_setlk/{id}/{lk}
+    defaults: { _controller: AcmeZayavkiBundle:Tsgs:setlk }	
+# Category routes
+categories:
+    path:     /categories
+    defaults: { _controller: AcmeZayavkiBundle:Category:index }	
+categories_data:
+    path:     /categories_data
+    defaults: { _controller: AcmeZayavkiBundle:Category:data }		
+categories_id:
+    path:     /categories_id/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Category:entity }
+categories_save:
+    path:     /categories_save/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Category:save }		
+categories_delete:
+    path:     /categories_delete/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Category:delete }	
+# Profs routes
+profs:
+    path:     /profs
+    defaults: { _controller: AcmeZayavkiBundle:Profs:index }	
+profs_data:
+    path:     /profs_data
+    defaults: { _controller: AcmeZayavkiBundle:Profs:data }		
+profs_id:
+    path:     /profs_id/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Profs:entity }
+profs_save:
+    path:     /profs_save/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Profs:save }	
+profs_delete:
+    path:     /profs_delete/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Profs:delete }	
+# Workers routes
+workers:
+    path:     /workers
+    defaults: { _controller: AcmeZayavkiBundle:Workers:index }	
+workers_data:
+    path:     /workers_data/{tsg}/{kind}/{options}
+    defaults: { _controller: AcmeZayavkiBundle:Workers:data, tsg:0, kind:0, options:'' }		
+workers_id:
+    path:     /workers_id/{tsg}/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Workers:entity }
+workers_save:
+    path:     /workers_save/{tsg}/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Workers:save }	
+workers_delete:
+    path:     /workers_delete/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Workers:delete }
+# Comprop routes
+comprop:
+    path:     /comprop
+    defaults: { _controller: AcmeZayavkiBundle:Comprop:index }	
+comprop_data:
+    path:     /comprop_data
+    defaults: { _controller: AcmeZayavkiBundle:Comprop:data }		
+comprop_id:
+    path:     /comprop_id/{entity}/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Comprop:entity }
+comprop_delete:
+    path:     /comprop_delete/{entity}/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Comprop:delete }	
+# Users routes
+users:
+    path:     /users
+    defaults: { _controller: AcmeZayavkiBundle:User:index }	
+users_data:
+    path:     /users_data/{tsg}
+    defaults: { _controller: AcmeZayavkiBundle:User:data, tsg: 0 }		
+user_id:
+    path:     /user_id/{id}
+    defaults: { _controller: AcmeZayavkiBundle:User:entity }
+user_save:
+    path:     /user_save/{id}/{list}
+    defaults: { _controller: AcmeZayavkiBundle:User:save, list: '' }	
+user_delete:
+    path:     /user_delete/{id}
+    defaults: { _controller: AcmeZayavkiBundle:User:delete }
+user_tsglist:
+    path:     /user_tsglist/{userid}
+    defaults: { _controller: AcmeZayavkiBundle:User:tsglist }	
+# Tickets routes
+tickets_data:
+    path:     /tickets_data/{params}
+    defaults: { _controller: AcmeZayavkiBundle:Tickets:data, params:'' }
+ticket_id:
+    path:     /ticket_id/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Tickets:entity }	
+ticket_closed:
+    path:     /ticket_closed/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Tickets:closed }	
+ticket_save:
+    path:     /ticket_save/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Tickets:save }
+ticket_dplan:
+    path:     /ticket_dplan/{dplan}
+    defaults: { _controller: AcmeZayavkiBundle:Tickets:dplan, dplan:'' }
+ticket_state:
+    path:     /ticket_state/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Tickets:state }	
+ticket_setstate:
+    path:     /ticket_setstate/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Tickets:setstate }		
+tickets_finduser:
+    path:     /tickets_finduser/{tsg}/{kv}
+    defaults: { _controller: AcmeZayavkiBundle:Tickets:finduser }	
+tickets_delete:
+    path:     /tickets_delete/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Tickets:delete }		
+ticket_history:
+    path:     /ticket_history/{userid}/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Tickets:history }	
+ 

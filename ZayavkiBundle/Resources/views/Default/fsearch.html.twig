@@ -1,0 +1,83 @@
+<form id="formcard_src" class="dialogform" method="post" {{ form_enctype(form) }}>
+
+<div class="long">
+	{{ form_label(form.statusid) }}
+	{{ form_widget(form.statusid) }}
+</div>
+<div class="long">
+	{{ form_label(form.categoryid) }}
+	{{ form_widget(form.categoryid) }}
+</div>
+<div class="long">
+	{{ form_label(form.periodid) }}
+	{{ form_widget(form.periodid) }}
+</div>
+<div class="long">
+	{{ form_label(form.dt1) }}
+	{{ form_widget(form.dt1) }}
+	{{ form_widget(form.dt2) }}
+</div>
+<div class="long">
+	{{ form_label(form.search) }}
+	{{ form_widget(form.search) }}
+</div>
+<div class="long">
+	{{ form_widget(form.closed) }}
+	{{ form_label(form.closed) }}	
+</div>
+{{ form_rest(form) }}
+</form> 
+
+<script>
+	jQuery(function($){
+		$('#bdefault').css("float","left");
+
+		$.fn.datebox.defaults.formatter = function(date){
+			var y = date.getFullYear();
+			var m = date.getMonth()+1;
+			var d = date.getDate();
+			return (d<10?('0'+d):d)+'.'+(m<10?('0'+m):m)+'.'+y;
+		}
+		
+		$('#filter_statusid').val( fx.search["status"] );
+		$('#filter_categoryid').val( fx.search["categs"] );
+		$('#filter_periodid').val( fx.search["period"] );
+		$('#filter_search').val( fx.search["poisk"] );
+		document.getElementById("filter_closed").checked = (fx.search["closed"] == 1);
+
+		$('#filter_dt1').datebox({
+			onSelect: function(date){
+				fx.setCalendar($('#filter_dt1'), date.getFullYear(), date.getMonth(), date.getDay());
+			}
+		});
+
+		$('#filter_dt2').datebox({
+			onSelect: function(date){
+				fx.setCalendar($('#filter_dt2'), date.getFullYear(), date.getMonth(), date.getDay());
+			}
+		});	
+		
+		var intervalID = setInterval(function(){
+	
+			$('#filter_dt1').datebox('setValue', fx.search["d1"]);
+			$('#filter_dt2').datebox('setValue', fx.search["d2"]);
+				
+			fx.setCalendarDate($('#filter_dt1'), fx.search["d1"]); 
+			fx.setCalendarDate($('#filter_dt2'), fx.search["d2"]); 
+			clearInterval(intervalID);
+		},100);
+		
+		if ( fx.search["period"] == 0) {
+			$('#filter_dt1').datebox({disabled: true});
+			$('#filter_dt2').datebox({disabled: true});
+		}
+
+	});
+	
+	$('#filter_periodid').bind('change', function(){
+		var val = $('#filter_periodid').val();
+		$('#filter_dt1').datebox({disabled: (val <= 0)});
+		$('#filter_dt2').datebox({disabled: (val <= 0)});
+	});	
+	
+</script>

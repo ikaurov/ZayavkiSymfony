@@ -1,0 +1,78 @@
+
+<div id="tb_categ" style="display:none">
+	<a href="#" id="c_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">Создать</a>
+	<a href="#" id="c_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">Редакт</a>
+	<a href="#" id="c_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">Удалить</a>
+	<a href="#" id="c_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">Обновить</a>
+</div>
+
+<table id="categs_list" fit="true"></table>
+<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/category.js') }}"></script>
+<script>
+	$(function(){
+		$('#c_btn1').bind('click', function(){
+			open_categ(0, $('#categs_list'));
+		});
+		
+		$('#c_btn2').bind('click', function(){
+			var row = $('#categs_list').treegrid('getSelected');
+			if (row){
+				open_categ(row.id, $('#categs_list'));
+			}
+		});
+
+		$('#c_btn3').bind('click', function(){
+			var row = $('#categs_list').treegrid('getSelected');
+			if (row){
+			    $.messager.defaults.ok = 'Да';
+			    $.messager.defaults.cancel = 'Нет';			
+				$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+					if (r){
+						$.ajax({
+							type: "GET",
+							url: 'categories_delete/'+row.id,
+							dataType: "json",
+							success: function(data) {
+								var data = eval(data);  
+								if (data.success){
+									$('#categs_list').treegrid('reload');
+								} else {
+									$.messager.alert('Внимание', data.message, 'info');
+								}
+							}
+						});
+					}
+				});
+			}
+		});
+
+		$('#c_btn4').bind('click', function(){
+			$('#categs_list').treegrid('reload');
+		});		
+	});
+
+
+	$('#categs_list').treegrid({
+ 	   url: 'categories_data',
+ 	   idField:'id',
+ 	   treeField:'name',
+ 	   columns:[[
+   	     {title:'Название',field:'name',width:300}
+  	   ]],
+  	   toolbar: '#tb_categ',
+	   onDblClickRow: function(row) {
+		   if ((fx.head == 1) && (row)) {
+				open_categ(row.id, $('#categs_list'));
+		   }
+	   },
+  	   onBeforeLoad: function(row, param) {
+  	  	 if (fx.head == 0) {
+  	  	 	$('#c_btn1').hide();
+  	  	 	$('#c_btn2').hide();
+  	  	 	$('#c_btn3').hide();
+  	  	 }
+  	   }
+	 });
+
+
+</script>

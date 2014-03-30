@@ -1,0 +1,130 @@
+<div id="efilter" class="easyui-panel" href="ftickets" style="height:50px;background:#fafafa;border:1px solid #fafafa;" ></div>
+<div style='font-family : "Arial";background:rgb(250, 250, 250);border-bottom: 1px #dedede dotted;'>
+<div style="width: 900px;">
+	<div style="display:inline-block; width: 450px;height: 50px;"><div style="display:inline-block; width:120px;float: left;margin-left: 5px;">Доп. параметры</div><div id="f_dop" style="display:inline-block;width: 300px;"></div></div>
+  	<div style="display:inline-block;float:right;margin-top: 10px;">
+		<div><div class="alert_text">Новых заявок :<a class = "a_notify" id="n_new" href="javascript:select_predef(1);"></a></div></div>
+	   	<div><div class="alert_text">В работе заявок всего<a class = "a_notify" id="n_total" href="javascript:select_predef(2);"></a> (из них <img width="16" height="16" alt="" src="{{ asset('bundles/acmezayavki/images/y16.png') }}"> срочных <a id="n_urgent" class = "a_notify" href="javascript:select_predef(4);"></a>)</div></div>
+	   	<div><div class="alert_text">в т.ч.:<div style="color:#f00;font-weight:bolder;display: inline;">просроченных</div></div><a class = "a_notify" id="n_alert" href="javascript:select_predef(3);"></a></div>
+	   	<div><div class="alert_text">со сроком <div style="color:#00f;font-weight:bolder;display: inline;">выполнения сегодня</div><a class = "a_notify" id="n_today" href="javascript:select_predef(5);"></a></div></div>
+	</div>
+</div>
+<div id="tb_tickets2" style="display:inline-block; width:450px"><div class="spacer5h"></div>
+	<a id="create_btn" href="#" class="easyui-linkbutton"  style="font-size:16px;font-weight: bolder;">Создать</a>
+	<a id="edit_btn" href="#"   class="easyui-linkbutton"  style="font-size:16px;font-weight: bolder;">Редактировать</a>
+	{% if ( prop_head == 1) %}
+		<a href="javascript:show_reportmenu();" class="easyui-linkbutton"  style="font-size:16px;font-weight: bolder;">Отчеты</a>
+	{% endif %}
+	
+</div>
+<div class="spacer5" style="border-bottom: 1px #888 solid;"></div>
+<div id="tb_menu" class="easyui-menu" style="width:120px;" data-options="onClick:menuHandler">
+	<div data-options="name:1">Список заявок</div>
+	<div data-options="name:2">Итого за период</div>
+	<div data-options="name:3">Список пользователей</div>				
+</div>
+  <table id="tickets_list" singleSelect="true" border="false" autoRowHeight="true" rownumbers="true" pagination="true" pagePosition="top" pageSize="20" sortName="nr" sortOrder="desc">
+  </table></div>
+<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/tickets.js') }}"></script>
+<script>
+
+	$(function(){	
+
+		var client_h=document.body.clientHeight;
+		client_h = client_h - 190;
+		
+		$('#tickets_list').datagrid({
+			height : client_h,
+			url: 'tickets_data/'+fx.buildPar(),
+			columns:[[
+				{field:'alert',hidden:'true'},
+				{field:'astate',hidden:'true'},
+				{field:'fopen',hidden:'true'},
+				{field:'status',hidden:'true',title:'...'},
+				{field:'state',width:40,title:'...'},
+				{field:'tsgname',width:150,sortable:true,title:'Организация'},
+				{field:'nr',width:70,sortable:true,title:'Номер'},
+				{field:'dstart',width:110,sortable:true,title:'Создана'},
+				{field:'cname',width:130,sortable:true,title:'Категория'},
+				{field:'sname',width:130,sortable:true,title:'Состояние'},
+				{field:'account',width:50,title:'Л.счет'},
+				{field:'fio',width:130,sortable:true,title:'ФИО'},
+				{field:'address',width:180,sortable:true,title:'Адрес'},
+				{field:'message',width:200,title:'Заявка'},
+				{field:'wname',width:110,sortable:true,title:'Ответственный'},
+				{field:'dplan',width:130,sortable:true,title:'План/Факт'}
+			]],		
+			rowStyler: function(index,row){
+				if (row.fopen == 0) {
+						return 'font-weight:bolder;';
+				}
+			},
+			onDblClickRow: function(index, data) {
+				edit_ticket();
+			}
+		});
+		
+		fx.getAlerts();
+		
+		
+	});
+	
+	$('#create_btn').bind('click', function(){
+		open_ticket(0, 1, $('#tickets_list'));
+	});
+	
+	$('#edit_btn').bind('click', function(){
+		edit_ticket();
+	});	
+
+	function menuHandler(item){
+		if (item.name == "1") {
+			window.open('export/'+fx.buildPar(), "_self");
+		}
+		if (item.name == "2") {
+
+	     	 $('#ccard').dialog({
+				title: '', width: 555,height: 200,closed: false,cache: false, modal: true,
+	            href: 'reportpar/2',
+	            buttons:[{text:'Выбрать',
+   		    		          handler:function(){
+   		    		          	var d1 = $('#rpt_d1').datebox('getValue');
+   		    		          	var d2 = $('#rpt_d2').datebox('getValue');
+								window.open('report1/{"rpt_d1":"'+d1+'","rpt_d2":"'+d2+'"}', "_self");
+  		    		          }
+   				       },
+   		     			   {text:'Закрыть', handler:function(){ $('#ccard').dialog('close'); } }  ] });
+		}
+		if (item.name == "3") {
+			window.open('report3', "_self");
+		}
+	}
+
+	function show_reportmenu() {
+		$('#tb_menu').menu('show', {left: 400, top: 120});
+	}
+
+	function edit_ticket() {
+			var row = $('#tickets_list').datagrid('getSelected');
+			if (row){
+				if ((row.fopen == 0)&&(fx.head == 0)) {
+	                fx.updateTitle(fx.notopen - 1);
+					row.fopen = 1;
+					$('#tickets_list').datagrid('refreshRow', $('#tickets_list').datagrid('getRowIndex', row) );
+				}
+				open_ticket(row.id, row.status, $('#tickets_list'));
+			}
+	}
+
+	function exporttickets() {
+		window.open('export/'+fx.buildPar(), "_self");
+	}
+
+	function select_predef(id) {
+		fx.clearFilter();
+        $('#f_predef').val(id);
+        fx.search["predef"] = id;
+		fx.filterInfo();
+        $('#tickets_list').datagrid({"url": '/tickets_data/'+fx.buildPar()});
+	}
+ </script>

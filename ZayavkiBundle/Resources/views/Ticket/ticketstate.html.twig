@@ -1,0 +1,22 @@
+<form id="formcard_state" class="dialogform" method="post" {{ form_enctype(form) }}>
+
+<div class="long">
+	{{ form_label(form.statusid) }}
+	{{ form_widget(form.statusid) }}
+</div>
+<div class="long">
+	{{ form_label(form.comment) }}
+	{{ form_widget(form.comment) }}
+</div>
+<div class="long"><div class="tstate_msg" id="c_warn"><B>Вы выбрали режим отмены заявки.</B> Укажите причину отмены.</div></div>
+</form> 
+<script>
+	$('#ticketstate_statusid').on('change', function() {
+    	if (this.value == 202) {
+    		$('#c_warn').show();
+    	}
+    	else {
+    		$('#c_warn').hide();
+    	}
+	});
+</script>

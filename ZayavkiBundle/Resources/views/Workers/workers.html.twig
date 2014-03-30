@@ -1,0 +1,17 @@
+<form id="formcard_workers" class="dialogform" method="post" {{ form_enctype(form) }}>
+<div class="long">
+	{{ form_label(form.ownid) }}
+	{{ form_widget(form.ownid) }}
+</div>
+<div class="long">
+	{{ form_label(form.profid) }}
+	{{ form_widget(form.profid) }}
+</div>
+<div class="long">
+	{{ form_label(form.name) }}
+	{{ form_widget(form.name) }}
+</div>
+
+
+{{ form_rest(form) }}
+</form> 

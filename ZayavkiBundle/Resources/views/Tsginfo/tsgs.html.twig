@@ -1,0 +1,127 @@
+
+<form id="formcard_tsgs" class="dialogform" method="post" {{ form_enctype(form) }}>
+<div class="long">
+	{{ form_label(form.tsgname) }}
+	{{ form_widget(form.tsgname) }}
+</div>
+<div class="long">
+	{{ form_label(form.tsgcode) }}
+	{{ form_widget(form.tsgcode) }}
+</div>
+<div class="long">
+	<label>ЛК: подача заявок</label>
+	<img id = "img_lk" width="16" height="16" alt="" src=" {% if(lk == 1) %}  {{asset('bundles/acmezayavki/images/ok.png') }} {%else%} {{asset('bundles/acmezayavki/images/blank.png') }}  {%endif%} " />
+	<input id = 'tsg_lk' type="hidden" value="{{lk}}"></input>
+	<a href="#" class="easyui-linkbutton" id="set_lk" ></a>
+</div>
+
+<h4>Локальные пользователи</h4>
+<table id="tsg_operators"  rownumbers="true" singleSelect="true" style="height:100px">
+<thead><tr>
+    <th data-options="field:'id',width:100,hidden:'true'">Id</th>
+    <th data-options="field:'name',width:200">Пользователь</th>
+    <th data-options="field:'lname',width:100">Логин</th>
+    <th data-options="field:'pname',width:100">Пароль</th>
+    </tr></thead><tbody></tbody></table>
+
+<h4>Исполнители</h4>
+<table id="tsg_works"  rownumbers="true" singleSelect="true" style="height:150px">
+<thead><tr>
+	<th data-options="field:'id',width:100,hidden:'true'">Id</th>
+    <th data-options="field:'name',width:200">Исполнитель</th>
+    <th data-options="field:'pname',width:200">Профессия</th>
+</tr></thead><tbody></tbody></table>
+
+{{ form_rest(form) }}
+</form>
+<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/workers.js') }}"></script> 
+<script>
+	var ar_act = [ "Включить", "Выключить"];
+	item = {"tsgid": 0,
+		"init" : function (tsgid) {
+			this.tsgid = tsgid;
+		},
+		"worker_add": function(id) {
+			$('#tsg_works').datagrid('reload');
+		}
+	};
+	
+	$(function(){
+		item.init({{tsg_id}});
+		$('#set_lk').linkbutton({
+			"text" : ar_act[$("#tsg_lk").val()]	
+		});
+		
+		
+		$('#set_lk').bind('click', function(){
+	     	var lk = $("#tsg_lk").val();
+            if (lk == 0) {lk = 1} else {lk = 0}
+
+			$.post('tsgs_setlk/{{tsg_id}}/'+lk, function(data){			
+				$('#set_lk').linkbutton({"text" : ar_act[lk] });
+				$("#tsg_lk").val( lk );
+				
+				if (lk == 1) {
+					$("#img_lk").attr("src", "{{asset('bundles/acmezayavki/images/ok.png') }}");
+				} else {
+					$("#img_lk").attr("src", "{{asset('bundles/acmezayavki/images/blank.png') }}");
+				}
+			});			
+		});
+		
+	    $('#tsg_operators').datagrid({
+    	       url: 'tsgs_oplist/{{tsg_id}}'
+	    });	
+		
+	    $('#tsg_works').datagrid({
+    	        url: 'tsgs_worklist/{{tsg_id}}',
+				toolbar: [{
+					text: 'Добавить',
+					iconCls: 'icon-add',
+					handler: function(){
+						open_worker({{tsg_id}}, 0, item);
+					}
+				},{
+					text: 'Изменить',
+					iconCls: 'icon-edit',
+					handler: function(){
+						var row = $('#tsg_works').datagrid('getSelected');
+						if (row){
+							open_worker({{tsg_id}}, row.id, item);
+						}
+					}
+				},'-',{
+					text: 'Удалить',
+					iconCls: 'icon-remove',
+					handler: function(){
+						var row = $('#tsg_works').datagrid('getSelected');
+						if (row){
+						$.messager.defaults.ok = 'Да';
+						$.messager.defaults.cancel = 'Нет';			
+						$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+						if (r){
+							$.ajax({
+								type: "GET",
+								url: 'workers_delete/'+row.id,
+								dataType: "json",
+								success: function(data) {
+									var data = eval(data);  
+									if (data.success){
+										$('#tsg_works').datagrid('reload');
+									} else {
+										$.messager.alert('Внимание', data.message, 'info');
+									}
+								}
+							});
+						}
+						});
+						}
+					}
+				}],
+           onDblClickRow: function(index, data) {
+				open_worker({{tsg_id}}, data['id'], item);
+           }
+	    });			
+	});
+
+</script>

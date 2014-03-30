@@ -1,0 +1,78 @@
+<form id="formcard_oper" class="dialogform" method="post" {{ form_enctype(form) }}>
+<div class="long">
+	{{ form_label(form.name) }}
+	{{ form_widget(form.name) }}
+</div>
+<div class="long">
+	{{ form_label(form.username) }}
+	{{ form_widget(form.username) }}
+</div>
+<div class="long">
+	{{ form_label(form.password) }}
+	{{ form_widget(form.password) }}
+</div>
+
+<table id="u_tsgs"  rownumbers="true" singleSelect="true" style="height:200px"><thead><tr>
+    <th data-options="field:'id',hidden:'true'"></th>
+    <th data-options="field:'head',hidden:'true'"></th>
+    <th data-options="field:'name',width:500">Организация</th></tr></thead><tbody></tbody>
+</table>
+<div id="u_toolbar">
+	<select class="users_tsg" id="o_tsgs"> 
+		{% for tsg in tsglist %}
+        <option value='{{tsg['id']}}' head='{{tsg['head']}}'>{{ tsg['name'] }}</option>
+		{% endfor %}
+	</select>
+   <a id="oc_btn1" href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" >Добавить</a>
+   <a id="oc_btn2" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" >Удалить</a>
+</div>
+
+{{ form_rest(form) }}
+</form> 
+<script>
+	$(function(){
+	
+		$('#oc_btn1').bind('click', function(){
+			var val = $( "#o_tsgs").val(); 
+			var head =  $( "#o_tsgs option:selected").attr('head');
+
+			var tsgs = $('#u_tsgs').datagrid('getData');
+			var fnd = 0;
+			
+			tsgs.rows.forEach(function(entry) {
+				if ((entry.id == val) || (entry.head == 1)) {
+					$.messager.alert('Внимание', 'Организация уже была добавлена', 'info');
+					fnd = 1;
+					return;
+				}
+			});
+			if (fnd == 0) {
+				if (head == 1) {
+					$('#u_tsgs').datagrid('loadData', {"total":0,"rows":[]});
+				}
+				$('#u_tsgs').datagrid('insertRow',{	row: {  name: $("#o_tsgs :selected").text(), id: val, head: head} });
+			}			
+		});	
+		
+		$('#oc_btn2').bind('click', function(){
+			var row = $('#u_tsgs').datagrid('getSelected');
+			if (row){
+			    $.messager.defaults.ok = 'Да';
+			    $.messager.defaults.cancel = 'Нет';			
+				$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+					if (r){
+						$('#u_tsgs').datagrid('deleteRow',  $('#u_tsgs').datagrid('getRowIndex',row) );
+					}
+				});
+			}			
+		});	
+
+		$('#u_tsgs').datagrid({
+			toolbar: '#u_toolbar',
+			url: 'user_tsglist/{{user_id}}'
+		});		
+		
+		$('#u_seltsg').prop("selectedIndex",0);
+		$('#user_name').focus();		
+	});
+</script>

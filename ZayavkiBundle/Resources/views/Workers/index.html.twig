@@ -1,0 +1,87 @@
+<div id="tb_workers" style="display:none">
+	<a href="#" id="w_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">Создать</a>
+	<a href="#" id="w_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">Редакт</a>
+	<a href="#" id="w_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">Удалить</a>
+	<a href="#" id="w_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">Обновить</a>
+</div>
+
+<table id="workers_list"  singleSelect="true" autoRowHeight="false" rownumbers="true" fit="true"></table>
+
+<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/workers.js') }}"></script> 
+<script>
+	var item = {"tsgid": 0,
+		"init" : function (tsgid) {
+			this.tsgid = tsgid;
+		},
+		"worker_add": function(id) {
+			$('#workers_list').datagrid('reload');
+		}
+	};
+
+
+	$(function(){
+		item.init({{tsgid}});
+		$('#w_btn1').bind('click', function(){
+			open_worker({{tsgid}}, 0, item);
+		});
+		
+		$('#w_btn2').bind('click', function(){
+			var row = $('#workers_list').datagrid('getSelected');
+			if (row){
+				open_worker({{tsgid}}, row.id, item);
+			}
+		});
+
+		$('#w_btn3').bind('click', function(){
+			var row = $('#workers_list').datagrid('getSelected');
+			if (row){
+			    $.messager.defaults.ok = 'Да';
+			    $.messager.defaults.cancel = 'Нет';				
+				$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+					if (r){
+						$.ajax({
+							type: "GET",
+							url: 'workers_delete/'+row.id,
+							dataType: "json",
+							success: function(data) {
+								var data = eval(data);  
+								if (data.success){
+									$('#workers_list').datagrid('reload');
+								} else {
+									$.messager.alert('Внимание', data.message, 'info');
+								}
+							}
+						});
+					}
+				});
+			}
+		});
+
+		$('#w_btn4').bind('click', function(){
+			$('#workers_list').datagrid('reload');
+		});		
+	});
+
+	$('#workers_list').datagrid({
+		url: 'workers_data',
+		toolbar: '#tb_workers',
+		columns:[[
+			{field:'id',hidden:'true'},
+			{field:'name',width:300,title:'Название'}
+		]],
+		onDblClickRow: function(index, data) {
+		   		if (fx.head == 1) {
+					open_worker({{tsgid}}, data['id'], item);
+		   		}
+		   },	   
+  	   onBeforeLoad: function(row, param) {
+  	  	 if (fx.head == 0) {
+  	  	 	$('#w_btn1').hide();
+  	  	 	$('#w_btn2').hide();
+  	  	 	$('#w_btn3').hide();
+  	  	 }
+  	   }
+	 });
+
+
+</script>

@@ -1,0 +1,85 @@
+ <div id="tb_user" style="display:none">
+ 	<a href="#" id="o_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">Создать</a>
+	<a href="#" id="o_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">Ред.</a>
+	<a href="#" id="o_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">Удалить</a>
+	<a href="#" id="o_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">Обновить</a>
+	<a href="#" id="o_btn5" class="easyui-linkbutton" data-options="iconCls:'icon-list',plain:true"></a>
+</div>
+<input type="hidden" id="users_view" value="1" >
+<table id="users_list" fit="true"></table>
+<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/users.js') }}"></script>
+<script>
+	$(function(){
+		var item = {
+			"user_add": function(id) {
+				$('#users_list').treegrid('reload');
+			}
+		};
+	
+		$('#o_btn1').bind('click', function(){
+			open_user(0, item);
+		});
+		
+		$('#o_btn2').bind('click', function(){
+			var row = $('#users_list').treegrid('getSelected');
+			if ((row)&&(row.company == 2)){
+				open_user(row.id, item);
+			}
+		});
+		
+		$('#o_btn3').bind('click', function(){
+			var row = $('#users_list').treegrid('getSelected');
+			if (row){
+			    $.messager.defaults.ok = 'Да';
+			    $.messager.defaults.cancel = 'Нет';			
+				$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+					if (r){
+						$.ajax({
+							type: "GET",
+							url: 'user_delete/'+row.id,
+							dataType: "json",
+							success: function(data) {
+								var data = eval(data);  
+								if (data.success){
+									$('#users_list').treegrid('reload');
+								} else {
+									$.messager.alert('Внимание', data.message, 'info');
+								}
+							}
+						});
+					}
+				});
+			}
+		});		
+		
+		$('#o_btn4').bind('click', function(){
+			$('#users_list').treegrid('reload');
+		});			
+		
+		$('#o_btn5').bind('click', function(){
+			$('#users_view').val( (($('#users_view').val()==0)?1:0) );
+			$('#users_list').treegrid('reload');	
+		});		
+	});
+
+  	$('#users_list').treegrid({
+ 	   url: 'users_data',
+ 	   idField:'id',
+ 	   treeField:'name',
+ 	   columns:[[
+   	     {title:'Название',field:'name',width:350}
+  	   ]],
+		toolbar: '#tb_user',
+		onDblClickRow: function(row) {
+			if ((row)&&(row.company == 2)){
+				open_user(row.id, item);
+			}
+		},
+		onBeforeLoad:function(row, param){
+			if(!row) {
+				param.view = $('#users_view').val();
+			}
+			return true;
+		}
+	});
+</script>

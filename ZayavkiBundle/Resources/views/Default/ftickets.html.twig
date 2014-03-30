@@ -1,0 +1,95 @@
+<div id="btns_more" style="display:none">
+	<a id="b_f1" href="#" class="easyui-linkbutton" style="float:left">По умолчанию</a>
+	<a id="b_f2" href="#" class="easyui-linkbutton">Применить</a>
+	<a id="b_f3" href="#" class="easyui-linkbutton">Отменить</a>
+ </div>
+<div id="filter" style="float: left;">
+	<form id="ffilter_card" method="post">
+    	<div class="long">
+    		 <label class="flabel">Фильтр</label><select  id="f_predef" name="f_predef"  style="width:210px;" >
+				 <option value="0">ВСЕ</option>
+				 <option value="1">Новые заявки</option>
+				 <option value="2">Заявка в работе</option>
+				 <option value="3">Просроченные заявки</option>
+				 <option value="4">Срочные заявки</option>
+				 <option value="5">Срок выполнения сегодня</option>
+			 </select>
+			 <label class="flabel">Организация</label>
+			 <? print_r(tsgs); ?>
+				<select style="width:210px;" id="f_tsgs">
+				{% for tsg in tsgs %}
+					<option value='{{tsg['id']}}'>{{ tsg['name'] }}</option>
+				{% endfor %}
+				</select>
+			<div class="spacer5h"></div>
+	    	<div style="display:inline-block; width: 200px;"><a id="b_f" class="easyui-linkbutton"  >Расширить поиск</a></div>
+		</div>
+	</form>
+</div>
+<script>
+	$(function(){
+		fx.filterInfo();
+		
+	});
+
+	$('#f_predef').bind('change', function(){
+		subform();
+	});
+		
+	$('#f_tsgs').bind('change', function(){
+		subform();
+	});		
+		
+
+	$('#b_f1').bind('click', function(){
+		fx.clearFilter();
+		subform();
+		fx.filterInfo();
+		$('#filter_card').dialog('close');
+	});		
+		
+	$('#b_f2').bind('click', function(){
+	
+		fx.search["period"] = $('#filter_periodid').val();
+		fx.search["categs"] = $('#filter_categoryid').val();
+		fx.search["status"] = $('#filter_statusid').val();
+		fx.search["d1"]     = $('#filter_dt1').datebox("getValue");
+		fx.search["d2"]     = $('#filter_dt2').datebox("getValue");
+		
+		var psk = $('#filter_search').val();
+		fx.search["poisk"]  = psk.replace(/[\/"]/g,"");
+		fx.search["predef"] = 0;
+		fx.search["closed"] = (document.getElementById("filter_closed").checked)? 1 : 0 ;
+		subform();
+		fx.filterInfo();
+		$('#filter_card').dialog('close');
+	});	
+
+	$('#b_f3').bind('click', function(){
+		$('#filter_card').dialog('close');
+	});	
+		
+	$('#b_f').bind('click', function(){
+		
+		if (!$('div').is('#filter_card')) {
+			$('#cardholder').after('<div id="filter_card"></div>');
+		}			
+		
+		$('#filter_card').dialog({
+			title: 'Поиск',  width: 450, height:300, closed: false, cache: false, 
+			href: 'filter_more/'+fx.buildPar(), modal: true, 
+			buttons:'#btns_more',
+			onBeforeOpen:function(){
+				$('#bdefault').css("float","left");
+				return true;
+			}
+           });
+	});		
+
+
+	function subform(){
+        fx.search["predef"] = $('#f_predef').val();
+		fx.search["tsg"] = $('#f_tsgs').val();
+		$('#tickets_list').datagrid({"pageNumber":1, "url": 'tickets_data/'+fx.buildPar()});
+	}
+</script>

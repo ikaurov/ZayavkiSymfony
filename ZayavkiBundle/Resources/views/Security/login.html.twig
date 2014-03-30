@@ -1,0 +1,137 @@
+
+{% block head %}
+    <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+	<title>Диспетчер</title>
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmezayavki/css/main.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmezayavki/css/easyui/themes/gray/easyui.css') }}"/>
+	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmezayavki/css/easyui/icon.css') }}"/>
+	
+	<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/jquery-1.8.0.min.js') }}"></script>	
+	<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/jquery.easyui.min.js') }}"></script>	
+	<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/basics.js') }}"></script>
+	
+{% endblock %}
+
+<body>
+<div id="login_card" style="display:none">
+
+<form id="logform" class="dialogform"  action="{{ path('login_check') }}" method="post" {{ form_enctype(form) }}>
+<div class="long">
+	{{ form_label(form.login) }}
+    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+</div>
+<div class="long">
+	{{ form_label(form.password) }}
+     <input type="password" id="password" name="_password" />
+</div>
+<input type="hidden" name="_target_path" value="/index" />
+</form> 	
+</div>
+
+	
+<script>
+		jQuery(function($){
+			fx.init(1, '', '', '');
+	
+			$("#username").validatebox({
+				required: true,
+				validType:'minLength[1]',
+				missingMessage:'Введите пользователя',
+				invalidMessage:'Ошибочное имя пользователя'
+			});
+			
+			$("#password").validatebox({
+				required: true,
+				validType:'minLength[1]',
+				missingMessage:'Введите пароль',
+				invalidMessage:'Ошибочный пароль'
+			});			
+			
+		
+			$("#username").live("keydown", function(event){
+ 			    if (event.keyCode == 13) { // Enter is pressed
+ 			    	$("#password").focus();
+ 			    }
+		   });
+
+			$("#password").live("keydown", function(event){
+ 			    if (event.keyCode == 13) { // Enter is pressed
+ 			    	$('#logform').submit();
+ 			    }
+		   });
+
+           login();
+		   
+           var usr = fx.getCredit("login");
+           $("#username").val( usr );
+		   
+           if ((!usr)||(usr.length == 0)) {
+           		$("#username").focus();
+           } else {
+          		$("#password").focus();
+           }
+		});
+		function login() {
+			$('#login_card').show();
+
+            $('#login_card').dialog({
+				title: 'Регистрация в системе', 
+				width: 400, 
+				height: 210, 
+				closed: false, 
+				cache: false, 
+				modal: true,
+				buttons:[ {text:'Вход в систему',id:'blogin', handler:function(){ 
+				//flogin(); 
+				$('#logform').submit();
+				}} ],
+				onBeforeOpen:function(){
+					$('#blogin').css("float","left");
+					return true;
+				}
+           });
+		}
+
+		function flogin() {
+		   $('#logform').form('submit', {
+               url:'{{ path('login_check') }}',
+               onSubmit: function(){
+                   var uname = $("#username").val();
+                   var pname = $("#password").val();
+                   if (uname.length == 0) {
+                   		$('#errmsg').html('Введите имя пользователя');
+                      	$('#errmsg').show();
+                        $("#username").focus();
+                   	   return false;
+                   }
+                   if (pname.length == 0) {
+                   		$('#errmsg').html('Введите пароль');
+                      	$('#errmsg').show();
+                        $("#password").focus();
+                   	   return false;
+                   }
+                   return true;
+              },
+              success:function(data){
+			  console.log(data);
+			//  console.log(data);
+			//	window.open('index','_self')
+                //  var data = eval('(' + data + ')');  // change the JSON string to javascript object
+                //  if (data.success){
+                //      $('#login_card').dialog('close');
+                //      fx.setCredit("login", $("#username").val());
+                //      window.open('index','_self')
+                //  }
+                //  else {
+	            //      $('#errmsg').html('Пользователь не найден');
+                //      $('#errmsg').show();
+				//      $("#uname").focus();
+                //  }
+             }
+          });
+		}		
+</script>
+
+</body>
+

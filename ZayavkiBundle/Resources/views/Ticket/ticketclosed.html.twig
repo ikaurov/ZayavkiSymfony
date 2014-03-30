@@ -1,0 +1,24 @@
+
+<div class="closed_hat">
+	<div class="closed_nr">Заявка № {{ data['nr'] }}</div>
+    <div class="closed_status">{{ data['subname'] }}</div>
+	<div class="closed_alert">{% if (data['alert'] == 1) %}СРОЧНАЯ{% endif %}</div>
+</div>
+<table>
+{% for row in data['rows'] %}
+	<tr class="crow"><td class="crowlbl">{{ row['key'] }}</td><td class="crowres">{{ row['name'] }}</td></tr>
+{% endfor %}
+</table>
+<div class="closed_history">Хронология выполнения заявки</div>
+<div>
+    <table class="closed_event">
+	<tr class="header">
+		<td style="width:18%;">Время</td>
+		<td style="width:20%;">Событие</td>
+		<td style="width:20%;">Выполнил</td>
+		<td style="width:42%;">Комментарий</td>
+    </tr>
+	{% for rs in data['comments'] %}
+		<tr><td>{{ rs['dt'] }}</td><td>{{ rs['kname'] }}</td><td>{{ rs['uname'] }}</td><td>{{ rs['comm'] }}</td></tr>
+	{% endfor %}	
+</div>

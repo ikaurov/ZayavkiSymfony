@@ -1,0 +1,123 @@
+html { height: 100% }
+body { height: 100%; margin: 0; padding: 0; font-family:Arial;font-size:12px; }
+#map-canvas { height: 100% }
+
+.login_err {font-size:16px;font-weight:bold; color: rgb(255,0,0);height: 40px;width: 380px;display: inline-block;float: left;text-align: center;}
+.errmsg {height: 40px;font-size:12px;font-weight:bold; -moz-border-radius: 10px;  -webkit-border-radius: 10px;-khtml-border-radius: 10px;border-radius: 10px;
+background: rgb(255,255,200); border: solid 1px #ababab; text-align: center;line-height: 40px;color: #F54040;margin: 10px;}
+.dialogtitle {font-family : "Arial";font-size: 14px;background: rgb(179, 223, 218);padding-left: 10px;}
+
+.comm_div {font-family : "Arial"; background:rgb(250, 250, 250);}
+
+.dialogform label{display: inline;  float: left;	text-align:right;width:120px;margin-top : 4px;margin-right : 4px; font-family: "Arial";font-size: 12px;}
+.dialogform legend{ font-family: "Arial";font-size: 12px; font-weight:bold;}
+.dialogform input{	font-size:12px; padding: 2px 2px;border:solid 1px #535353; }
+.dialogform button{	clear:both;	width:82px;	height:35px;	background:#666666 url(../img/btn1.png) no-repeat;	text-align:center;    cursor: pointer;			line-height:35px;	color:#000000;    font-family : "Arial";		font-size:14px;	border : none;	margin-left : 10px;}
+
+.ticketform label{display: inline;  float: left;	text-align:right;width:110px;margin-top : 4px;margin-right : 4px; font-family: "Arial";font-size: 12px;}
+.ticketform input{	font-family: "Arial"; font-size:12px; padding: 2px 2px;border:solid 1px #535353; float:left; }
+.ticketform textarea{	font-family: "Arial"; font-size:12px; padding-left: 3px; border:solid 1px #535353; resize: none;}
+
+.ffmorecard input{	font-family: "Arial"; font-size:12px; padding: 2px 2px;border:solid 1px #535353; }
+
+.tc_line{height: 20px;border-bottom: 1px solid #dedede;margin: 10px;}
+.tc_label{display: inline-block;width:200px;}
+.tc_field{display: inline;font-weight:bolder;margin-left:10px;}
+
+.t_private{ display: inline-block; height:60px; width: 615px; background:#dedede; border:solid 1px #ababab;margin-left: 10px;margin-right: 10px;-moz-border-radius: 20px;
+    -webkit-border-radius: 20px; -khtml-border-radius: 20px; border-radius: 20px; font-size: 16px;}
+.t_private_hide{ display: inline-block; height:60px; width: 615px; background:#dedede; border:solid 1px #ababab;margin-left: 10px;margin-right: 10px;-moz-border-radius: 20px;
+    -webkit-border-radius: 20px; -khtml-border-radius: 20px; border-radius: 20px; font-size: 16px; display: none;}
+	
+.t_private_inner{ height: 56px;border:1px solid #fff; margin: 1px;-moz-border-radius: 20px; -webkit-border-radius: 20px; -khtml-border-radius: 20px; border-radius: 20px; font-size: 16px;}
+.t_private_inner_col1{display:inline-block; width:500px;}
+
+
+.t_visible{ display: inline-block;  background:rgb(255,255,200); border:solid 1px #ababab;-moz-border-radius: 20px;
+    -webkit-border-radius: 20px; -khtml-border-radius: 20px; border-radius: 20px;margin-left: 13px;padding-bottom: 5px;}
+.t_visible_inner{ border:1px solid #fff; margin: 1px;-moz-border-radius: 20px; -webkit-border-radius: 20px; -khtml-border-radius: 20px; border-radius: 20px; }
+
+.t_options{font-family: "Arial"; font-size: 16px;margin-left: 10px;}
+.t_notify{display: inline;margin-left: 4px; margin-right: 4px;}
+
+.t_tbl_today {color:#00f;font-weight:bolder;display:inline;}
+.t_tbl_alert {color:#f00;font-weight:bolder;display:inline;}
+.filterform label{display: inline;  float: left;	text-align:right;width:80px;margin-top : 4px;margin-right : 4px; font-family: "Arial";font-size: 14px;}
+
+.justtext {display : block; margin-left: 10px; font-family : "Arial";font-size: 12px;}
+.subtitle {display : block; bacjground:#dedede; padding-left: 10px; font-family : "Arial";font-size: 14px;}
+.fontstyler14 {display : inline; font-family : "Arial";font-size: 14px; }
+
+.long {font-family : "Arial"; display : block; padding-top:8px; height:25px;}
+.tlong {font-family : "Arial"; display : block; padding-top:8px; height:22px;}
+.tlong_text {font-family : "Arial"; display : block; padding-top:8px; }
+.line {display : block; padding-top:8px; height:25px;}
+.clbl0 {font-family : "Arial";font-size: 14px;display : inline; padding-left:5px; padding-right:5px;}
+.clbl {font-family : "Arial";font-size: 14px;display : inline-block; width:80px;  text-align: right; padding-left:5px; padding-right:5px;}
+.field{display : inline;	}
+.s_long  {display : block; padding-top:2px; }
+.s_label {font-family : "Arial";font-size: 14px;display : inline-block; width:120px;}
+.s_value {font-family : "Arial";font-size: 16px; font-weight: bold; display : inline;}
+
+.crow {font-family : "Arial";font-size: 14px;}
+.crowlbl {width:200px;vertical-align: top;border-bottom: 1px solid #dedede;}
+.crowres {font-weight: bolder;border-bottom: 1px solid #dedede;font-size: 13px;}
+
+.t_cl_lbl {font-size:16px; font-weight:bolder}
+.t_cl_txt {font-size:16px;}
+/*.pleft   {display: inline-block; width: 400px; font-family : "Arial";font-size: 14px; }*/
+.top_filter  {display: inline;  font-family : "Arial";font-size: 14px;float: left; padding-top: 2px;padding-left: 2px;}
+.company{display: inline-block;  font-family : "Arial";font-size: 14px; height: 18px; overflow-y: hidden;float: left;margin-top: 4px;margin-left: 10px;}
+.lowcharge {display: inline-block; width: 50px; border:solid 1px #dedede; padding-right: 10px; height: 25px; text-align: right; font-family : "Arial";font-size: 14px; font-weight:bold; background: #fff url(../images/charge.png) no-repeat;}
+.noresp {display: inline-block; width: 50px; border:solid 1px #dedede; padding-right: 10px; height: 25px; text-align: right; font-family : "Arial";font-size: 14px; font-weight:bold; background: #fff  url(../images/noresp.png) no-repeat;}
+.alerts {display: inline-block; width: 50px; border:solid 1px #dedede; padding-right: 10px; height: 25px; text-align: right; font-family : "Arial";font-size: 14px; font-weight:bold; background: #fff  url(../images/alerts.png) no-repeat;}
+a.alertlink, a.alertlink:visited { font-family : "Arial";font-size:14px;  color: #000; text-decoration:none;}
+a.alertlink:hover { font-family : "Arial";font-size:14px;  color: #000; text-decoration:underline;}
+
+.flabel {display: inline-block; font-family : "Arial"; width: 100px;text-align: right; margin-right: 10px;}
+.flabel2 {display: inline-block;width: 150px;font-family: "Arial";}
+
+.spacer10 {display : block;height: 10px; clear: both;	padding-top : 0px;}
+.spacer5 {display : block;height: 5px; clear: both;	padding-top : 0px;}
+.spacer5h {display:inline-block; width:5px;}
+
+a.gpslink, a.gpslink:visited { font-family : "Arial";font-size:14px;  color: #000; text-decoration:none;}
+a.gpslink:hover { font-family : "Arial";font-size:14px;  color: #000; text-decoration:underline;}
+
+a.a_notify, a.a_notify:visited { font-family : "Arial";font-size:16px;  color: #000; font-weight: bolder;margin-left: 5px;} /*text-decoration:none;*/
+a.a_notify:hover { font-family : "Arial";font-size:16px; font-weight: bolder; color: #000; text-decoration:underline;}
+
+.t_l_person {width:120px; margin-top: 2px;}
+.t_status {float: left;font-family: Arial;font-size: 16px;font-weight: bolder;color: #777;margin-right: 10px;}
+.t_nr {font-family: Arial; font-size: 18px; margin-left: 10px;float: left;display: inline-block;width: 180px;}
+
+.alert_text {font-size:14px;display: inline;}
+
+.category_textClass {width:400px}
+.filter_textClass {width:280px}
+.users_tsg{ width:200px;}
+
+.t_fio {font-weight:bolder; font-family: Arial; font-size:12px; padding-top: 4px; display:inline-block; width:350px; height:15px; overflow:hidden }
+.t_address{font-weight:bolder;font-family: Arial;font-size:12px;padding-top: 4px; display:inline-block; width:350px; height:15px; overflow:hidden}
+.t_l_person {width:120px; margin-top: 2px;}
+.t_status {float: left;font-family: Arial;font-size: 16px;font-weight: bolder;color: #777;margin-right: 10px;}
+.t_nr {font-family: Arial; font-size: 18px; margin-left: 10px;float: left;display: inline-block;width: 180px;}
+.t_kv{width: 200px;font-size: 12px;font-weight: bolder;margin-top:8px;}
+.t_change{ display: inline-block;font-family: Arial;margin-top:10px;margin-right: 5px;float:right;}
+.ticket_col1{width:195px;}
+.ticket_col2{width:191px;}
+.ticket_sel{width: 195px; font-size:12px;float: left;}
+.ticket_text{width: 500px; }
+.ticket_textarea{width: 500px; margin-top: 10px;}
+.ticket_btn{display: inline-block;font-family: Arial;margin-left:10px;float:right; margin-right:25px;}
+
+.tstate_msg{ font-size:12px;margin-left:10px; color:#f00; display:none;}
+.ticket_hd{height: 30px;margin-top: 10px;margin-right: 10px;}
+.ticket_hist {font-family : "Arial"; background:rgb(250, 250, 250); margin: 10px; width: 645px;}
+.ticket_creator {margin-left: 10px;}
+.closed_hat{height: 20px;margin: 10px;}
+.closed_nr{font-weight:bolder;font-size:16px;display: inline-block; width:200px;}
+.closed_status{font-weight:bolder;font-size:16px;display: inline;}
+.closed_alert{font-weight:bolder;font-size:16px;display: inline;float:right;}
+.closed_event{border-bottom: 1px solid #efefef; margin: 10px;}
+.closed_history{height: 20px;margin: 10px;}

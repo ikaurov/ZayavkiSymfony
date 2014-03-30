@@ -1,0 +1,36 @@
+<form id="formcard_dplan" class="dialogform" method="post" {{ form_enctype(form) }}>
+
+<div class="long">
+	{{ form_label(form.dplan) }}
+	{{ form_widget(form.dplan) }}
+</div>
+<div class="long">
+	{{ form_label(form.comment) }}
+	{{ form_widget(form.comment) }}
+</div>
+</form> 
+
+<script>
+	$.fn.datebox.defaults.formatter = function(date){
+		var y = date.getFullYear();
+		var m = date.getMonth()+1;
+		var d = date.getDate();
+		return (d<10?('0'+d):d)+'.'+(m<10?('0'+m):m)+'.'+y;
+	}
+
+	jQuery(function($){
+
+		$('#ticketdplan_dplan').datebox({
+			onSelect: function(date){
+				fx.setCalendar($('#ticketdplan_dplan'), date.getFullYear(), date.getMonth(), date.getDate());
+			}
+		});
+
+		var intervalID = setInterval(function(){
+			$('#ticketdplan_dplan').datebox('setValue', '{{ dplan }}')		
+			fx.setCalendarDate($('#ticketdplan_dplan'), '{{ dplan }}'); 
+			clearInterval(intervalID);
+		},100);		 
+	});
+	
+</script>

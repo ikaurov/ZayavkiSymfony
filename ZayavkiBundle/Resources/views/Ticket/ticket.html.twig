@@ -1,0 +1,328 @@
+<form id="formcard_ticket" class="ticketform" method="post" {{ form_enctype(form) }}>
+{{ form_widget(form.id) }}
+{{ form_widget(form.userid) }}
+<input type="hidden" id="t_tsgidold" value="{{data['tsgid']}}">
+
+{# Header of the ticket. Number, status and button to change status #}
+
+	<div class="ticket_hd">
+		<div class="t_nr">
+			{% if (data['nr'] > 0) %} Номер № <B>{{data['nr']}}</B>	
+			{% else %}	Новая заявка  
+			{% endif %} 	
+		</div>
+		{% if (data['nr'] > 0) %} 
+			<div id="t_status" class="t_status">{{data['subname']}}</div>
+			<div class="ticket_btn"><a id="b_s203"  href="#" class="easyui-linkbutton">Изменить</a></div>
+		{% endif %} 
+	</div>
+
+{# Main part of ticket #}
+
+	<div class="t_visible">
+		<div class="tlong">{{ form_label(form.tsgid) }} {{ form_widget(form.tsgid) }}</div>
+		<div class="spacer10"></div>
+	{# Input apartment number #}		
+		<div id = "t_askflat"  {% if (data['nr'] > 0) %} 
+									class="t_private_hide"  
+								{% else %}	 
+									class = "t_private" 
+								{% endif %} >
+			<label for="t_kv" class="t_kv">Квартира</label>
+				<input type="text" id="t_kv" name="t_kv" size="5" maxlength="10" autocomplete="off" value="" />
+				<input id="t_selflat" name="t_selflat" value="">
+			<a id="b_src"  href="#" class="easyui-linkbutton"  >Поиск</a>
+			<a id="b_notsrc"  href="javascript:show_flat(0);" class="easyui-linkbutton"  >Отменить</a>
+		</div>
+	{# Show apartment number and owner #}	
+		<div id = "t_person" {% if (data['nr'] == 0) %} 
+	                            class="t_private_hide"  
+							 {% else %}	 
+							    class = "t_private" 
+	                         {% endif %} >
+			<div class = "t_private_inner">
+				<div class="t_private_inner_col1">
+					<div><label class="t_l_person">ФИО</label><div id="p_fio"  class="t_fio" >{{ data['account']}} / {{data['fio']}}</div></div>
+					<div><label class="t_l_person">Адрес</label><div id="p_adr" class="t_address" >{{ data['address']}}</div></div>
+					<div><label class="t_l_person">Баланс</label><div id="p_debt" class="t_address" >{{data['debt']}}</div></div>
+				</div>
+				<div class="t_change"><a id="b_edit"  href="#" class="easyui-linkbutton" >Изменить</a></div>
+			</div>
+		</div>
+	{# Ticket properties #}	
+		<div class="tlong"> {{ form_label(form.podal) }}     	{{ form_widget(form.podal) }}</div>
+		<div class="tlong"> {{ form_label(form.categoryid) }} 	{{ form_widget(form.categoryid) }}{{ form_label(form.alert) }}{{ form_widget(form.alert) }}</div>
+		<div class="tlong"> {{ form_label(form.phone) }}     	{{ form_widget(form.phone) }}  {{ form_label(form.email) }} {{ form_widget(form.email) }}</div>
+		<div class="tlong"> {{ form_label(form.preftime) }}   	{{ form_widget(form.preftime) }}</div>
+		<div class="tlong_text"> {{ form_label(form.message) }} {{ form_widget(form.message) }} </div>
+		<div class="tlong"> {{ form_label(form.workerid) }}   	{{ form_widget(form.workerid) }}
+			<div class="ticket_btn"><a id="b_wadd"  href="#" class="easyui-linkbutton" >Добавить исполнителя</a></div>	
+		</div>
+		<div class="tlong"> {{ form_label(form.dplan) }}      {{ form_widget(form.dplan) }} 
+							<div class="ticket_btn"> <a id="b_wadd"  href="javascript:set_dplan();" class="easyui-linkbutton">Установить дату</a> </div>
+		</div>
+</div>
+
+{# Optional part of ticket #}
+	<div class="tlong_text"> {{ form_label(form.note) }} {{ form_widget(form.note) }} </div>		  
+
+	<div class="ticket_creator"><h3>Ранее поданные заявки по этому адресу</h3></div>
+	<div class="ticket_hist"><table id="history"></table></div>
+	<div class="ticket_creator">Заявку зарегистрировал: <B>{{ data['creator'] }}</B></div>
+
+</form> 
+
+<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/workers.js') }}"></script>
+
+<script>
+	item = {"tsgid": 0,
+		"init" : function (tsgid) {
+			this.tsgid = tsgid;
+		},
+		"worker_add": function(id) {
+			$('#ticket_workerid').combobox({url: 'workers_data/'+this.tsgid+'/1/N'});
+			$('#ticket_workerid').combobox('setValue', id);
+		}
+	};
+
+	jQuery(function($){
+		
+		$('#ticket_email').validatebox({
+			validType:'email',
+			invalidMessage:'Укажите правильный электронный адрес'
+		});
+	
+
+		$('#t_selflat').combogrid({
+		 width:2,
+		 panelWidth:450,
+		 value:'',
+		 idField:'userid',
+	   	 textField:'fio',
+	     url:'',
+		 columns:[[
+		    {field:'code',hidden:true},
+			{field:'debt',hidden:true},
+		    {field:'fio',title:'ФИО',width:150},
+		    {field:'address',title:'Адрес',width:200},
+		    {field:'account',title:'Лицевой счет',width:80}
+		 ]],
+		 onLoadSuccess: function(data){
+			switch ( data.total ) {
+				case 0: $.messager.alert('Внимание', 'Номер квартиры не найден.', 'info');
+						break;
+				case 1: askflat(0, data.rows[0].account+' / '+data.rows[0].fio, data.rows[0].address, data.rows[0].debt, data.rows[0].userid, data.rows[0].email, data.rows[0].phone);
+						$('#ticket_categs').focus();
+						break;
+				default:
+						$('#t_selflat').combogrid('showPanel');
+			}
+		 },
+		 onSelect: function(record){
+			var g = $('#t_selflat').combogrid('grid');	// get datagrid object
+			var r = g.datagrid('getSelected');	// get the selected row
+			askflat(0, r.account+' / '+r.fio, r.address, r.debt, r.userid, r.email, r.phone);
+			$('#t_categs').focus();
+		 }
+		});
+		
+		var tsgid = $('#ticket_tsgid').val();
+		$('#ticket_workerid').combobox({
+	    	url:'workers_data/'+tsgid+'/1/N',
+		    editable:false,
+		    valueField:'id',
+		    textField:'name'
+		});	
+		
+		var userid = $('#ticket_userid').val();
+
+		$('#history').datagrid({
+			height:110,
+			singleSelect:true,
+			url: 'ticket_history/'+userid+'/'+$('#ticket_id').val(),
+			columns:[[
+				{field:'id',hidden:true},
+				{field:'status',hidden:true},
+				{field:'dstart',title:'Дата создания',width:110},
+				{field:'dstop',title:'Закрыта',width:110},
+				{field:'nr',title:'Номер',width:70},
+				{field:'message',title:'Заявление',width:300}
+			]],
+			onDblClickRow: function(index, data) {
+				//open_tpreview(data.id);
+			}
+		});		
+	});
+
+	$('#b_src').bind('click', function(){
+		findflat();
+	});
+	
+	$('#b_wadd').bind('click', function(){
+		var tsgid = $('#ticket_tsgid').val();
+		item.init(tsgid);
+		open_worker(tsgid, 0, item);		
+	});
+	
+	$('#b_nosrc').bind('click', function(){
+		show_flat(0);	
+	});
+	
+	$('#b_edit').bind('click', function(){
+		show_flat(1);	
+	});	
+	
+	$('#t_kv').bind('keydown',function(e){
+		if (e.keyCode == 13){
+			findflat();
+		}
+	});		
+
+	$('#b_s203').bind('click', function(){
+		set_state();	
+	});	
+
+	$('#ticket_tsgid').bind('change', function(){
+		var t_old = document.getElementById('t_tsgidold').value;
+		if (t_old > 0) {
+			$.messager.defaults.ok = 'Подтвердить';
+			$.messager.defaults.cancel = 'Отмена';
+			$.messager.confirm('Внимание !','Вы уверены, что желаете изменить организацию ? Информация о жильце будет потеряна.',function(r){
+				if (r){
+					askflat(1, '', '', 0, 0, '', '');
+					$('#t_tsgidold').val( $('#ticket_tsgid').val() );
+				}
+				else {
+					$('#ticket_tsgid').val(t_old);
+				}
+			});
+		}		
+	});		
+	
+
+	var tw = $('#ticket_workerid'); // click on field must popup the list
+	tw.combobox('textbox').bind('click', function() {
+	    if (tw.combobox('panel').parent().css('display') === 'none') {
+            tw.combobox('showPanel');
+       	}
+	    else {
+            tw.combobox('hidePanel');
+	    }
+	});	
+	
+	function askflat(way, fio, address, debt, userid, email, phone) {
+		$('#history').datagrid({url: 'ticket_history/'+userid+'/'+$('#ticket_id').val() });
+        $('#p_fio').html(fio);
+        $('#p_adr').html(address);
+        $('#p_debt').html(debt);
+
+        $('#ticket_userid').val(userid);
+        $('#t_email').val(email);
+		$('#t_phone').val(phone);
+		show_flat(way);
+	}
+	
+	function findflat() {
+	  	var flat = document.getElementById('t_kv').value;
+  		var tsgid = $('#ticket_tsgid').val();
+  		if (tsgid == 0) {
+  			$.messager.alert('Внимание !', 'Организация на выбрана. Поиск жильца невозможен', 'info');
+  			return;
+  		}
+  		if (flat == 0) {
+  			$.messager.alert('Внимание !', 'Квартира на выбрана. Поиск жильца невозможен', 'info');
+  			return;
+  		}
+		$('#t_selflat').combogrid({url : 'tickets_finduser/'+tsgid+'/'+flat});
+	}
+	
+  	function show_flat(way) {
+		if (way == 1) {
+	       $('#t_askflat').show();
+	       $('#t_person').hide();
+		}
+		else {
+	       $('#t_askflat').hide();
+	       $('#t_person').show();
+		}
+  	}	
+	
+  	function set_dplan() {
+	
+		if (!$('div').is('#dplan_card')) {
+			$('#cardholder').after('<div id="dplan_card"></div>');
+		}
+
+		 var dplan2= $('#ticket_dplan').val();
+		 if (dplan2.length < 5) {
+			dplan2='none';
+		 }
+
+     	 $('#dplan_card').dialog({
+			title: 'Установка даты выполнения заявки',
+            width: 555,
+            height: 200,
+            closed: false,
+            cache: false,
+            href: 'ticket_dplan/'+dplan2,
+            modal: true,
+            buttons:[ {text:'Подтвердить', handler:function(){
+
+				var ctext = $("#ticketdplan_comment").val();
+                var dplan = $('#ticketdplan_dplan').datebox('getValue');
+   		    	ctext = fx.strCheck( ctext );
+								
+                if ((ctext.length == 0)&&(dplan2.length > 0)) {
+                  	$.messager.alert('Выполнить', 'Комментарий должен быть заполнен', 'info');
+                   	return false;
+                }			    	
+				
+				$('#ticket_dplan').val(dplan);
+				$('#ticket_perenos').val(ctext);
+				$('#dplan_card').dialog('close');
+   				}},
+   	     		{text:'Отменить', handler:function(){ $('#dplan_card').dialog('close'); } } ]
+            });
+  	}
+
+	function set_state() {
+	
+		if (!$('div').is('#state_card')) {
+			$('#cardholder').after('<div id="state_card"></div>');
+		}
+     	 $('#state_card').dialog({
+			title: 'Изменение состояния заявки',
+            width: 555,
+            height: 200,
+            closed: false,
+            cache: false,
+            href: 'ticket_state/{{data['id']}}',
+            modal: true,
+            buttons:[ {text:'Подтвердить',
+   		    		          handler:function(){
+							   var state = $('#ticketstate_statusid').val();
+                    	       $('#formcard_state').form('submit', {
+       		                     url:'ticket_setstate/{{data['id']}}',
+	                             onSubmit: function(){							
+       		                        return true;
+               		             },
+                       		     success:function(data){
+                                	 var data = eval('(' + data + ')');  
+	                                 if (data.success){
+   			                         	$('#t_status').html(data.message);
+										$('#state_card').dialog('close');
+           		                     }
+                           		 }
+                   				});
+   		    		          }
+   				       },
+   	     			   {text:'Отменить',
+   		    		          handler:function(){
+   		    		             $('#state_card').dialog('close');
+   		    		           }
+   				       }
+   				   ]
+            });
+	}
+
+</script>
