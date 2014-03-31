@@ -60,32 +60,8 @@ function open_ticket(id, status, list) {
             {text:'ОК',id:"b_dlg_save",
    		        handler:function(){
                     var tsgid    = $('#ticket_tsgid').val();
-                //    var userid   = document.getElementById('t_userid').value;
-                //    var ticketid = document.getElementById('t_ticketid').value;
-				//	var nr       = document.getElementById('t_nr').value;
                     var categ    = $('#ticket_categoryid').val();
-                //    var alr      = document.getElementById("t_alert").value;
-				//	var email    = document.getElementById("t_email").value;
-				//	var phone    = document.getElementById('t_phone').value;
-				//	var defemail = document.getElementById("t_defemail").value;
-				//	var defphone = document.getElementById('t_defphone').value;
-				//	var pref     = document.getElementById('t_pref').value;
-				//	var podal    = document.getElementById('t_podal').value;
 					var msg      = $('#ticket_message').val();
-				//	var note     = document.getElementById('t_note').value;
-                 //   var work     = $('#t_worker').combobox('getValue');
-                 //   var dplan    = document.getElementById("t_dplan").value;
-				//	var perenos  = document.getElementById('t_perenos').value;
-
-                 //   msg     = msg.replace(/[\/"]/g,"'");
-                 //   perenos = perenos.replace(/[\/"]/g,"'");
-                 //   note    = note.replace(/[\/"]/g,"'");
-                 //   email   = email.replace(/[\/"]/g,"'");
-                 //   phone   = phone.replace(/[\/"]/g,"'");
-                 //   pref    = pref.replace(/[\/"]/g,"'");
-                 //   podal   = podal.replace(/[\/"]/g,"'");
-
-				//	var uri = encodeURI('{"ticketid":'+ticketid+',"userid":'+userid+',"tsgid":'+tsgid+',"categ":'+categ+',"alert":'+alr+',"email":"'+email+'","phone":"'+phone+'","podal":"'+podal+'","pref":"'+pref+'","message":"'+msg+'","note":"'+note+'","workerid":"'+work+'","dplan":"'+dplan+'","upduser":1,"perenos":"'+perenos+'"}');
           	        $('#formcard_ticket').form('submit', {
         		        url: 'ticket_save/'+id,
 		                onSubmit: function(){

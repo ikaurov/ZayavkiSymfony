@@ -10,19 +10,27 @@ use Doctrine\ORM\NoResultException;
 
 class UserRepository extends EntityRepository implements UserProviderInterface
 {
+	/**
+	* UserProviderInterface methods
+	*/
     public function loadUserByUsername($username)
     {
+		$user = $this->findOneBy(
+			array('username' => $username)
+		);
 	
-		$query = $this->getEntityManager()->createQuery(
-			'SELECT u.id FROM AcmeZayavkiBundle:User u WHERE u.username = :username '
-			);
-		$query->setParameter('username', $username);		
-		$res = current($query->getResult());
-		$id = ($res) ? $res['id'] : 0;
-		$user = $this->find($id);
+		// $query = $this->getEntityManager()->createQuery(
+			// 'SELECT u.id FROM AcmeZayavkiBundle:User u WHERE u.username = :username '
+			// );
+		// $query->setParameter('username', $username);		
+		// $res = current($query->getResult());
+		// $id = ($res) ? $res['id'] : 0;
+		// $user = $this->find($id);
         return $user;
     }
-
+	/**
+	* UserProviderInterface methods
+	*/
     public function refreshUser(UserInterface $user)
     {
         $class = get_class($user);
@@ -37,7 +45,9 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 
         return $this->find($user->getId());
     }
-
+	/**
+	* UserProviderInterface methods
+	*/
     public function supportsClass($class)
     {
         return $this->getEntityName() === $class
@@ -147,7 +157,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 							// 'id'       => 0
 				// );
 		// }
-		$entity->find($id);
+		$entity = $this->find($id);
 		return $entity;
 	}	
 	

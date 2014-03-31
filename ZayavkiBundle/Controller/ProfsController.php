@@ -55,10 +55,8 @@ class ProfsController extends Controller
 	{
 		if ($request->getMethod() == 'POST') {
 			
-			$var = $request->request->all();
-			
-			$id = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Profs')
-					->saveEntity( $id, $var['profs']);
+			$var = $request->request->all();		
+			$id = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Profs')->saveEntity( $id, $var['profs']);
 					
 			return new Response(Resanswer::getRetJSON('',true, $id));	
 		}	

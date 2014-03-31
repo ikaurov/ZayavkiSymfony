@@ -41,7 +41,22 @@
 				{field:'astate',hidden:'true'},
 				{field:'fopen',hidden:'true'},
 				{field:'status',hidden:'true',title:'...'},
-				{field:'state',width:40,title:'...'},
+				{field:'state',width:40,title:'...',
+					formatter: function(value,row,index){
+						var state = '';
+						if ((row.alert == 1)&&(row.statusid == 1)){
+							state = '<img width="16" height="16" alt="" src="{{ asset("bundles/acmezayavki/images/y16.png") }}" >';
+						} else {
+							state = '<img width="16" height="16" alt="" src="{{ asset("bundles/acmezayavki/images/blank.png") }}" >';
+						}
+						if (row.creator == 0){
+							state = state + '<img width="16" height="16" alt="" src="{{ asset("bundles/acmezayavki/images/c16.png") }}" >';
+						} else {
+							state = state + '<img width="16" height="16" alt="" src="{{ asset("bundles/acmezayavki/images/blank.png") }}" >';
+						}
+						return state;
+					}				
+				},
 				{field:'tsgname',width:150,sortable:true,title:'Организация'},
 				{field:'nr',width:70,sortable:true,title:'Номер'},
 				{field:'dstart',width:110,sortable:true,title:'Создана'},
@@ -52,7 +67,16 @@
 				{field:'address',width:180,sortable:true,title:'Адрес'},
 				{field:'message',width:200,title:'Заявка'},
 				{field:'wname',width:110,sortable:true,title:'Ответственный'},
-				{field:'dplan',width:130,sortable:true,title:'План/Факт'}
+				{field:'dplan',width:130,sortable:true,title:'План/Факт',
+					styler: function(value,row,index){
+						if ((row.overdue == "0")&&(row.statusid == 1)){		
+							return 'font-weight:bolder; color:blue;';
+						}
+						if ((row.overdue > 0)&&(row.statusid == 1)){
+							return 'font-weight:bolder; color:red;';
+						}						
+					}
+				}
 			]],		
 			rowStyler: function(index,row){
 				if (row.fopen == 0) {
@@ -63,8 +87,8 @@
 				edit_ticket();
 			}
 		});
-		
-		fx.getAlerts();
+	//	fx.getAlerts();
+
 		
 		
 	});

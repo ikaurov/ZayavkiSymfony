@@ -64,7 +64,7 @@ class TsgsController extends Controller
 */	
 	public function worklistAction($id)
 	{
-		$list = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersForTsg($id);	
+		$list = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersForTsg($id, '', 'easyui');	
         return new Response(json_encode($list));	
 	}	
 /**

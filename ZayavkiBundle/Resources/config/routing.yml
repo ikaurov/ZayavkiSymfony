@@ -33,6 +33,9 @@ filter_more:
 filter_act:
     path:     /filter_act/{params}
     defaults: { _controller: AcmeZayavkiBundle:Default:filter_act }	
+mail:
+    path:     /mail/{id}/{msg}
+    defaults: { _controller: AcmeZayavkiBundle:Default:mail }	
 # Organizations routes
 tsgs:
     path:     /tsgs

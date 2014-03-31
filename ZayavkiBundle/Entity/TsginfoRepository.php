@@ -17,7 +17,7 @@ class TsginfoRepository extends EntityRepository
 	{
 		$qb = $this->getEntityManager()->createQueryBuilder()
 			->from('AcmeZayavkiBundle:Tsginfo', 't')
-			->select("t.tsgname as name, t.tsgid as id, t.head")
+			->select("t.tsgname as name, t.tsgid as id, t.head, t.lk")
 			->orderBy('t.head','DESC')
 			->addOrderBy('t.tsgname');
 			
@@ -32,10 +32,10 @@ class TsginfoRepository extends EntityRepository
 		$res = $query->getResult();
 		
 		if (substr_count($options, 'N') > 0) {
-			array_unshift($res, array('id' => 0, 'name' => 'НЕТ', 'head' => 0));																	  		
+			array_unshift($res, array('id' => 0, 'name' => 'НЕТ', 'head' => 0, 'lk' => 0));																	  		
 		}
 		if (substr_count($options, 'A') > 0) {
-			array_unshift($res, array('id' => 0, 'name' => 'ВСЕ', 'head' => 0));																	  		
+			array_unshift($res, array('id' => -1, 'name' => 'ВСЕ', 'head' => 0, 'lk' => 0));																	  		
 		}		
 		
 		switch ($output) {
@@ -93,18 +93,19 @@ class TsginfoRepository extends EntityRepository
 	*/
 	public function findTsgsListForUserHash($id)
 	{	
-		$query = $this->getEntityManager()->createQuery(
-			'SELECT p.tsgid as id, p.tsgname as name, p.head as head FROM AcmeZayavkiBundle:Tsginfo p, AcmeZayavkiBundle:Usertsg u 
-			WHERE p.tsgid = u.tsgid and u.userid = :userid
-			ORDER BY p.head desc, p.tsgname ASC'
-			);
-		$query->setParameter('userid', $id);	
-		$res = $query->getResult();
-		$tsgs = array();		
-		foreach ($res as $row) {
-			$tsgs[ $row['id'] ] = $row['name'];			
-		}		
-        return $tsgs;	
+		// $query = $this->getEntityManager()->createQuery(
+			// 'SELECT p.tsgid as id, p.tsgname as name, p.head as head FROM AcmeZayavkiBundle:Tsginfo p, AcmeZayavkiBundle:Usertsg u 
+			// WHERE p.tsgid = u.tsgid and u.userid = :userid
+			// ORDER BY p.head desc, p.tsgname ASC'
+			// );
+		// $query->setParameter('userid', $id);	
+		// $res = $query->getResult();
+		// $tsgs = array();		
+		// foreach ($res as $row) {
+			// $tsgs[ $row['id'] ] = $row['name'];			
+		// }		
+        // return $tsgs;
+			return $this->findTsgsListForUser($id, 'hash');
 	}	
 	
 	/**
@@ -115,18 +116,17 @@ class TsginfoRepository extends EntityRepository
 	*/
 	public function findEntity($id)
 	{	
-	    $query = $this->getEntityManager()->createQuery(
-			'SELECT p.tsgid as id, p.tsgname, p.tsgcode, p.lk FROM AcmeZayavkiBundle:Tsginfo p WHERE p.tsgid = :id'
-			);
-		$query->setParameter('id', $id);
-		$res = current($query->getResult());
-		if (!$res) {
-			$res = array('id' => 0, 
-						 'tsgname' => '', 
-						 'tsgcode' => '', 
-						 'lk' => 0);
-		}		
-		return $res;
+		$entity = $this->find($id);
+		
+		if (!$entity) {
+			$entity = new Tsginfo();
+		}
+		
+		return array('id' 	   => $entity->getTsgid(), 
+					 'tsgname' => $entity->getTsgname(), 
+					 'tsgcode' => $entity->getTsgcode(), 
+					 'lk' 	   => $entity->getLk()
+					 );
 	}	
 	
 	/**
@@ -137,9 +137,9 @@ class TsginfoRepository extends EntityRepository
 	*/
 	public function setLkforTsg($id, $lk)
 	{	
-		$connection = $this->getEntityManager()->getConnection();
-		$connection->executeUpdate('update TSGInfo set lk = :lk where TSGId = :id', array('id' => $id, 
-																						  'lk' => $lk ));	
+		$connection = $this->getEntityManager()->getConnection()
+							->executeUpdate('update TSGInfo set lk = :lk where TSGId = :id', array( 'id' => $id, 
+																									'lk' => $lk ));	
 	}	
 	/**
 	* Return Id of Head tsg. 0 if not found

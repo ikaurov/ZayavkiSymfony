@@ -34,8 +34,7 @@ class TicketsRepository extends EntityRepository
 							  (a.roomnumber LIKE "%'.$param['f_poisk'].'%")
 							)'; 
 		}
-		
-		
+			
 		switch ($param['predef']) {
 			case 1: $where .= ' AND (t.substatusid = 101)';
 					break;
@@ -55,11 +54,6 @@ class TicketsRepository extends EntityRepository
 		$rows = $stmt->fetchAll();
 		$rec = current($rows);
 		$list = array("total" => $rec['count'], "rows" => array());
-	
-		// deprecated field "state" indicated 2 conditions: 1) ($rs['statusid'] == 1) and ($rs['alert']==1) - icon warning
-		//                                                  2) ($rs['creator'] == 0)   icone "owner creator"
-		// "astate" = 0, 3 when new and no alert?
-		// [TODO] move it into the row/cell styler
 		
 		$query = "SELECT t.id, t.nr, t.alert, t.fopen, '' as state, 'as' as astate, DATE_FORMAT(t.dstart, '%Y-%m-%d %k:%i') as dstartraw, 
 						 COALESCE(DATE_FORMAT(t.dstart, '%d.%m.%Y %k:%i'),'') as dstart,
@@ -69,21 +63,17 @@ class TicketsRepository extends EntityRepository
 						 COALESCE((select name from Workers where id = t.workerid),'') as wname, 
 						 COALESCE((select name from Users where userid = t.dispid),'') as disp, 
 						 COALESCE((select name from Comprop where kind=2 and uin = t.substatusid),'') as sname, 
-						 COALESCE(DATEDIFF( NOW(), IFNULL(t.dplan,NOW()+10000000)),'') as overdue, 
+						 COALESCE(DATEDIFF( NOW(), IFNULL(t.dplan,NOW()+10000000)),0) as overdue, 
 						 COALESCE((select TSGName from TSGInfo where TSGId = t.tsgid ),'') as tsgname,						 
 						 a.Account as account, concat(a.ObjectAddress,'-',a.RoomNumber) as address,
 						 a.RoomNumber as kv, a.FIO as fio, COALESCE(a.RegistryMobile,'') as phone, 
-						(select count(*) from Users where userid = t.dispid) as creator,t.categoryid					 
+						(select count(*) from User where id = t.dispid) as creator,t.categoryid					 
 				  FROM  Tickets t LEFT JOIN Accounts a ON a.UserId = t.userid, Category c ".$where." AND (c.id = t.categoryid) ORDER BY ".
 				  ((strlen($env['sort']) == 0)? "t.nr" : "t.".$env['sort'])." LIMIT ".$env["offset"].",".$env["to"].";";
 		
 		$stmt = $this->getEntityManager()->getConnection()->prepare( $query );
 		$stmt->execute();
 		$list["rows"] = $stmt->fetchAll();
-// [TODO] Test multiline fields		
-		
-	//	'message'  => str_replace('[CRLF]',"\n", $rs['message']),
-    //  'note'   => str_replace('[CRLF]',"\n", $rs['note']),
 		return $list;
 	}
 
@@ -172,9 +162,8 @@ class TicketsRepository extends EntityRepository
 		 $stmt->bindValue(':podal', $var['podal']);
 		 $stmt->bindValue(':alert', $var['alert']);
 		 $stmt->bindValue(':workid',$var['workerid']);
-		 $stmt->bindValue(':dplan', $var['dplan']);
-		 $stmt->bindValue(':upduser', $userid);		
-		
+		 $stmt->bindValue(':dplan', CustomDateFormat::dateAnsiToRus($var['dplan'],'rus','mysql'));
+		 $stmt->bindValue(':upduser', $userid);			
 		
 		$stmt->execute();
 		$rows = $stmt->fetchAll();
@@ -271,8 +260,8 @@ class TicketsRepository extends EntityRepository
 	* @param int $kind
 	* @return array 
 	*/		
-	public function addComment($id, $userid, $message, $kind) {
-		
+	public function addComment($id, $userid, $message, $kind) 
+	{
 		$entity = new TicketsComment();
 			
 		$entity->setTicketid( $id );
@@ -285,4 +274,27 @@ class TicketsRepository extends EntityRepository
 		$em->flush();
 		return $entity->getId();
 	}	
+	
+	public function getMailProperties($id)
+	{
+		$stmt = $this->getEntityManager()->getConnection()->prepare('CALL Ticket_maildata(:id);'); //back with 1 row always
+		$stmt->bindValue(':id', $id);
+		$stmt->execute();
+		$rows = $stmt->fetchAll();	
+		 
+		return current($rows);
+
+		/*
+		$template = str_replace('<%= tname %>',$res[0]['tname'],$template);
+		$template = str_replace('<%= taddress %>',$res[0]['tsgaddress'],$template);
+		$template = str_replace('<%= tphone %>',$res[0]['dtel'],$template);
+		$template = str_replace('<%= temail %>',$res[0]['tsgemail'],$template);
+		$template = str_replace('<%= fio %>',$res[0]['fio'],$template);
+		$template = str_replace('<%= nr %>',$res[0]['nr'],$template);
+		$template = str_replace('<%= info %>',$message,$template);
+		$template = str_replace('<%= message %>',$res[0]['message'],$template);
+		$template = str_replace('<%= dstart %>',$res[0]['dstart'],$template);
+		$template = str_replace('<%= address %>',$res[0]['address'],$template);		
+		*/
+	}
 }

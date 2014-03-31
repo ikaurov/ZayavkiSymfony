@@ -5,6 +5,7 @@ namespace Acme\ZayavkiBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Acme\ZayavkiBundle\Model\Resanswer;
 use Acme\ZayavkiBundle\Form\Type\FilterType;
 
 class DefaultController extends Controller
@@ -140,4 +141,22 @@ class DefaultController extends Controller
 
         return new Response(json_encode(array('message' => $message, 'params' => $apar)));
     }		
+	
+	public function mailAction( $id, $msg) 
+	{
+		$data = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->getMailProperties($id);
+		$data['info'] = $msg;
+		
+		$message = \Swift_Message::newInstance()
+			->setSubject('Уведомление об изменении в заявке № '.$data['nr'])
+			->setFrom('cosmoservice@cosmoservice.spb.ru')
+			->setTo('ikaurov@gmail.com')
+			->setBody(	
+				$this->renderView('AcmeZayavkiBundle:Default:mailtemplate.html.twig', array('data' => $data))
+			);
+		$this->get('mailer')->send($message);
+	
+		return new Response(Resanswer::getRetJSON('',true, 0));		
+	}	
+	
 }

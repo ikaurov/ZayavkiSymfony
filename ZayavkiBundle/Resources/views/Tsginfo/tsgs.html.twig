@@ -1,4 +1,3 @@
-
 <form id="formcard_tsgs" class="dialogform" method="post" {{ form_enctype(form) }}>
 <div class="long">
 	{{ form_label(form.tsgname) }}
@@ -10,30 +9,26 @@
 </div>
 <div class="long">
 	<label>ЛК: подача заявок</label>
-	<img id = "img_lk" width="16" height="16" alt="" src=" {% if(lk == 1) %}  {{asset('bundles/acmezayavki/images/ok.png') }} {%else%} {{asset('bundles/acmezayavki/images/blank.png') }}  {%endif%} " />
+	<img id = "img_lk" width="16" height="16" alt="" src=" 
+		{% if(lk == 1) %}  
+			{{asset('bundles/acmezayavki/images/ok.png') }} 
+		{%else%} 
+			{{asset('bundles/acmezayavki/images/blank.png') }}  
+		{%endif%} " />
+		
 	<input id = 'tsg_lk' type="hidden" value="{{lk}}"></input>
 	<a href="#" class="easyui-linkbutton" id="set_lk" ></a>
 </div>
 
 <h4>Локальные пользователи</h4>
-<table id="tsg_operators"  rownumbers="true" singleSelect="true" style="height:100px">
-<thead><tr>
-    <th data-options="field:'id',width:100,hidden:'true'">Id</th>
-    <th data-options="field:'name',width:200">Пользователь</th>
-    <th data-options="field:'lname',width:100">Логин</th>
-    <th data-options="field:'pname',width:100">Пароль</th>
-    </tr></thead><tbody></tbody></table>
+<table id="tsg_users"  rownumbers="true" singleSelect="true" style="height:100px"></table>
 
 <h4>Исполнители</h4>
-<table id="tsg_works"  rownumbers="true" singleSelect="true" style="height:150px">
-<thead><tr>
-	<th data-options="field:'id',width:100,hidden:'true'">Id</th>
-    <th data-options="field:'name',width:200">Исполнитель</th>
-    <th data-options="field:'pname',width:200">Профессия</th>
-</tr></thead><tbody></tbody></table>
+<table id="tsg_works"  rownumbers="true" singleSelect="true" style="height:150px"></table>
 
 {{ form_rest(form) }}
 </form>
+
 <script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/workers.js') }}"></script> 
 <script>
 	var ar_act = [ "Включить", "Выключить"];
@@ -46,8 +41,18 @@
 		}
 	};
 	
+	uitem = {"tsgid": 0,
+		"init" : function (tsgid) {
+			this.tsgid = tsgid;
+		},
+		"user_add": function(id) {
+			$('#tsg_users').datagrid('reload');
+		}
+	};	
+	
 	$(function(){
-		item.init({{tsg_id}});
+		item.init({{ tsg_id }});
+		uitem.init({{ tsg_id }});
 		$('#set_lk').linkbutton({
 			"text" : ar_act[$("#tsg_lk").val()]	
 		});
@@ -69,12 +74,23 @@
 			});			
 		});
 		
-	    $('#tsg_operators').datagrid({
-    	       url: 'tsgs_oplist/{{tsg_id}}'
+	    $('#tsg_users').datagrid({
+    	       url: 'tsgs_oplist/{{tsg_id}}',
+				columns:[[
+					{field:'id',hidden:'true'},
+					{field:'name',width:200,title:'Пользователь'},
+					{field:'lname',width:100,title:'Логин'},
+					{field:'pname',width:100,title:'Пароль'}
+				]]
 	    });	
 		
 	    $('#tsg_works').datagrid({
     	        url: 'tsgs_worklist/{{tsg_id}}',
+				columns:[[
+					{field:'id',hidden:'true'},
+					{field:'name',width:200,title:'Исполнитель'},
+					{field:'pname',width:200,title:'Профессия'}
+				]],			
 				toolbar: [{
 					text: 'Добавить',
 					iconCls: 'icon-add',
@@ -102,7 +118,7 @@
 						if (r){
 							$.ajax({
 								type: "GET",
-								url: 'workers_delete/'+row.id,
+								url: 'worker_delete/'+row.id,
 								dataType: "json",
 								success: function(data) {
 									var data = eval(data);  

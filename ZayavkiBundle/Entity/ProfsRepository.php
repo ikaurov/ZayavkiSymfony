@@ -8,19 +8,24 @@ class ProfsRepository extends EntityRepository
 
 	/**
 	* Get Profs list
+	* @options string $options {A=all, N- none}
 	* @param string $output {'easyui','hash','array' - default}	
-	* @return array $list: easyui json format ["total", "rows"]
+	* @return array $list in $output format
 	*/
 	public function findProfsList( $options, $output )
 	{
-		$list = array();
+		$list = ($output == 'easyui')? array("total" => 0, "rows"  => array()) : array();
 		$rows = $this->getEntityManager()->createQuery(
 			'SELECT p.id, p.name FROM AcmeZayavkiBundle:Profs p WHERE p.deleted=0 ORDER BY p.name ASC'
 			)->getResult();
 		
 		if (substr_count($options, 'N') > 0) {
 			array_unshift($rows, array('id' => 0, 'name' => 'НЕТ'));																	  		
-		}
+		}		
+		if (substr_count($options, 'A') > 0) {
+			array_unshift($rows, array('id' => -1, 'name' => 'ВСЕ'));																	  		
+		}			
+
 		switch ($output) {
 			case 'easyui':
 					$list = array("total" => count($rows), 
@@ -36,7 +41,6 @@ class ProfsRepository extends EntityRepository
 		}	
         return $list;	
 	}
-
 
 	/**
 	* Get entity Profs 

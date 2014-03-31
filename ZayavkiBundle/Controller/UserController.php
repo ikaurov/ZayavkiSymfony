@@ -71,12 +71,9 @@ class UserController extends Controller
 		if ($request->getMethod() == 'POST') {
 			
 			$var = $request->request->all();
-
-			$id = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:User')
-					->saveEntity( $id, $var['user']);
+			$id = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:User')->saveEntity( $id, $var['user']);
 
 			// save a corresponding organizations
-
 			$this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:User')->setTsgs( $id, $list);
 
 			return new Response(Resanswer::getRetJSON('',true, $id));	

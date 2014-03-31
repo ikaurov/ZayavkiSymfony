@@ -31,14 +31,14 @@ class WorkersController extends Controller
     {
 		// if organization is not specified, then take with head = 1 ()
 		$tsg = ($tsg == 0) ? $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgHeadId() : $tsg;
-			
-		$rows = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersList($tsg, $options);	
 		
+		$output = 'array';		
 		if ($kind == 0) { // easyui datagrid style
-			return new Response(json_encode(array("total" => count($rows), "rows" => $rows)));
-		} else { // simple array
-			return new Response(json_encode($rows));
-		}		
+			$output = 'easyui';
+		}	
+			
+		$rows = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersForTsg($tsg, $options, $output);	
+		return new Response(json_encode($rows));	
     }
 
 /**
@@ -53,7 +53,8 @@ class WorkersController extends Controller
 		// if organization is not specified, then take with head = 1 ()
 		$tsg = ($tsg == 0) ? $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgHeadId() : $tsg;
 	
-		$entity = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->findEntity($id);
+		$entity = (array)$this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->findEntity($id);
+		
 		$entity['ownid'] = ($entity['ownid'] == 0) ? $tsg : $entity['ownid'];
 		$entity['profs'] = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Profs')->findProfsList('N', 'hash');
 		$entity['tsgs']  = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('all', '', 'hash');
@@ -76,10 +77,8 @@ class WorkersController extends Controller
 	{
 		if ($request->getMethod() == 'POST') {
 			
-			$var = $request->request->all();
-			
-			$id = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')
-					->saveEntity( $id, $var['worker']);
+			$var = $request->request->all();			
+			$id = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->saveEntity( $id, $var['worker']);
 					
 			return new Response(Resanswer::getRetJSON('',true, $id));				
 		}	

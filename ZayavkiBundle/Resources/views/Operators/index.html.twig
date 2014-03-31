@@ -1,0 +1,80 @@
+ <div id="tb_operator">
+ 	<a href="#" id="o_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">Создать</a>
+	<a href="#" id="o_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">Ред.</a>
+	<a href="#" id="o_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">Удалить</a>
+	<a href="#" id="o_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">Обновить</a>
+	<a href="#" id="o_btn5" class="easyui-linkbutton" data-options="iconCls:'icon-list',plain:true"></a>
+</div>
+<input type="hidden" id="operators_view" value="1" >
+<table id="operators_list" fit="true"></table>
+<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/operators.js') }}"></script>
+<script>
+	$(function(){
+		$('#o_btn1').bind('click', function(){
+			open_operator(0, $('#operators_list'));
+		});
+		
+		$('#o_btn2').bind('click', function(){
+			var row = $('#operators_list').treegrid('getSelected');
+			console.log(row);
+			if ((row)&&(row.company == 2)){
+				open_operator(row.id, $('#operators_list'));
+			}
+		});
+		
+		$('#o_btn3').bind('click', function(){
+			var row = $('#operators_list').treegrid('getSelected');
+			if (row){
+			    $.messager.defaults.ok = 'OK';
+			    $.messager.defaults.cancel = 'Отменить';			
+				$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+					if (r){
+						$.ajax({
+							type: "GET",
+							url: 'operators_delete/'+row.id,
+							dataType: "json",
+							success: function(data) {
+								var data = eval(data);  
+								if (data.success){
+									$('#operators_list').treegrid('reload');
+								} else {
+									$.messager.alert('Внимание', data.message, 'info');
+								}
+							}
+						});
+					}
+				});
+			}
+		});		
+		
+		$('#o_btn4').bind('click', function(){
+			$('#operators_list').treegrid('reload');
+		});			
+		
+		$('#o_btn5').bind('click', function(){
+			$('#operators_view').val( (($('#operators_view').val()==0)?1:0) );
+			$('#operators_list').treegrid('reload');	
+		});		
+	});
+
+  	$('#operators_list').treegrid({
+ 	   url: 'operators_data',
+ 	   idField:'id',
+ 	   treeField:'name',
+ 	   columns:[[
+   	     {title:'Название',field:'name',width:350}
+  	   ]],
+		toolbar: '#tb_operator',
+		onDblClickRow: function(row) {
+			if ((row)&&(row.company == 2)){
+				open_operator(row.id, $('#operators_list'));
+			}
+		},
+		onBeforeLoad:function(row, param){
+			if(!row) {
+				param.view = $('#operators_view').val();
+			}
+			return true;
+		}
+	});
+</script>

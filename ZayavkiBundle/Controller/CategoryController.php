@@ -55,9 +55,7 @@ class CategoryController extends Controller
 		if ($request->getMethod() == 'POST') {
 			
 			$var = $request->request->all();
-			
-			$id = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Category')
-					->saveEntity( $id, $var['category']);
+			$id = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Category')->saveEntity( $id, $var['category']);
 					
 			return new Response(Resanswer::getRetJSON('',true, $id));	
 		}	

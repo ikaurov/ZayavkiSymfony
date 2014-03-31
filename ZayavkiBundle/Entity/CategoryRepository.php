@@ -50,10 +50,10 @@ class CategoryRepository extends EntityRepository
 	}	
 	
 	/**
-	* Get all top level Categories 
+	* Get all Categories hierarchically
 	*
-	* @param string $option
-	* @return array $res: [1] => value
+	* @param string $option {N}
+	* @return hash array $res
 	*/
 	public function findCategoryListHash( $option = '')
 	{	
@@ -75,22 +75,19 @@ class CategoryRepository extends EntityRepository
 	* Get entity Category 
 	*
 	* @param int $id
-	* @return array $res
+	* @return entity $entity
 	*/		
 	public function findEntity($id)
-	{	
-	    $query = $this->getEntityManager()->createQuery(
-			'SELECT p.id, p.name, p.parentid FROM AcmeZayavkiBundle:Category p WHERE p.id = :id'
-			);
-		$query->setParameter('id', $id);
-		$res = current($query->getResult());
-		if (!$res) {
-			$entity = array('name'     => '',
-							'parentid' => 0,			  
-							'id'       => 0
-				);		
-		}		
-		return $res;
+	{
+		$entity = $this->find($id);	
+		if (!$entity) {
+			$entity = new Category(); 
+		}
+		
+		return array('id' 		=> $entity->getId(), 
+					 'name' 	=> $entity->getName(), 
+					 'parentid'	=> $entity->getParentid(), 
+					);
 	}	
 	/**
 	* Save Category 
