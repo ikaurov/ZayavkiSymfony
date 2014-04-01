@@ -35,7 +35,7 @@ jQuery(function($){
 	                }
 
 					var that = this;
-					setInterval(function(){ that.getAlerts(); },60000);
+					setInterval(function(){ that.getAlerts(1); },60000);
 
 				},
 				"align": function () {
@@ -57,9 +57,9 @@ jQuery(function($){
 
 				},
 				"playSound" : function() { // сигнал о неоткрытых заявках
-					    document.getElementById("sound").innerHTML='<audio autoplay="autoplay"><source src="' + this.alertfile +
-					    											'.mp3" type="audio/mpeg" /><source src="' + this.alertfile +
-					    											'.ogg" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="' + this.alertfile +'.mp3" /></audio>';
+					document.getElementById("sound").innerHTML='<audio autoplay="autoplay"><source src="' + this.alertfile +
+					   											'.mp3" type="audio/mpeg" /><source src="' + this.alertfile +
+					   											'.ogg" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="' + this.alertfile +'.mp3" /></audio>';
 				},
 				"filterInfo": function() {
 				
@@ -115,7 +115,7 @@ jQuery(function($){
 					if(mm<10){mm="0"+mm};
 					this.search["d2"]     = dd+"."+mm+"."+yy;
 				},
-				"getAlerts" : function() { // сигнал о неоткрытых заявках
+				"getAlerts" : function(reload) { // сигнал о неоткрытых заявках
 					var that = this;
 					$.ajax({
 	            	type: "GET",
@@ -133,7 +133,9 @@ jQuery(function($){
 						if ((that.head == 0)&&(data.ding > 0)) {   // it means dispatcher level
 								that.playSound();
      					}
-						$('#tickets_list').datagrid('reload');
+						if (reload == 1) {
+							$('#tickets_list').datagrid('reload');
+						}
     	            }
 					});
 				},
@@ -210,5 +212,4 @@ jQuery(function($){
 					return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '').replace(/[\/]/g,'').replace(/["']/g,'`')
 				},
            }//fx
-
 });

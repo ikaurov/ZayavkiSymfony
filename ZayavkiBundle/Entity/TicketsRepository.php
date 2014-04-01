@@ -274,7 +274,13 @@ class TicketsRepository extends EntityRepository
 		$em->flush();
 		return $entity->getId();
 	}	
-	
+	/**
+	* Get data for a mail
+	*
+	* @param int $id - ticket id	
+	*
+	* @return array 
+	*/	
 	public function getMailProperties($id)
 	{
 		$stmt = $this->getEntityManager()->getConnection()->prepare('CALL Ticket_maildata(:id);'); //back with 1 row always
@@ -283,18 +289,34 @@ class TicketsRepository extends EntityRepository
 		$rows = $stmt->fetchAll();	
 		 
 		return current($rows);
-
-		/*
-		$template = str_replace('<%= tname %>',$res[0]['tname'],$template);
-		$template = str_replace('<%= taddress %>',$res[0]['tsgaddress'],$template);
-		$template = str_replace('<%= tphone %>',$res[0]['dtel'],$template);
-		$template = str_replace('<%= temail %>',$res[0]['tsgemail'],$template);
-		$template = str_replace('<%= fio %>',$res[0]['fio'],$template);
-		$template = str_replace('<%= nr %>',$res[0]['nr'],$template);
-		$template = str_replace('<%= info %>',$message,$template);
-		$template = str_replace('<%= message %>',$res[0]['message'],$template);
-		$template = str_replace('<%= dstart %>',$res[0]['dstart'],$template);
-		$template = str_replace('<%= address %>',$res[0]['address'],$template);		
-		*/
 	}
+	/**
+	* Report about users 	
+	*
+	* @return array 
+	*/	
+	public function getRptusers() 
+	{
+		$stmt = $this->getEntityManager()->getConnection()->prepare('CALL Report3();'); 
+		$stmt->execute();
+		$rows = $stmt->fetchAll();	
+		return $rows;
+	}
+	/**
+	* Report: total tickets for perios
+	*
+	* @param string $d1 - from	
+	* @param string $d2 - to	
+	*
+	* @return array 
+	*/	
+	public function getRpttotal($d1, $d2) 
+	{
+		$stmt = $this->getEntityManager()->getConnection()->prepare('CALL Report1(:d1, :d2);'); 
+		$stmt->bindValue(':d1', CustomDateFormat::dateAnsiToRus($d1,'rus','mysql'));
+		$stmt->bindValue(':d2', CustomDateFormat::dateAnsiToRus($d2,'rus','mysql'));
+		$stmt->execute();
+		$rows = $stmt->fetchAll();	
+		return $rows;
+	}	
 }

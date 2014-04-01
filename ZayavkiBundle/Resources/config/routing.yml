@@ -36,6 +36,18 @@ filter_act:
 mail:
     path:     /mail/{id}/{msg}
     defaults: { _controller: AcmeZayavkiBundle:Default:mail }	
+test:
+    path:     /test
+    defaults: { _controller: AcmeZayavkiBundle:Report:test }
+rpttickets:
+    path:     /rpttickets/{params}
+    defaults: { _controller: AcmeZayavkiBundle:Report:rpttickets }	
+rptusers:
+    path:     /rptusers
+    defaults: { _controller: AcmeZayavkiBundle:Report:rptusers }
+rpttotal:
+    path:     /rpttotal/{d1}/{d2}
+    defaults: { _controller: AcmeZayavkiBundle:Report:rpttotal }	
 # Organizations routes
 tsgs:
     path:     /tsgs

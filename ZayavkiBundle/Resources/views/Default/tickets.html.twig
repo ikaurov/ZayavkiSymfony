@@ -87,7 +87,7 @@
 				edit_ticket();
 			}
 		});
-	//	fx.getAlerts();
+		fx.getAlerts(0);
 
 		
 		
@@ -114,13 +114,13 @@
    		    		          handler:function(){
    		    		          	var d1 = $('#rpt_d1').datebox('getValue');
    		    		          	var d2 = $('#rpt_d2').datebox('getValue');
-								window.open('report1/{"rpt_d1":"'+d1+'","rpt_d2":"'+d2+'"}', "_self");
+								window.open('rpttotal/'+d1+'/'+d2, "_self");
   		    		          }
    				       },
    		     			   {text:'Закрыть', handler:function(){ $('#ccard').dialog('close'); } }  ] });
 		}
 		if (item.name == "3") {
-			window.open('report3', "_self");
+			window.open('rptusers', "_self");
 		}
 	}
 

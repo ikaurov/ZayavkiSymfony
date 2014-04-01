@@ -148,6 +148,7 @@ class DefaultController extends Controller
 		$data['info'] = $msg;
 		
 		$message = \Swift_Message::newInstance()
+			->setContentType("text/html")
 			->setSubject('Уведомление об изменении в заявке № '.$data['nr'])
 			->setFrom('cosmoservice@cosmoservice.spb.ru')
 			->setTo('ikaurov@gmail.com')
