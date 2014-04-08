@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Acme\ZayavkiBundle\Model\Resanswer;
+use Acme\ZayavkiBundle\Form\Type\Report2Type;
 use PHPExcel;
 use PHPExcel_IOFactory;
 use PHPExcel_Cell;
@@ -16,6 +17,21 @@ use PHPExcel_Style_Alignment;
 
 class ReportController extends Controller
 {
+	public function report_par2Action()
+	{	
+		$data = array( 'translate' => $this->get('transloc')->getTranslated('S') );
+		$form = $this->createForm(new Report2Type(), $data);
+	
+		$d1 = '01.02.2014';
+		$d2 = '12.02.2014';
+	
+		return $this->render('AcmeZayavkiBundle:Default:report2param.html.twig', array(
+			'form' => $form->createView(),
+			'd1' => $d1,
+			'd2' => $d2
+		));	
+	}
+
 	public function setHat($oExcel, $caption, $cols) 
 	{
 		$sht = $oExcel->getActiveSheet();

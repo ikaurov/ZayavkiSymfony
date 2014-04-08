@@ -127,7 +127,29 @@
 			window.open('rpttickets/'+fx.buildPar($('#tickets_list').datagrid('options').sortName, $('#tickets_list').datagrid('options').sortOrder), "_self");
 		}
 		if (item.name == "2") {
-			window.open('rpttotal/01.01.2014/01.01.2015', "_self");
+
+			if (!$('div').is('#report2_card')) {
+				$('#cardholder').after('<div id="report2_card"></div>');
+			}
+
+			$('#report2_card').dialog({
+			title: '{{ translate['dialog.title.reportparams'] }}',
+            width: 555,
+            height: 200,
+            closed: false,
+            cache: false,
+            href: 'report_par2',
+            modal: true,
+            buttons:[ {text:'{{ translate['tickets.ok'] }}', handler:function(){
+					$('#report2_card').dialog('close');
+					window.open('rpttotal/'+$('#report2_dt1').datebox('getValue')+'/'+$('#report2_dt2').datebox('getValue'), "_self");
+   				}},
+   	     		{text:'{{ translate['tickets.cancel'] }}', handler:function(){ $('#report2_card').dialog('close'); } } ]
+            });
+		
+		
+		
+			
 		}
 		if (item.name == "3") {
 			window.open('rptusers', "_self");

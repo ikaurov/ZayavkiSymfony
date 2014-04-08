@@ -116,6 +116,9 @@
 		<en>Please, select the category</en></tickets.message.category>
 	<tickets.message.selecttext>
 		<ru>Введите текст заявки</ru>
-		<en>Please input ticket message</en></tickets.message.selecttext>		
+		<en>Please input ticket message</en></tickets.message.selecttext>	
+	<dialog.title.reportparams>
+		<ru>Параметры отчета</ru>
+		<en>Report parameters</en></dialog.title.reportparams>		
 								  
 </dictionary>		

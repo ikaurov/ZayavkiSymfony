@@ -48,6 +48,9 @@ rpttickets:
 rptusers:
     path:     /rptusers
     defaults: { _controller: AcmeZayavkiBundle:Report:rptusers }
+report_par2:
+    path:     /report_par2
+    defaults: { _controller: AcmeZayavkiBundle:Report:report_par2 }	
 rpttotal:
     path:     /rpttotal/{d1}/{d2}
     defaults: { _controller: AcmeZayavkiBundle:Report:rpttotal }	

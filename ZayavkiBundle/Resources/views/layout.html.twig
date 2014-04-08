@@ -28,15 +28,18 @@
 		jQuery(function($){
 
 			var translate = new Array();
-			translate['menus.companies']  = '{{ translate['menus.title'] }}';
-			translate['menus.users']      = '{{ translate['menus.title'] }}';
-			translate['menus.categories'] = '{{ translate['menus.title'] }}';
-			translate['menus.profs']      = '{{ translate['menus.title'] }}';
-			translate['menus.workers']    = '{{ translate['menus.title'] }}';		
-		//	console.log('value',translate);
+			translate['menus.companies']  = '{{ translate['menus.companies'] }}';
+			translate['menus.users']      = '{{ translate['menus.users'] }}';
+			translate['menus.categories'] = '{{ translate['menus.categories'] }}';
+			translate['menus.profs']      = '{{ translate['menus.profs'] }}';
+			translate['menus.workers']    = '{{ translate['menus.workers'] }}';		
 			
 			fx.init({{prop_head}}, '', 'bundles/acmezayavki/images/alert.wav', translate);
 		});
+		
+
+
+
 
     </script>	
 </body>

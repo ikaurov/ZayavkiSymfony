@@ -1,0 +1,43 @@
+<form id="formcard_rpt2" class="dialogform" method="post" {{ form_enctype(form) }}>
+
+<div class="long">
+	{{ form_label(form.dt1) }}
+	{{ form_widget(form.dt1) }}
+	{{ form_widget(form.dt2) }}
+</div>
+</form> 
+
+<script>
+	jQuery(function($){
+		$.fn.datebox.defaults.formatter = function(date){
+			var y = date.getFullYear();
+			var m = date.getMonth()+1;
+			var d = date.getDate();
+			return (d<10?('0'+d):d)+'.'+(m<10?('0'+m):m)+'.'+y;
+		}
+		
+		$('#report2_dt1').datebox({
+			onSelect: function(date){
+				fx.setCalendar($('#report2_dt1'), date.getFullYear(), date.getMonth(), date.getDay());
+			}
+		});
+
+		$('#report2_dt2').datebox({
+			onSelect: function(date){
+				fx.setCalendar($('#report2_dt2'), date.getFullYear(), date.getMonth(), date.getDay());
+			}
+		});	
+		
+		var intervalID = setInterval(function(){
+	
+			$('#report2_dt1').datebox('setValue', '{{ d1 }}');
+			$('#report2_dt2').datebox('setValue', '{{ d2 }}');
+				
+			fx.setCalendarDate($('#report2_dt1'), '{{ d1 }}'); 
+			fx.setCalendarDate($('#report2_dt2'), '{{ d2 }}'); 
+			clearInterval(intervalID);
+		},100);
+
+	});
+		
+</script>

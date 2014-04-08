@@ -1,7 +1,7 @@
 <dictionary Version="1.0">
 	<login.message.nouser>
 		<ru>Введите пользователя</ru>
-		<en>Imput user</en></login.message.nouser>	
+		<en>Input user name</en></login.message.nouser>	
 	<login.message.baduser>
 		<ru>Ошибочное имя пользователя</ru>
 		<en>Wrong user name</en></login.message.baduser>	

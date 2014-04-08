@@ -6,14 +6,14 @@ function open_user(id, list, translate) {
 	}
 	
     $('#user_card').dialog({
-		title: '{{ translate['dialog.title.user'] }}',
+		title: translate['dialog.title.user'] ,
         width: 600,
         height: 400,
         closed: false,
         cache: false,
         href: 'user_id/'+id,
         modal: true,
-        buttons:[  {text:'{{ translate['basic.save'] }}',
+        buttons:[  {text: translate['basic.save'],
    		              handler:function(){
                         var name = document.getElementById("user_name").value;
                         var log  = document.getElementById("user_username").value;
@@ -30,29 +30,29 @@ function open_user(id, list, translate) {
         		            url:'user_save/'+id+'/'+tt+'',
 		                    onSubmit: function(){
 		                       	if (name.length == 0) {
-		                       		$.messager.alert('{{ translate['basic.warning'] }}', '{{ translate['message.usernameisempty'] }}', 'info');
+		                       		$.messager.alert( translate['basic.warning'] ,  translate['message.usernameisempty'] , 'info');
 		                       		return false;
 		                       	}
 
 		                       	if (log.length == 0) {
-		                       		$.messager.alert('{{ translate['basic.warning'] }}', '{{ translate['message.loginisempty'] }}', 'info');
+		                       		$.messager.alert( translate['basic.warning'] , translate['message.loginisempty'] , 'info');
 		                       		return false;
 		                       	}
 
 		                       	if (pass.length == 0) {
-		                       		$.messager.alert('{{ translate['basic.warning'] }}', '{{ translate['message.passwordisempty'] }}', 'info');
+		                       		$.messager.alert( translate['basic.warning'] ,  translate['message.passwordisempty'] , 'info');
 		                       		return false;
 		                       	}
 
 								var filter  = /^[a-zA-Z0-9 \u0430-\u044F\u0410-\u042F]+$/;
 
 								if (!filter.test(log)) {
-								   	$.messager.alert('{{ translate['basic.warning'] }}', '{{ translate['message.loginbadsymbol'] }}', 'info');
+								   	$.messager.alert( translate['basic.warning'] , translate['message.loginbadsymbol'] , 'info');
 								   	return false;
 								}
 
 						        if (!filter.test(pass)) {
-						        	$.messager.alert('{{ translate['basic.warning'] }}', '{{ translate['message.passwordbadsymbol'] }}', 'info');
+						        	$.messager.alert( translate['basic.warning'] , translate['message.passwordbadsymbol'] , 'info');
 						        	return false;
 						        }
 
@@ -70,13 +70,13 @@ function open_user(id, list, translate) {
 									}
     			                    $('#user_card').dialog('close');
             		            } else {
-                    		        $.messager.alert('{{ translate['basic.warning'] }}', data.message, 'info');
+                    		        $.messager.alert(translate['basic.warning'], data.message, 'info');
                         		}
                             }
                        	});
    		    		}
 				},
-   	     		{text:'{{ translate['basic.cancel'] }}',  handler:function(){ $('#user_card').dialog('close'); } }
+   	     		{text: translate['basic.cancel'],  handler:function(){ $('#user_card').dialog('close'); } }
    	     ],
 		onBeforeOpen:function(){
 			$('#user_card').dialog('dialog').attr('tabIndex','-1').bind('keydown',function(e){
