@@ -18,7 +18,10 @@ class WorkersController extends Controller
     public function indexAction()
     {
 		$id = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgHeadId();
-        return $this->render('AcmeZayavkiBundle:Workers:index.html.twig', array('tsgid' => $id));
+        return $this->render('AcmeZayavkiBundle:Workers:index.html.twig', 
+			array('tsgid' => $id,
+				  'translate' => $this->get('transloc')->getTranslated('','en'), )
+		);
     }
 /**
 * list of workers	
@@ -27,17 +30,17 @@ class WorkersController extends Controller
 * @param String $options 
 * @return json array of categories
 */
-    public function dataAction($tsg, $kind, $options)
+    public function dataAction($tsg, $kind, $incl, $options)
     {
 		// if organization is not specified, then take with head = 1 ()
 		$tsg = ($tsg == 0) ? $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgHeadId() : $tsg;
 		
 		$output = 'array';		
-		if ($kind == 0) { // easyui datagrid style
+		if ($kind == 0) { 
 			$output = 'easyui';
 		}	
 			
-		$rows = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersForTsg($tsg, $options, $output);	
+		$rows = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersForTsg($tsg, $options, $incl, $output);	
 		return new Response(json_encode($rows));	
     }
 
@@ -54,6 +57,7 @@ class WorkersController extends Controller
 		$tsg = ($tsg == 0) ? $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgHeadId() : $tsg;
 	
 		$entity = (array)$this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->findEntity($id);
+		$entity['translate'] = $this->get('transloc')->getTranslated('','en');
 		
 		$entity['ownid'] = ($entity['ownid'] == 0) ? $tsg : $entity['ownid'];
 		$entity['profs'] = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Profs')->findProfsList('N', 'hash');
@@ -62,8 +66,9 @@ class WorkersController extends Controller
 		$form = $this->createForm(new WorkerType(), $entity);
 		
 		return $this->render('AcmeZayavkiBundle:Workers:workers.html.twig', array(
-			'form' => $form->createView()
-		));
+			'form' => $form->createView(),
+			'translate' => $this->get('transloc')->getTranslated('','en') )
+		);
 	}			
 	
 /**

@@ -12,30 +12,21 @@ class CompropRepository extends EntityRepository
 */
 	public function findEntityByUin($kind, $uin) 
 	{
-		$entity = $repository->findOneBy(
-						array('kind' => $kind, 'uin' => $uin)
-					);
+	
+		$query = $this->getEntityManager()->createQuery(
+			'SELECT c.id, c.name, c.uin FROM AcmeZayavkiBundle:Comprop c WHERE c.kind = :kind and c.uin = :uin'
+			);
+		$query->setParameter('kind', $kind);
+		$query->setParameter('uin', $uin);
+		$res = current($query->getResult());
 		
-		if ($entity) {
-			$entity = new Comprop();
+		if (!$res) {
+			$res = array('id'   => 0,
+						 'name' => '',
+						 'uin'  => 0
+						);	
 		}
-		$res = array('id'   => $entity->getId(),
-					 'name' => $entity->getName(),
-					 'uin'  => $entity->getUin()
-					 );			
-		
-		// $query = $this->getEntityManager()->createQuery(
-			// 'SELECT c.id, c.name, c.uin FROM AcmeZayavkiBundle:Comprop c WHERE c.kind = :kind and c.uin=:uin'
-			// );
-		// $query->setParameter('kind', $kind);
-		// $query->setParameter('uin', $uin);
-		// $res = current($rows = $query->getResult());
-		// if (!$res) {
-			// $res = array('id' => 0,
-						 // 'name' => '',
-						 // 'uin' => 0);
-		// }
-		return $res;
+		return $res;		
 	}
 /**
 *
@@ -43,7 +34,7 @@ class CompropRepository extends EntityRepository
 */
 	public function findEntityById($kind, $id) 
 	{
-		$entity = $repository->findOneBy(
+		$entity = $this->findOneBy(
 						array('kind' => $kind, 'id' => $id)
 					);
 		

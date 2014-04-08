@@ -1,0 +1,27 @@
+# databases.yml
+parameters:
+  db.class: Acme\ZayavkiBundle\Model\Db
+  
+  database.main_database.dsn: mysql:host=127.0.0.1;port=3306;dbname=zdb
+  database.main_database.username: root
+  database.main_database.password: '123456'  
+  
+  database.importsource.dsn: mysql:host=127.0.0.1;port=3306;dbname=test
+  database.importsource.username: root
+  database.importsource.password: '123456'
+  
+  
+ 
+services:
+  main_database:
+    class: %db.class%
+    calls:
+      - [setDsn, [%database.main_database.dsn%]]
+      - [setUsername, [%database.main_database.username%]]
+      - [setPassword, [%database.main_database.password%]]
+  importsource:
+    class: %db.class%
+    calls:
+      - [setDsn, [%database.importsource.dsn%]]
+      - [setUsername, [%database.importsource.username%]]
+      - [setPassword, [%database.importsource.password%]]

@@ -7,14 +7,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CategoryType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
+	{			
 		$builder->add('parentid', 'choice', array(
 						'attr' => array("class" => "category_textClass"),
 						'choices' => $options['data']['choice'],
-						'label' => 'Группа',				
+						'label' => $options['data']['translate']['column.group'],				
 					));
 		$builder->add('name', 'text', array(
-						'label' => 'Название',
+						'label' => $options['data']['translate']['column.name'],
 						'attr'  => array("class" => "category_textClass"),						
 					));
 					

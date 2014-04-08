@@ -19,7 +19,8 @@ class UserController extends Controller
     public function indexAction()
     {
         return $this->render('AcmeZayavkiBundle:User:index.html.twig', 
-								array('tsgid' => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgHeadId()));
+								array('tsgid' => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgHeadId(),
+									  'translate' => $this->get('transloc')->getTranslated('','en') ));
     }
 /**
 * list of Users	
@@ -53,11 +54,15 @@ class UserController extends Controller
 	
 		$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('all', '', 'array');
 		
-		$entity = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:User')->findEntity($id);		
+		$entity = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:User')->findEntity($id);	
+		$entity['translate'] = $this->get('transloc')->getTranslated('','en');
 		$form = $this->createForm(new UserType(), $entity);
 					
 		return $this->render('AcmeZayavkiBundle:User:user.html.twig', array(
-			'form' => $form->createView(), 'tsglist' => $tsgs, 'user_id' => $id
+			'form' => $form->createView(), 
+			'translate' => $entity['translate'],
+			'tsglist' => $tsgs, 
+			'user_id' => $id
 		));
     }
 /**

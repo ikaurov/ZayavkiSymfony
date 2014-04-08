@@ -15,7 +15,7 @@
 <table id="u_tsgs"  rownumbers="true" singleSelect="true" style="height:200px"><thead><tr>
     <th data-options="field:'id',hidden:'true'"></th>
     <th data-options="field:'head',hidden:'true'"></th>
-    <th data-options="field:'name',width:500">Организация</th></tr></thead><tbody></tbody>
+    <th data-options="field:'name',width:500">{{ translate['column.company'] }}</th></tr></thead><tbody></tbody>
 </table>
 <div id="u_toolbar">
 	<select class="users_tsg" id="o_tsgs"> 
@@ -23,8 +23,8 @@
         <option value='{{tsg['id']}}' head='{{tsg['head']}}'>{{ tsg['name'] }}</option>
 		{% endfor %}
 	</select>
-   <a id="oc_btn1" href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" >Добавить</a>
-   <a id="oc_btn2" href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" >Удалить</a>
+   <a id="oc_btn1" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" >{{ translate['entity.menu.add'] }}</a>
+   <a id="oc_btn2" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" >{{ translate['entity.menu.delete'] }}</a>
 </div>
 
 {{ form_rest(form) }}
@@ -41,7 +41,7 @@
 			
 			tsgs.rows.forEach(function(entry) {
 				if ((entry.id == val) || (entry.head == 1)) {
-					$.messager.alert('Внимание', 'Организация уже была добавлена', 'info');
+					$.messager.alert('{{ translate['basic.warning'] }}', '{{ translate['message.companyisalreadyadd'] }}', 'info');
 					fnd = 1;
 					return;
 				}
@@ -57,9 +57,9 @@
 		$('#oc_btn2').bind('click', function(){
 			var row = $('#u_tsgs').datagrid('getSelected');
 			if (row){
-			    $.messager.defaults.ok = 'Да';
-			    $.messager.defaults.cancel = 'Нет';			
-				$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+				$.messager.defaults.ok = '{{ translate['basic.yes'] }}';
+			    $.messager.defaults.cancel = '{{ translate['basic.no'] }}';		
+				$.messager.confirm('{{ translate['basic.warning'] }}','{{ translate['ask.delete'] }}',function(r){
 					if (r){
 						$('#u_tsgs').datagrid('deleteRow',  $('#u_tsgs').datagrid('getRowIndex',row) );
 					}

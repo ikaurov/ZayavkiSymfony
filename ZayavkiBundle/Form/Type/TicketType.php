@@ -15,77 +15,79 @@ class TicketType extends AbstractType
 		
 		$builder->add('userid', 'text', array(
 					'attr' => array("hidden" => "true"),
-					'label' => 'Хозяин',				
+					'label' => '',				
 		));	
 		
 		$builder->add('tsgid', 'choice', array(
 					'attr' => array("class" => "ticket_text"),
 					'choices' => $options['data']['tsgs'],
-					'label' => 'Организация',				
+					'label' => $options['data']['translate']['ticket.company'],				
 		));
 	
 		$builder->add('podal', 'text', array(
-						'label' => 'Заявку подал',
-						'attr'  => array("class" => "ticket_text"),		//	style="width:473px;"			
+						'label' => $options['data']['translate']['ticket.podal'],
+						'attr'  => array("class" => "ticket_text"),					
 					));	
 					
 		$builder->add('categoryid', 'choice', array(
 					'attr' => array("class" => "ticket_sel"),
 					'choices' => $options['data']['cats'],
-					'label' => 'Категория',				
+					'label' => $options['data']['translate']['ticket.category'],				
 		));	
 
 		$builder->add('alert', 'choice', array(
 					'attr' => array("class" => "ticket_sel"),
 					'choices' => $options['data']['alerts'],
-					'label' => 'Срочность',				
+					'label' => $options['data']['translate']['ticket.urgent'],				
 		));						
 	
 		$builder->add('phone', 'text', array(
-						'label' => 'Телефон',
-						'attr'  => array("class" => "ticket_col1"),		//	style="width:473px;"			
+						'label' => $options['data']['translate']['ticket.phone'],
+						'attr'  => array("class" => "ticket_col1"),				
 					));	
 
 		$builder->add('email', 'text', array(
-						'label' => 'Эл. почта',
-						'attr'  => array("class" => "ticket_col2"),		//	style="width:473px;"			
+						'label' => $options['data']['translate']['ticket.email'],
+						'attr'  => array("class" => "ticket_col2"),				
 					));
 					
 		$builder->add('preftime', 'text', array(
-						'label' => 'Время',
+						'label' => $options['data']['translate']['ticket.preftime'],
 						'attr'  => array("class" => "ticket_text"),					
 					));					
 	
 		$builder->add('message', 'textarea', array(
-						'label' => 'Текст заявки',
+						'label' => $options['data']['translate']['ticket.message'],
 						'attr'  => array("class" => "ticket_textarea", "rows" => 3),						
 					));
 					
 		$builder->add('workerid', 'text', array(
-						'label' => 'Ответственный',
+						'label' => $options['data']['translate']['ticket.charge'],
 						'attr'  => array("class" => "ticket_col1"),					
 					));	
 					
 					
 		$builder->add('note', 'textarea', array(
-						'label' => 'Примечание',
+						'label' => $options['data']['translate']['ticket.comment'],
 						'attr'  => array("class" => "ticket_textarea", "rows" => 3),						
 					));		
 
 		$builder->add('dplan', 'text', array(
-						'label' => 'Выполнить до',
-						'attr'  => array("class" => "ticket_col1", 'readonly' => 'readonly', 'value' => $options['data']['dplan_fmt']),					
+						'label' => $options['data']['translate']['ticket.dplan'],
+						'attr'  => array("class" => "ticket_col1", 
+										 'readonly' => 'readonly', 
+										 'value' => ((strlen($options['data']['dplan_fmt']) > 9) ? $options['data']['dplan_fmt'] : '<'.$options['data']['translate']['ticket.nodate'].'>')),					
 					));	
 
 		$builder->add('perenos', 'text', array(
 						'label' => '',
 						'attr'  => array("hidden" => "true"),				
-					));					
+					));		
 
-
-
-		  
-					
+		$builder->add('tsgidold', 'text', array(
+						'label' => '',
+						'attr'  => array("hidden" => "true", "value" => $options['data']['tsgid'] ),				
+					));						
 	}
 	
 	public function getName()

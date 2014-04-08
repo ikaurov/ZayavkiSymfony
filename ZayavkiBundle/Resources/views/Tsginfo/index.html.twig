@@ -1,15 +1,19 @@
 <div id="tb_tsgs">
-	  <a id="t_btn1" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">Просмотр</a>
-	  <a id="t_btn2" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">Обновить</a>
+	  <a id="t_btn1" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">{{ translate['entity.menu.open'] }}</a>
+	  <a id="t_btn2" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">{{ translate['entity.menu.refresh'] }}</a>
 </div>
 <table id="tsgs_list"></table>
 <script>
 	$(function(){
 	
+		var translate = new Array();
+		translate['dialog.title.profs']  = '{{ translate['dialog.title.company'] }}';
+		translate['basic.close']        = '{{ translate['basic.close'] }}';
+		
 		$('#t_btn1').bind('click', function(){
 			var row = $('#tsgs_list').datagrid('getSelected');
 			if (row){
-				open_tsg(row.id, $('#tsgs_list'));
+				open_tsg(row.id, $('#tsgs_list'), translate);
 			}
 		});
 	
@@ -27,36 +31,40 @@
 		toolbar: '#tb_tsgs',
 		columns:[[
 			{field:'id',hidden:'true'},
-			{field:'lk',title:'ЛК', width:20,
+			{field:'lk',title:'{{ translate['column.lk'] }}', width:20,
 				formatter: function(value,row,index){
 					if (row.lk==1){
 						return '<img width="16" height="16" alt="" src="{{ asset('bundles/acmezayavki/images/ok.png') }}" >';
 					}
 				}
 			},
-			{field:'name',title:'Название', width:280}			
+			{field:'name',title:'{{ translate['column.name'] }}', width:280}			
 		]],		
 		onDblClickRow: function(index, data) {
-				open_tsg(data['id'], $('#tsgs_list'));
+				open_tsg(data['id'], $('#tsgs_list'), translate);
 		}
     });
 	
 
-	function open_tsg(id) {
+	function open_tsg(id, list, translate) {
 
 		 var client_h = ((document.body.clientHeight > 720) ? 720 : document.body.clientHeight - 200);
 	
 		if (!$('div').is('#tsgs_card')) {
 			$('#cardholder').after('<div id="tsgs_card"></div>');
 		}
-	
+
 		$('#tsgs_card').dialog({
-			title: 'Карточка организации',  width: 600, height: client_h, closed: false, cache: false, href: 'tsgs_id/'+id,
+			title: translate['dialog.title.company'],  width: 600, height: client_h, closed: false, cache: false, href: 'tsgs_id/'+id,
 			resizable: true,
 			modal: true,
-            buttons:[ {text:'Закрыть',  
+            buttons:[ {text: translate['basic.close'],  
 				handler:function(){ 
-					$('#tsgs_list').datagrid('reload'); 
+					try {
+						list.datagrid('reload'); 
+					}
+					catch(err) {		
+					}
 					$('#tsgs_card').dialog('close'); }  
 			}],
 			onBeforeOpen:function(){

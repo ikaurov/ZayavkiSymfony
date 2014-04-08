@@ -50,8 +50,14 @@ class ProfsRepository extends EntityRepository
 	*/		
 	public function findEntity($id)
 	{	
-		$res = $this->find($id);	 
-		return $res;
+		$entity = $this->find($id);		
+		if (!$entity) {
+			$entity = new Profs(); 
+		}
+		
+		return array('id' 		=> $entity->getId(), 
+					 'name' 	=> $entity->getName(), 
+					);
 	}	
 	/**
 	* Save Profs 

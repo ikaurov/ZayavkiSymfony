@@ -7,7 +7,7 @@ jQuery(function($){
 				"root" : "",
 				"path" : "",
 				"search" : {"predef":0, "period":0,"tsg":0,"status":-1,"categs":-1,"closed":0, "poisk":"", "d1":"","d2":"" },
-				"init" : function(head, path, file) {      // initialization
+				"init" : function(head, path, file, menus) {      // initialization
 					this.head      = head;
 					this.path      = path;
                     this.alertfile = file;
@@ -22,17 +22,17 @@ jQuery(function($){
 		            this.align();
 		            this.clearFilter();
 
-                    if (this.head == 0) {
-                    	$('#acc_menus').accordion('add', {title: 'Исполнители', href:"workers", selected: false});
-                    	$('#acc_menus').accordion('add', {title: 'Категории', href:"categories", selected: false});
-	                }
-	                else {
-		                $('#acc_menus').accordion('add', {title: 'Организации', href:"tsgs", selected: false});
-		                $('#acc_menus').accordion('add', {title: 'Пользователи', href:"users", selected: false});
-                    	$('#acc_menus').accordion('add', {title: 'Исполнители', href:"workers", selected: false});
-                    	$('#acc_menus').accordion('add', {title: 'Категории', href:"categories", selected: false});
-		                $('#acc_menus').accordion('add', {title: 'Профессии', href:"profs", selected: false});
-	                }
+                     if (this.head == 0) {
+                    	 $('#acc_menus').accordion('add', {title: menus['menus.users'], href:"workers", selected: false});
+                    	 $('#acc_menus').accordion('add', {title: menus['menus.categories'], href:"categories", selected: false});
+	                 }
+	                 else {
+		                 $('#acc_menus').accordion('add', {title: menus['menus.companies'], href:"tsgs", selected: false});
+		                 $('#acc_menus').accordion('add', {title: menus['menus.users'], href:"users", selected: false});
+                    	 $('#acc_menus').accordion('add', {title: menus['menus.workers'], href:"workers", selected: false});
+                    	 $('#acc_menus').accordion('add', {title: menus['menus.categories'], href:"categories", selected: false});
+		                 $('#acc_menus').accordion('add', {title: menus['menus.profs'], href:"profs", selected: false});
+	                 }
 
 					var that = this;
 					setInterval(function(){ that.getAlerts(1); },60000);
@@ -57,6 +57,7 @@ jQuery(function($){
 
 				},
 				"playSound" : function() { // сигнал о неоткрытых заявках
+					console.log('load audio');
 					document.getElementById("sound").innerHTML='<audio autoplay="autoplay"><source src="' + this.alertfile +
 					   											'.mp3" type="audio/mpeg" /><source src="' + this.alertfile +
 					   											'.ogg" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="' + this.alertfile +'.mp3" /></audio>';
@@ -100,6 +101,9 @@ jQuery(function($){
 					this.search["status"] = 0;
 					this.search["closed"] = 0;
 					this.search["poisk"]  = "";
+					this.search["sort"]  = "";
+					this.search["order"]  = "";
+					
 
 					var cd = new Date();
 					var mm = cd.getMonth()+1;
@@ -158,22 +162,20 @@ jQuery(function($){
 					}
 					catch(err) {
 						console.log(err);
-					}
-					
-					
+					}				
 				},				
 				"setCalendar" :	 function (obj, y, m, d) {
 					var el = obj.datebox('calendar');
 					el.calendar('moveTo', new Date(y, m, d));
 				},
-				"buildPar":function() {
-				
-				// "sort":"'+$('#tickets_list').datagrid('options').sortName+'","order":"'+$('#tickets_list').datagrid('options').sortOrder+'"
-				
+				"buildPar":function(sort, order) {
+					this.search["sort"]  = typeof sort !== 'undefined' ? sort : '';
+					this.search["order"] = typeof order !== 'undefined' ? order : '';
+					
 					return '{"predef":'+this.search["predef"]+', "tsg": '+this.search["tsg"]+',"f_categs": '+this.search["categs"]+',"f_status":'+this.search["status"]+
 							',"f_cbperiod":'+this.search["period"]+',"f_d1":"'+this.search["d1"]+'", "f_d2":"'+this.search["d2"]+'","f_closed":'+this.search["closed"]+
-							',"f_poisk":"'+encodeURI(this.search["poisk"])+'"}';
-				},
+							',"f_poisk":"'+encodeURI(this.search["poisk"])+'","sort":"'+this.search["sort"]+'", "order":"'+this.search["order"]+'"}';
+				},			
 				"setCredit": function(key, value) {
 					if(typeof(window.localStorage) != 'undefined'){
 						window.localStorage.setItem(key,value);

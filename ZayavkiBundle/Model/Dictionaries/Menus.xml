@@ -1,0 +1,20 @@
+<dictionary Version="1.0">	
+	<menus.title>
+		<ru>Меню</ru>
+		<en>Menus</en></menus.title>		
+	<menus.companies>
+		<ru>Организации</ru>
+		<en>Companies</en></menus.companies>		
+	<menus.users>
+		<ru>Пользователи</ru>
+		<en>Users</en></menus.users>
+	<menus.workers>
+		<ru>Исполнители</ru>
+		<en>Workers</en></menus.workers>
+	<menus.categories>
+		<ru>Категории</ru>
+		<en>Categories</en></menus.categories>
+	<menus.profs>
+		<ru>Профессии</ru>
+		<en>Professions</en></menus.profs>	
+</dictionary>

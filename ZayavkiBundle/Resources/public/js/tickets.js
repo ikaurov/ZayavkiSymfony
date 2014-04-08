@@ -1,18 +1,32 @@
 
-function open_ticket(id, status, list) {
+function open_ticket(id, status, list, translate) {
 
     if (status == 2) {
 		if (!$('div').is('#closed_card')) {
 			$('#cardholder').after('<div id="closed_card"></div>');
 		}
 
-		$('#closed_card').dialog({ title: 'Карточка заявки',  
+		$('#closed_card').dialog({ title: translate['dialog.title.ticket'],  
 						width: 600, height: 700, closed: false, cache: false, 
 						href: 'ticket_closed/'+id, modal: true,
-			            buttons:[ {text:'Удалить', id:"btc_delete", handler:function(){  } },
-								  {text:'Печать', handler:function(){ window.open(fx.path+'/ticket/card/{"ticketid":'+id+',"status":'+status+'}/', "_blank"); } },
-								  {text:'Закрыть',id:"btc_close", handler:function(){  $('#closed_card').dialog('close'); } }]
-        });
+			            buttons:[ {text: translate['tickets.delete'], id:"btc_delete", handler:function(){ ticket_delete(id, list); } },
+								  {text: translate['tickets.print'], handler:function(){ window.open('ticket_print/'+id, "_blank"); } },
+								  {text: translate['tickets.closed'],id:"btc_close", handler:function(){  $('#closed_card').dialog('close'); } }],
+						onBeforeOpen:function(){
+							if(this.head == 0) {
+								$('#btc_delete').css("display","none");
+							}
+							else {
+								$('#btc_delete').css("float","left");
+							}
+							$('#closed_card').dialog('dialog').attr('tabIndex','-1').bind('keydown',function(e){
+								if (e.keyCode == 27){
+									$('#closed_card').dialog('close');
+								}
+							});					
+							return true;
+						}								  
+		});
     }
     else {
 		if (!$('div').is('#ticket_card')) {
@@ -22,7 +36,7 @@ function open_ticket(id, status, list) {
 		var client_h = ((document.body.clientHeight > 720) ? 720 : document.body.clientHeight - 200);		
 		// старое значение: 760
 		$('#ticket_card').dialog({
-			title: 'Карточка заявки',
+			title: translate['dialog.title.ticket'],
 			left: 100,
 			top: 10,
 			width: 680,
@@ -32,32 +46,12 @@ function open_ticket(id, status, list) {
 			cache: false,
 			href: 'ticket_id/'+id,
 			modal: true,
-			buttons:[ {text:'Удалить',id:"b_dlg_delete",
-				handler:function(){
-            	 	$.messager.defaults.ok = 'Да';
-					$.messager.defaults.cancel = 'Нет';
-            		$.messager.confirm('Внимание !','Вы уверены, что желаете удалить заявку ?',function(r){
-					if (r){
-						$.ajax({
-					       	type: "GET",
-							url: 'tickets_delete/'+id,
-							dataType: "json",
-							success: function(data) {
-		                      	var data = eval(data);  // change the JSON string to javascript object
-
-			                    if (data.success){
-									if (list) {
-										list.datagrid('reload');
-									}
-    				                $('#ticket_card').dialog('close');
-						 		}
-						 	}
-						});
-					}
-					});
-            	}
+			buttons:[ {text:translate['tickets.delete'],id:"b_dlg_delete",
+				handler:function(){ 
+					ticket_delete(id, list);
+             	}
             },
-            {text:'ОК',id:"b_dlg_save",
+            {text:translate['tickets.ok'],id:"b_dlg_save",
    		        handler:function(){
                     var tsgid    = $('#ticket_tsgid').val();
                     var categ    = $('#ticket_categoryid').val();
@@ -66,15 +60,15 @@ function open_ticket(id, status, list) {
         		        url: 'ticket_save/'+id,
 		                onSubmit: function(){
 	                  		if (tsgid == 0) {
-	                   			$.messager.alert("Внимание !", "Выберите организацию", "info");
+	                   			$.messager.alert( translate['tickets.warning'], translate['tickets.message.selectcompany'], "info");
 	                   			return false;
 	                   		}
 	                   		if (categ == 0) {
-	                   			$.messager.alert("Внимание !", "Выберите категорию заявки", "info");
+	                   			$.messager.alert(translate['tickets.warning'], translate['tickets.message.category'], "info");
 	                   			return false;
 	                   		}
 	                   		if (msg.length == 0) {
-	                  			$.messager.alert("Внимание !", "Введите текст заявки", "info");
+	                  			$.messager.alert(translate['tickets.warning'], translate['tickets.message.selecttext'], "info");
 	                  			return false;
 	                   		}
         		            return true;
@@ -84,23 +78,23 @@ function open_ticket(id, status, list) {
 	                      	var data = eval('(' + data + ')');  // change the JSON string to javascript object
 		                    if (data.success){
 		                          	if (data.id > 0) {
-			                            $.messager.alert('Внимание !', data.message, 'info');
+			                            $.messager.alert(translate['tickets.warning'], data.message, 'info');
 			                        }
 									if (list) {
 										list.datagrid('reload');
 									}
     			                    $('#ticket_card').dialog('close');
             		        }   else {
-                    		        $.messager.alert('Внимание !', data.message, 'info');
+                    		        $.messager.alert(translate['tickets.warning'], data.message, 'info');
                         	}
                         }
                     });
    		    	}
    			},
-	   	    {text:'Отмена',id:"b_dlg_cancel",  handler:function(){ $('#ticket_card').dialog('close'); } }
+	   	    {text:translate['tickets.cancel'],id:"b_dlg_cancel",  handler:function(){ $('#ticket_card').dialog('close'); } }
 	   		],
 		   	onBeforeOpen:function(){
-				$('#b_dlg_save').linkbutton({text: ((id == 0)?'Создать':'ОК')});
+				$('#b_dlg_save').linkbutton({text: ((id == 0)?translate['tickets.create']:translate['tickets.ok'])});
 
 				if(this.head == 0) {
 		   			$('#b_dlg_delete').css("display","none");
@@ -118,3 +112,27 @@ function open_ticket(id, status, list) {
         });
     }//else
 }//function
+
+function ticket_delete(id, list) 
+{
+	$.messager.defaults.ok =  translate['tickets.yes'];
+    $.messager.defaults.cancel = translate['tickets.no'];
+    $.messager.confirm( translate['tickets.warning'], translate['tickets.message.delete'], function(r){
+		if (r){
+			$.ajax({
+		       	type: "GET",
+				url: 'tickets_delete/'+id,
+				dataType: "json",
+				success: function(data) {
+	               	var data = eval(data);  // change the JSON string to javascript object
+                    if (data.success){
+						if (list) {
+							list.datagrid('reload');
+						}
+						$('#ticket_card').dialog('close');
+					}
+				}
+			});
+		}
+	});
+}

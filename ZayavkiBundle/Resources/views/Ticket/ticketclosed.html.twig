@@ -1,24 +1,38 @@
+{% block head %}
+    <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmezayavki/css/main.css') }}"/>
+{% endblock %}
 
 <div class="closed_hat">
-	<div class="closed_nr">Заявка № {{ data['nr'] }}</div>
-    <div class="closed_status">{{ data['subname'] }}</div>
-	<div class="closed_alert">{% if (data['alert'] == 1) %}СРОЧНАЯ{% endif %}</div>
+	<div class="closed_nr">{{ translate['ticket.closed.ticket'] }} {{ entity['nr'] }}</div>
+    <div class="closed_status">{{ entity['subname'] }}</div>
+	<div class="closed_alert">{% if (entity['alert'] == 1) %} {{ translate['ticket.closed.urgent'] }} {% endif %}</div>
 </div>
 <table>
-{% for row in data['rows'] %}
-	<tr class="crow"><td class="crowlbl">{{ row['key'] }}</td><td class="crowres">{{ row['name'] }}</td></tr>
-{% endfor %}
+	<tr class="crow"><td class="crowlbl">{{ translate['ticket.company'] }}</td><td class="crowres">{{ entity['tsgname'] }}</td></tr>
+	<tr class="crow"><td class="crowlbl">{{ translate['ticket.category'] }}</td><td class="crowres">{{ entity['cname'] }}</td></tr>	
+	<tr class="crow"><td class="crowlbl">{{ translate['ticket.closed.fio'] }}</td><td class="crowres">{{ entity['account']+' / '+entity['fio'] }}</td></tr>
+	<tr class="crow"><td class="crowlbl">{{ translate['ticket.address'] }}</td><td class="crowres">{{ entity['address'] }}</td></tr>	
+	<tr class="crow"><td class="crowlbl">{{ translate['ticket.phone'] }}</td><td class="crowres">{{ entity['phone'] }}</td></tr>
+	<tr class="crow"><td class="crowlbl">{{ translate['ticket.email'] }}</td><td class="crowres">{{ entity['email'] }}</td></tr>	
+	<tr class="crow"><td class="crowlbl">{{ translate['ticket.message'] }}</td><td class="crowres">{{ entity['message'] }}</td></tr>
+	<tr class="crow"><td class="crowlbl">{{ translate['ticket.charge'] }}</td><td class="crowres">{{ entity['wname'] }}</td></tr>	
+	<tr class="crow"><td class="crowlbl">{{ translate['ticket.preftime'] }}</td><td class="crowres">{{ entity['preftime'] }}</td></tr>
+	<tr class="crow"><td class="crowlbl">{{ translate['ticket.creator'] }}</td><td class="crowres">{{ entity['creator'] }}</td></tr>	
 </table>
-<div class="closed_history">Хронология выполнения заявки</div>
+<div class="closed_history">{{ translate['ticket.closed.history'] }}</div>
 <div>
     <table class="closed_event">
 	<tr class="header">
-		<td style="width:18%;">Время</td>
-		<td style="width:20%;">Событие</td>
-		<td style="width:20%;">Выполнил</td>
-		<td style="width:42%;">Комментарий</td>
+		<td style="width:18%;">{{ translate['ticket.closed.column.time'] }}</td>
+		<td style="width:20%;">{{ translate['ticket.closed.column.event'] }}</td>
+		<td style="width:20%;">{{ translate['ticket.closed.column.charge'] }}</td>
+		<td style="width:42%;">{{ translate['ticket.closed.column.comment'] }}</td>
     </tr>
-	{% for rs in data['comments'] %}
-		<tr><td>{{ rs['dt'] }}</td><td>{{ rs['kname'] }}</td><td>{{ rs['uname'] }}</td><td>{{ rs['comm'] }}</td></tr>
+	{% for rs in comments %}
+		<tr {% if loop.index0 is even %} 
+				class="closed_row_even" 
+			{% endif %}>
+				<td>{{ rs['dt'] }}</td><td>{{ rs['kname'] }}</td><td>{{ rs['uname'] }}</td><td>{{ rs['comm'] }}</td></tr>
 	{% endfor %}	
 </div>

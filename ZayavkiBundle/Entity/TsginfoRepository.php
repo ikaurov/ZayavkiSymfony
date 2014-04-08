@@ -151,5 +151,10 @@ class TsginfoRepository extends EntityRepository
 	    $res = current($this->getTsgsList('only_head', '', 'array'));	
 		return ($res)? (int)$res['id']: 0 ;
 	}
+	
+	public function deleteAllEntity()
+	{	
+		$this->getEntityManager()->getConnection()->executeUpdate('delete from TSGInfo');			 
+	}	
 		
 }

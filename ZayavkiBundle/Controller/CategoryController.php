@@ -17,7 +17,8 @@ class CategoryController extends Controller
 */
     public function indexAction()
     {
-        return $this->render('AcmeZayavkiBundle:Category:index.html.twig');
+        return $this->render('AcmeZayavkiBundle:Category:index.html.twig', 
+					array('translate' => $this->get('transloc')->getTranslated() ));
     }
 /**
 * list of categories	
@@ -37,12 +38,14 @@ class CategoryController extends Controller
 	public function entityAction($id, Request $request)
     {							
 		$entity = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Category')->findEntity($id);
-		$entity['choice'] = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Category')->findGroupsOrderedByName('N');
+		$entity['choice']    = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Category')->findGroupsOrderedByName('N');
+		$entity['translate'] = $this->get('transloc')->getTranslated();
 		
 		$form = $this->createForm(new CategoryType(), $entity);
 			
 		return $this->render('AcmeZayavkiBundle:Category:category.html.twig', array(
-			'form' => $form->createView()
+			'form' => $form->createView(), 
+			'translate' => $entity['translate'],
 		));
     }
 /**

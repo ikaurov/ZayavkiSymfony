@@ -11,17 +11,17 @@ class WorkerType extends AbstractType
 		$builder->add('ownid', 'choice', array(
 						'attr' => array("class" => "Category_textClass"),
 						'choices' => $options['data']['tsgs'],
-						'label' => 'Обслуживает',				
+						'label' => $options['data']['translate']['caption.serves'],				
 					));	
 	
 		$builder->add('profid', 'choice', array(
 						'attr' => array("class" => "Category_textClass"),
 						'choices' => $options['data']['profs'],
-						'label' => 'Профессия',				
+						'label' => $options['data']['translate']['column.profession'],				
 					));
 					
 		$builder->add('name', 'text', array(
-						'label' => 'Название',
+						'label' => $options['data']['translate']['column.name'],
 						'attr'  => array("class" => "Category_textClass"),						
 					));
 					

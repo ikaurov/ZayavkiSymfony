@@ -1,10 +1,13 @@
 parameters:
 #    acme_zayavki.example.class: Acme\ZayavkiBundle\Example
-#    user_provider.class: Acme\ZayavkiBundle\Entity\UserProvider
-
+    transloc.class: Acme\ZayavkiBundle\Model\Transloc
+imports:
+- { resource: databases.yml }
 services:
-#    user_provider:
-#        class: "%user_provider.class%"
+    transloc:
+        class: "%transloc.class%"
+        calls:
+          - [ setContainer,[ @service_container ] ]
 #    acme_zayavki.example:
 #        class: %acme_zayavki.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]

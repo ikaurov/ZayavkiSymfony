@@ -69,7 +69,8 @@ class TicketsRepository extends EntityRepository
 						 a.RoomNumber as kv, a.FIO as fio, COALESCE(a.RegistryMobile,'') as phone, 
 						(select count(*) from User where id = t.dispid) as creator,t.categoryid					 
 				  FROM  Tickets t LEFT JOIN Accounts a ON a.UserId = t.userid, Category c ".$where." AND (c.id = t.categoryid) ORDER BY ".
-				  ((strlen($env['sort']) == 0)? "t.nr" : "t.".$env['sort'])." LIMIT ".$env["offset"].",".$env["to"].";";
+				  ((strlen($env['sort']) == 0) ? "t.nr" : "".$env['sort'])." ".((strlen($env['order']) == 0)? "ASC"  : $env['order']).				  
+				  " LIMIT ".$env["offset"].",".$env["to"].";";
 		
 		$stmt = $this->getEntityManager()->getConnection()->prepare( $query );
 		$stmt->execute();
@@ -128,7 +129,7 @@ class TicketsRepository extends EntityRepository
 	* @return array $res
 	*/		
 	public function getHistory( $id)
-	{	
+	{
 		$stmt = $this->getEntityManager()->getConnection()->prepare('CALL Ticket_history(:id);');
 		$stmt->bindValue(':id', $id);
 		$stmt->execute();
@@ -229,26 +230,27 @@ class TicketsRepository extends EntityRepository
 	* @return array 
 	*/		
 	public function findHistory($userid, $id)
-	{	
-		$query = $this->getEntityManager()->createQuery(
+	{
+		$list = array();
+		if ($userid > 0) {
+			$query = $this->getEntityManager()->createQuery(
 				"SELECT t.id, t.nr, t.dstart, t.dstop, t.message, t.statusid FROM AcmeZayavkiBundle:Tickets t WHERE t.userid = :userid and t.id <> :id ORDER BY t.dstart DESC "
 			);
-		$query->setParameter('userid', $userid);	
-		$query->setParameter('id', $id);
-		$res = $query->getResult();
-		$list = array();
-		foreach($res as $rs) {
-			$dt1 = (array)$rs['dstart'];
-			$dt2 = (array)$rs['dstop'];
-			$list[] = array ('id'	    => $rs['id'],
+			$query->setParameter('userid', $userid);	
+			$query->setParameter('id', $id);
+			$res = $query->getResult();
+			foreach($res as $rs) {
+				$dt1 = (array)$rs['dstart'];
+				$dt2 = (array)$rs['dstop'];
+				$list[] = array ('id'	    => $rs['id'],
 							 'nr' 		=> $rs['nr'],
 							 'statusid' => $rs['statusid'],
 							 'dstart' 	=> (isset($dt1['date']) ? CustomDateFormat::dateAnsiToRus($dt1['date']) : ''),
 							 'dstop' 	=> (isset($dt2['date']) ? CustomDateFormat::dateAnsiToRus($dt2['date']) : ''), 
 							 'message' 	=> $rs['message'],
-							);
+								);
+			}
 		}
-		
         return $list;
 	}	
 	/**

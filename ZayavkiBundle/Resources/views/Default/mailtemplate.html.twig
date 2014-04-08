@@ -4,19 +4,19 @@
 		 <div style="float:left;  height:40px; width: 800px;font-size: 16px;text-align: center;padding-top: 10px;">{{ data['tname'] }}</div>
 		 <div style="float:left;  height:40px; width: 790px; clear:both;font-size: 12px;text-align: center;padding-left: 10px;padding-top: 10px;">
 					{{ data['tsgaddress'] }} 
-					Тел. диспетчера:{{ data['dtel'] }} 
-					Email: <a href="mailto:{{ data['tsgemail'] }}">{{ data['tsgemail'] }}</a></div>
+					{{ translate['mail.phone'] }}:{{ data['dtel'] }} 
+					{{ translate['mail.email'] }}: <a href="mailto:{{ data['tsgemail'] }}">{{ data['tsgemail'] }}</a></div>
 	</div>
 </div>
-<div style="float:left;  height:30px; clear:both;width: 900px;font-family: Arial;font-size:14px;text-align: center;padding-top: 10px;background:#cdc">Уведомление об изменении в заявке № {{ data['nr'] }}</div>
+<div style="float:left;  height:30px; clear:both;width: 900px;font-family: Arial;font-size:14px;text-align: center;padding-top: 10px;background:#cdc">{{ translate['mail.subject'] }} {{ data['nr'] }}</div>
 <div style="float:left; clear:both;width: 890px;font-family: Arial;font-size:14px;padding-left: 10px;padding-top: 10px;background:#dff">
-	Уважаемый(ая) <B>{{ data['fio'] }}</B> ,<br>в заявке № {{ data['nr'] }} произошли изменения:<br>{{ data['info'] }}<br>
+	{{ translate['mail.appeal'] }} <B>{{ data['fio'] }}</B> ,<br>{{ translate['mail.inticket'] }} {{ data['nr'] }} {{ translate['mail.changeshappens'] }} :<br>{{ data['info'] }}<br>
 </div>
 <div style="float:left; clear:both;width: 890px;font-family: Arial;font-size:12px; padding-left: 10px;padding-top: 10px;padding-bottom: 10px;background:#dff">
-	Краткая информация о заявке:<br>
-	Сообщение: {{ data['message'] }} <br>
-	Подана: {{ data['dstart'] }}<br>
-	Адрес: {{ data['address'] }}<br>
+	{{ translate['mail.info'] }}:<br>
+	{{ translate['mail.message'] }}: {{ data['message'] }} <br>
+	{{ translate['mail.created'] }}: {{ data['dstart'] }}<br>
+	{{ translate['mail.address'] }}: {{ data['address'] }}<br>
 </div>
 </div>
 

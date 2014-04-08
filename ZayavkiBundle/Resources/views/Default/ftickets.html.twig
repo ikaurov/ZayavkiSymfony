@@ -1,20 +1,20 @@
 <div id="btns_more" style="display:none">
-	<a id="b_f1" href="#" class="easyui-linkbutton" style="float:left">По умолчанию</a>
-	<a id="b_f2" href="#" class="easyui-linkbutton">Применить</a>
-	<a id="b_f3" href="#" class="easyui-linkbutton">Отменить</a>
+	<a id="b_f1" href="javascript:void(0)" class="easyui-linkbutton" style="float:left">{{ translate['filter.bydefault'] }}</a>
+	<a id="b_f2" href="javascript:void(0)" class="easyui-linkbutton">{{ translate['filter.apply'] }}</a>
+	<a id="b_f3" href="javascript:void(0)" class="easyui-linkbutton">{{ translate['filter.cancel'] }}</a>
  </div>
 <div id="filter" style="float: left;">
 	<form id="ffilter_card" method="post">
     	<div class="long">
-    		 <label class="flabel">Фильтр</label><select  id="f_predef" name="f_predef"  style="width:210px;" >
-				 <option value="0">ВСЕ</option>
-				 <option value="1">Новые заявки</option>
-				 <option value="2">Заявка в работе</option>
-				 <option value="3">Просроченные заявки</option>
-				 <option value="4">Срочные заявки</option>
-				 <option value="5">Срок выполнения сегодня</option>
+    		 <label class="flabel">{{ translate['filter.caption'] }}</label><select  id="f_predef" name="f_predef"  style="width:210px;" >
+				 <option value="0">{{ translate['filter.all'] }}</option>
+				 <option value="1">{{ translate['filter.new'] }}</option>
+				 <option value="2">{{ translate['filter.process'] }}</option>
+				 <option value="3">{{ translate['filter.overdue'] }}</option>
+				 <option value="4">{{ translate['filter.urgent'] }}</option>
+				 <option value="5">{{ translate['filter.today'] }}</option>
 			 </select>
-			 <label class="flabel">Организация</label>
+			 <label class="flabel">{{ translate['filter.company'] }}</label>
 			 <? print_r(tsgs); ?>
 				<select style="width:210px;" id="f_tsgs">
 				{% for tsg in tsgs %}
@@ -22,7 +22,7 @@
 				{% endfor %}
 				</select>
 			<div class="spacer5h"></div>
-	    	<div style="display:inline-block; width: 200px;"><a id="b_f" class="easyui-linkbutton"  >Расширить поиск</a></div>
+	    	<div style="display:inline-block; width: 200px;"><a id="b_f" class="easyui-linkbutton"  >{{ translate['filter.more'] }}</a></div>
 		</div>
 	</form>
 </div>
@@ -76,7 +76,7 @@
 		}			
 		
 		$('#filter_card').dialog({
-			title: 'Поиск',  width: 450, height:300, closed: false, cache: false, 
+			title: '{{ translate['filter.search'] }}',  width: 450, height:300, closed: false, cache: false, 
 			href: 'filter_more/'+fx.buildPar(), modal: true, 
 			buttons:'#btns_more',
 			onBeforeOpen:function(){
@@ -85,7 +85,6 @@
 			}
            });
 	});		
-
 
 	function subform(){
         fx.search["predef"] = $('#f_predef').val();

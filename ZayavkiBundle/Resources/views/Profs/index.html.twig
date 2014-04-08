@@ -1,8 +1,8 @@
 <div id="tb_prof" style="display:none">
-	<a href="#" id="p_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">Создать</a>
-	<a href="#" id="p_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">Редакт</a>
-	<a href="#" id="p_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">Удалить</a>
-	<a href="#" id="p_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">Обновить</a>
+	<a href="javascript:void(0)" id="p_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">{{ translate['entity.menu.create'] }}</a>
+	<a href="javascript:void(0)" id="p_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">{{ translate['entity.menu.edit'] }}</a>
+	<a href="javascript:void(0)" id="p_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">{{ translate['entity.menu.delete'] }}</a>
+	<a href="javascript:void(0)" id="p_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">{{ translate['entity.menu.refresh'] }}</a>
 </div>
 
 <table id="profs_list"  singleSelect="true" autoRowHeight="false" rownumbers="true" fit="true"></table>
@@ -15,25 +15,31 @@
 				$('#profs_list').datagrid('reload');
 			}
 		};
-	
-	
+		
+		var translate = new Array();
+		translate['dialog.title.profs']  = '{{ translate['dialog.title.profs'] }}';
+		translate['basic.save']          = '{{ translate['basic.save'] }}';
+		translate['basic.cancel']        = '{{ translate['basic.cancel'] }}';
+		translate['basic.warning']       = '{{ translate['basic.warning'] }}';	
+		translate['message.nameisempty'] = '{{ translate['message.nameisempty'] }}';
+		
 		$('#p_btn1').bind('click', function(){
-			open_prof(0, item);
+			open_prof(0, item, translate);
 		});
 		
 		$('#p_btn2').bind('click', function(){
 			var row = $('#profs_list').datagrid('getSelected');
 			if (row){
-				open_prof(row.id, item);
+				open_prof(row.id, item, translate);
 			}
 		});
 
 		$('#p_btn3').bind('click', function(){
 			var row = $('#profs_list').datagrid('getSelected');
 			if (row){
-				$.messager.defaults.ok = 'Да';
-			    $.messager.defaults.cancel = 'Нет';
-				$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+				$.messager.defaults.ok = '{{ translate['basic.yes'] }}';
+			    $.messager.defaults.cancel = '{{ translate['basic.no'] }}';
+				$.messager.confirm('{{ translate['basic.warning'] }}','{{ translate['ask.delete'] }}',function(r){
 					if (r){
 						$.ajax({
 							type: "GET",
@@ -44,7 +50,7 @@
 								if (data.success){
 									$('#profs_list').datagrid('reload');
 								} else {
-									$.messager.alert('Внимание', data.message, 'info');
+									$.messager.alert('{{ translate['basic.warning'] }}', data.message, 'info');
 								}
 							}
 						});
@@ -55,19 +61,17 @@
 
 		$('#p_btn4').bind('click', function(){
 			$('#profs_list').datagrid('reload');
-		});		
-	});
-
+		});	
 	$('#profs_list').datagrid({
 		url: 'profs_data',
 		toolbar: '#tb_prof',
 		columns:[[
 			{field:'id',hidden:'true'},
-			{field:'name',width:300,title:'Название'}
+			{field:'name',width:300,title:'{{ translate['column.name'] }}'}
 		]],		
 		onDblClickRow: function(index, data) {
 		   		if (fx.head == 1) {
-					open_prof(data['id'], item);
+					open_prof(data['id'], item, translate);
 		   		}
 		   },	   
   	   onBeforeLoad: function(row, param) {
@@ -77,7 +81,8 @@
   	  	 	$('#p_btn3').hide();
   	  	 }
   	   }
-	 });
+	 });		
+	});
 
 
 </script>

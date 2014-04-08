@@ -1,0 +1,134 @@
+<dictionary Version="1.0">
+	<entity.menu.create>
+		<ru>Создать</ru>
+		<en>Create</en></entity.menu.create>
+	<entity.menu.add>
+		<ru>Добавить</ru>
+		<en>Add</en></entity.menu.add>		
+	<entity.menu.open>
+		<ru>Просмотр</ru>
+		<en>Open</en></entity.menu.open>		
+	<entity.menu.edit>
+		<ru>Редакт</ru>
+		<en>Edit</en></entity.menu.edit>
+	<entity.menu.edit.short>
+		<ru>Ред.</ru>
+		<en>Edit</en></entity.menu.edit.short>		
+	<entity.menu.delete>
+		<ru>Удалить</ru>
+		<en>Delete</en></entity.menu.delete>
+	<entity.menu.refresh>
+		<ru>Обновить</ru>
+		<en>Refresh</en></entity.menu.refresh>	
+	<basic.yes>
+		<ru>Да</ru>
+		<en>Yes</en></basic.yes>
+	<basic.no>
+		<ru>Нет</ru>
+		<en>No</en></basic.no>		
+	<basic.save>
+		<ru>Сохранить</ru>
+		<en>Save</en></basic.save>	
+	<basic.cancel>
+		<ru>Отменить</ru>
+		<en>Cancel</en></basic.cancel>	
+	<basic.close>
+		<ru>Закрыть</ru>
+		<en>Close</en></basic.close>	
+	<basic.exit>
+		<ru>Выход</ru>
+		<en>Exit</en></basic.exit>		
+	<basic.search>
+		<ru>Поиск</ru>
+		<en>Search</en></basic.search>		
+	<basic.warning>
+		<ru>Внимание</ru>
+		<en>Attention</en></basic.warning>	
+	<basic.on>
+		<ru>Включить</ru>
+		<en>ON</en></basic.on>
+	<basic.off>
+		<ru>Выключить</ru>
+		<en>OFF</en></basic.off>		
+	<column.name>
+		<ru>Название</ru>
+		<en>Name</en></column.name>	
+	<column.code>
+		<ru>Код</ru>
+		<en>Code</en></column.code>			
+	<column.company>
+		<ru>Организация</ru>
+		<en>Company</en></column.company>		
+	<column.group>
+		<ru>Группа</ru>
+		<en>Group</en></column.group>	
+	<column.profession>
+		<ru>Профессия</ru>
+		<en>Profession</en></column.profession>		
+	<column.worker>
+		<ru>Исполнитель</ru>
+		<en>Worker</en></column.worker>			
+	<column.user>
+		<ru>Пользователь</ru>
+		<en>User</en></column.user>	
+	<column.login>
+		<ru>Логин</ru>
+		<en>Login</en></column.login>			
+	<column.password>
+		<ru>Пароль</ru>
+		<en>Password</en></column.password>			
+	<column.lk>
+		<ru>ЛК</ru>
+		<en>...</en></column.lk>				
+	<caption.serves>
+		<ru>Обслуживает</ru>
+		<en>Serves</en></caption.serves>	
+	<caption.users>
+		<ru>Локальные пользователи</ru>
+		<en>Local users</en></caption.users>
+	<caption.workers>
+		<ru>Исполнители</ru>
+		<en>Workers</en></caption.workers>		
+	<label.lk>
+		<ru>ЛК: подача заявок</ru>
+		<en>Available for homeowner</en></label.lk>	
+	<ask.delete>
+		<ru>Вы уверены, что желаете удалить запись ?</ru>
+		<en>Are you sure to delete record ?</en></ask.delete>	
+	<message.nameisempty>
+		<ru>Название не может быть пустым</ru>
+		<en>Name can not be empty</en></message.nameisempty>
+	<message.usernameisempty>
+		<ru>Имя пользователя не может быть пустым</ru>
+		<en>User name can not be empty</en></message.usernameisempty>
+	<message.loginisempty>
+		<ru>Логин не может быть пустым</ru>
+		<en>Login can not be empty</en></message.loginisempty>
+	<message.passwordisempty>
+		<ru>Пароль не может быть пустым</ru>
+		<en>Password can not be empty</en></message.passwordisempty>
+	<message.loginbadsymbol>
+		<ru>Логин содержит недопустимые символы</ru>
+		<en>Login contains invalid characters</en></message.loginbadsymbol>
+	<message.passwordbadsymbol>
+		<ru>Пароль содержит недопустимые символы</ru>
+		<en>Password contains invalid characters</en></message.passwordbadsymbol>		
+	<message.companyisalreadyadd>
+		<ru>Организация уже была добавлена в список</ru>
+		<en>Company is already in the list</en></message.companyisalreadyadd>
+	<dialog.title.category>
+		<ru>Карточка категории</ru>
+		<en>Category properties</en></dialog.title.category>	
+	<dialog.title.profs>
+		<ru>Карточка профессии</ru>
+		<en>Profession properties</en></dialog.title.profs>		
+	<dialog.title.worker>
+		<ru>Карточка исполнителя</ru>
+		<en>Worker properties</en></dialog.title.worker>	
+	<dialog.title.user>
+		<ru>Карточка пользователя</ru>
+		<en>User properties</en></dialog.title.user>	
+	<dialog.title.company>
+		<ru>Карточка организации</ru>
+		<en>Company properties</en></dialog.title.company>		
+</dictionary>

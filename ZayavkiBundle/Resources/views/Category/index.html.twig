@@ -1,9 +1,9 @@
 
 <div id="tb_categ" style="display:none">
-	<a href="#" id="c_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">Создать</a>
-	<a href="#" id="c_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">Редакт</a>
-	<a href="#" id="c_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">Удалить</a>
-	<a href="#" id="c_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">Обновить</a>
+	<a href="javascript:void(0)" id="c_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">{{ translate['entity.menu.create'] }}</a>
+	<a href="javascript:void(0)" id="c_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">{{ translate['entity.menu.edit'] }}</a>
+	<a href="javascript:void(0)" id="c_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">{{ translate['entity.menu.delete'] }}</a>
+	<a href="javascript:void(0)" id="c_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">{{ translate['entity.menu.refresh'] }}</a>
 </div>
 
 <table id="categs_list" fit="true"></table>
@@ -20,13 +20,20 @@
 				open_categ(row.id, $('#categs_list'));
 			}
 		});
+		
+		var translate = new Array();
+		translate['dialog.title.category']  = '{{ translate['dialog.title.category'] }}';
+		translate['basic.save']          = '{{ translate['basic.save'] }}';
+		translate['basic.cancel']        = '{{ translate['basic.cancel'] }}';
+		translate['basic.warning']       = '{{ translate['basic.warning'] }}';	
+		translate['message.nameisempty'] = '{{ translate['message.nameisempty'] }}';		
 
 		$('#c_btn3').bind('click', function(){
 			var row = $('#categs_list').treegrid('getSelected');
 			if (row){
-			    $.messager.defaults.ok = 'Да';
-			    $.messager.defaults.cancel = 'Нет';			
-				$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+			    $.messager.defaults.ok = '{{ translate['basic.yes'] }}';
+			    $.messager.defaults.cancel = '{{ translate['basic.no'] }}';			
+				$.messager.confirm('{{ translate['basic.warning'] }}','{{ translate['ask.delete'] }}',function(r){
 					if (r){
 						$.ajax({
 							type: "GET",
@@ -37,7 +44,7 @@
 								if (data.success){
 									$('#categs_list').treegrid('reload');
 								} else {
-									$.messager.alert('Внимание', data.message, 'info');
+									$.messager.alert('{{ translate['basic.warning'] }}', data.message, 'info');
 								}
 							}
 						});
@@ -51,13 +58,12 @@
 		});		
 	});
 
-
 	$('#categs_list').treegrid({
  	   url: 'categories_data',
  	   idField:'id',
  	   treeField:'name',
  	   columns:[[
-   	     {title:'Название',field:'name',width:300}
+   	     {title:'{{ translate['column.name'] }}',field:'name',width:300}
   	   ]],
   	   toolbar: '#tb_categ',
 	   onDblClickRow: function(row) {
@@ -73,6 +79,4 @@
   	  	 }
   	   }
 	 });
-
-
 </script>

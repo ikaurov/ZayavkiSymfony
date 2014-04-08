@@ -9,15 +9,14 @@ class TicketDplanType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 	
-	
 		$builder->add('dplan', 'text', array(
-						'attr' => array( "style" => "width:138px"),//"class" => "easyui-datebox",
-						'label' => 'Дата выполнения',				
+						'attr' => array( "style" => "width:138px"),
+						'label' => $options['data']['translate']['ticket.label.dstop'],				
 					));	
 
 		$builder->add('comment', 'text', array(
 						'attr' => array("class" => "category_textClass"),
-						'label' => 'Примечание',				
+						'label' => $options['data']['translate']['ticket.label.comment'],				
 					));						
 	}
 	

@@ -13,39 +13,39 @@ class FilterType extends AbstractType
 		$builder->add('statusid', 'choice', array(
 						'attr' => array("class" => "filter_textClass", "value" => 2),
 						'choices' => $options['data']['status'],
-						'label' => 'Статус',				
+						'label' => $options['data']['translate']['filter.status'],			
 					));	
 					
 		$builder->add('categoryid', 'choice', array(
 						'attr' => array("class" => "filter_textClass", "value" => 2),
 						'choices' => $options['data']['category'],
-						'label' => 'Категория',				
+						'label' => $options['data']['translate']['filter.category'],				
 					));	
 					
 		$builder->add('periodid', 'choice', array(
 						'attr' => array("class" => "filter_textClass", "value" => 1),
 						'choices' => $options['data']['period'],
-						'label' => 'Дата',				
+						'label' => $options['data']['translate']['filter.date'],					
 					));	
 					
 		$builder->add('dt1', 'text', array(
 						'attr' => array("class" => "easyui-datebox", "style" => "width:138px"),
-						'label' => 'Период',				
+						'label' => $options['data']['translate']['filter.period'],					
 					));			
 
 		$builder->add('dt2', 'text', array(
 						'attr' => array("class" => "easyui-datebox", "style" => "width:138px"),
-						'label' => 'Период',				
+						'label' => $options['data']['translate']['filter.period'],					
 					));	
 					
 		$builder->add('search', 'text', array(
 						'attr' =>  array("class" => "filter_textClass"),
-						'label' => 'Период',				
+						'label' => $options['data']['translate']['filter.text'],				
 					));	
 					
 		$builder->add('closed', 'checkbox', array(
-						'attr' =>  array("class" => "filter_textClass"),
-						'label' => 'Показывать закрытые',				
+//						'attr' =>  array("class" => "filter_textClass"),
+						'label' => $options['data']['translate']['filter.closed'],				
 					));						
 			
 	}

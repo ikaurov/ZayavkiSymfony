@@ -1,9 +1,9 @@
  <div id="tb_user" style="display:none">
- 	<a href="#" id="o_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">Создать</a>
-	<a href="#" id="o_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">Ред.</a>
-	<a href="#" id="o_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">Удалить</a>
-	<a href="#" id="o_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">Обновить</a>
-	<a href="#" id="o_btn5" class="easyui-linkbutton" data-options="iconCls:'icon-list',plain:true"></a>
+ 	<a href="javascript:void(0)" id="o_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">{{ translate['entity.menu.create'] }}</a>
+	<a href="javascript:void(0)" id="o_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">{{ translate['entity.menu.edit.short'] }}</a>
+	<a href="javascript:void(0)" id="o_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">{{ translate['entity.menu.delete'] }}</a>
+	<a href="javascript:void(0)" id="o_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">{{ translate['entity.menu.refresh'] }}</a>
+	<a href="javascript:void(0)" id="o_btn5" class="easyui-linkbutton" data-options="iconCls:'icon-list',plain:true"></a>
 </div>
 <input type="hidden" id="users_view" value="1" >
 <table id="users_list" fit="true"></table>
@@ -16,23 +16,35 @@
 			}
 		};
 	
+		var translate = new Array();
+		translate['dialog.title.user']  = '{{ translate['dialog.title.user'] }}';
+		translate['basic.save']          = '{{ translate['basic.save'] }}';
+		translate['basic.cancel']        = '{{ translate['basic.cancel'] }}';
+		translate['basic.warning']       = '{{ translate['basic.warning'] }}';	
+		translate['message.usernameisempty']   = '{{ translate['message.usernameisempty'] }}';
+		translate['message.loginisempty']      = '{{ translate['message.loginisempty'] }}';
+		translate['message.passwordisempty']   = '{{ translate['message.passwordisempty'] }}';
+		translate['message.loginbadsymbol']    = '{{ translate['message.loginbadsymbol'] }}';
+		translate['message.passwordbadsymbol'] = '{{ translate['message.passwordbadsymbol'] }}';		
+			
 		$('#o_btn1').bind('click', function(){
-			open_user(0, item);
+			open_user(0, item, translate);
 		});
 		
 		$('#o_btn2').bind('click', function(){
 			var row = $('#users_list').treegrid('getSelected');
 			if ((row)&&(row.company == 2)){
-				open_user(row.id, item);
+				open_user(row.id, item, translate);
 			}
 		});
+		
 		
 		$('#o_btn3').bind('click', function(){
 			var row = $('#users_list').treegrid('getSelected');
 			if (row){
-			    $.messager.defaults.ok = 'Да';
-			    $.messager.defaults.cancel = 'Нет';			
-				$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+				$.messager.defaults.ok = '{{ translate['basic.yes'] }}';
+			    $.messager.defaults.cancel = '{{ translate['basic.no'] }}';
+				$.messager.confirm('{{ translate['basic.warning'] }}','{{ translate['ask.delete'] }}',function(r){
 					if (r){
 						$.ajax({
 							type: "GET",
@@ -43,7 +55,7 @@
 								if (data.success){
 									$('#users_list').treegrid('reload');
 								} else {
-									$.messager.alert('Внимание', data.message, 'info');
+									$.messager.alert('{{ translate['basic.warning'] }}', data.message, 'info');
 								}
 							}
 						});
@@ -67,12 +79,12 @@
  	   idField:'id',
  	   treeField:'name',
  	   columns:[[
-   	     {title:'Название',field:'name',width:350}
+   	     {title:'{{ translate['column.name'] }}',field:'name',width:350}
   	   ]],
 		toolbar: '#tb_user',
 		onDblClickRow: function(row) {
 			if ((row)&&(row.company == 2)){
-				open_user(row.id, item);
+				open_user(row.id, item, translate);
 			}
 		},
 		onBeforeLoad:function(row, param){
@@ -82,4 +94,5 @@
 			return true;
 		}
 	});
+		
 </script>

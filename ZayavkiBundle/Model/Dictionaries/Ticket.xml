@@ -1,0 +1,178 @@
+<dictionary Version="1.0">
+	<ticket.confirm>
+		<ru>Подтвердить</ru>
+		<en>Confirm</en></ticket.confirm>	
+	<ticket.cancel>
+		<ru>Отменить</ru>
+		<en>Cancel</en></ticket.cancel>
+	<ticket.change>
+		<ru>Изменить</ru>
+		<en>Change</en></ticket.change>
+	<ticket.search>
+		<ru>Поиск</ru>
+		<en>Search</en></ticket.search>
+	<ticket.nr>
+		<ru>Номер №</ru>
+		<en>Nr #</en></ticket.nr>		
+	<ticket.at>
+		<ru>от</ru>
+		<en>at</en></ticket.at>
+	<ticket.newticket>
+		<ru>Новая заявка</ru>
+		<en>NEW ticket</en></ticket.newticket>		
+	<ticket.apartment>
+		<ru>Квартира</ru>
+		<en>Apartment</en></ticket.apartment>
+	<ticket.fio>
+		<ru>ФИО</ru>
+		<en>Name</en></ticket.fio>
+	<ticket.account>
+		<ru>Лицевой счет</ru>
+		<en>Account</en></ticket.account>			
+	<ticket.balance>
+		<ru>Баланс</ru>
+		<en>Debt</en></ticket.balance>		
+	<ticket.addcharge>
+		<ru>Добавить исполнителя</ru>
+		<en>Add worker</en></ticket.addcharge>
+	<ticket.setdplan>
+		<ru>Установить дату</ru>
+		<en>Set exec date</en></ticket.setdplan>
+	<ticket.previous>
+		<ru>Ранее поданные заявки по этому адресу</ru>
+		<en>Previous tickets</en></ticket.previous>	
+	<ticket.dstart>
+		<ru>Дата создания</ru>
+		<en>Created at</en></ticket.dstart>
+	<ticket.closed>
+		<ru>Закрыта</ru>
+		<en>Closed</en></ticket.closed>
+	<ticket.warning>
+		<ru>Внимание</ru>
+		<en>Warning</en></ticket.warning>
+		
+	
+		
+	<ticket.company>
+		<ru>Организация</ru>
+		<en>Company</en></ticket.company>
+	<ticket.category>
+		<ru>Категория</ru>
+		<en>Category</en></ticket.category>		
+	<ticket.urgent>
+		<ru>Срочность</ru>
+		<en>Urgency</en></ticket.urgent>		
+	<ticket.podal>	
+		<ru>Заявку подал</ru>
+		<en>Caller info</en></ticket.podal>		
+	<ticket.charge>	
+		<ru>Исполнитель</ru>
+		<en>Charge</en></ticket.charge>
+	<ticket.preftime>
+		<ru>Время</ru>
+		<en>Date</en></ticket.preftime>
+	<ticket.address>
+		<ru>Адрес</ru>
+		<en>Address</en></ticket.address>	
+	<ticket.phone>		
+		<ru>Телефон</ru>
+		<en>Phone</en></ticket.phone>
+	<ticket.email>
+		<ru>Эл. адрес</ru>
+		<en>Email</en></ticket.email>		
+	<ticket.comment>
+		<ru>Примечание</ru>
+		<en>Comments</en></ticket.comment>
+	<ticket.dplan>
+		<ru>Выполнить до</ru>
+		<en>Execution date</en></ticket.dplan>		
+	<ticket.nodate>
+		<ru>дата не выбрана</ru>
+		<en>not selected</en></ticket.nodate>			
+	<ticket.message>
+		<ru>Текст заявки</ru>
+		<en>Message</en></ticket.message>	
+	<ticket.creator>
+		<ru>Заявку зарегистрировал</ru>
+		<en>Created by</en></ticket.creator>		
+		
+	<ticket.label.dstop>
+		<ru>Дата выполнения</ru>
+		<en>Execution date</en></ticket.label.dstop>
+
+
+		
+		
+		
+	<ticket.label.status>
+		<ru>Статус</ru>
+		<en>Status</en></ticket.label.status>		
+	<ticket.message.cancel>
+		<ru><B>Вы выбрали режим отмены заявки.</B> Укажите причину отмены.</ru>
+		<en><B>You select ticket cancellation.</B> Please notify the reason.</en></ticket.message.cancel>
+	<ticket.message.invalidemail>
+		<ru>Укажите правильный электронный адрес</ru>
+		<en>Email is invalid. Please check</en></ticket.message.invalidemail>	
+	<ticket.message.appnotfound>
+		<ru>Номер квартиры не найден</ru>
+		<en>Apartment is not found</en></ticket.message.appnotfound>
+	<ticket.message.chargedeleted>
+		<ru>Исполнитель был удален и находится в списке только для сохранения истории</ru>
+		<en>Charge person was deleted and can not be selected</en></ticket.message.chargedeleted>	
+	<ticket.message.companychange>
+		<ru>Вы уверены, что желаете изменить организацию ? Информация о жильце будет потеряна</ru>
+		<en>Are you sure to change company? Information about apartment number will be lost</en></ticket.message.companychange>	
+	<ticket.message.nocomment>
+		<ru>Комментарий должен быть заполнен</ru>
+		<en>Comments must be present</en></ticket.message.nocomment>
+	<ticket.message.noapp>
+		<ru>Квартира на выбрана. Поиск жильца невозможен</ru>
+		<en>Apartment was not selected. Search is not available</en></ticket.message.noapp>
+	<ticket.message.nocompany>
+		<ru>Организация на выбрана. Поиск жильца невозможен</ru>
+		<en>Company was not selected. Search is not available</en></ticket.message.nocompany>		
+
+	<dialog.title.dplan>
+		<ru>Установка даты выполнения заявки</ru>
+		<en>Execution date</en></dialog.title.dplan>	
+	<dialog.title.status>
+		<ru>Изменение состояния заявки</ru>
+		<en>Ticket status</en></dialog.title.status>			
+
+	
+	<ticket.closed.urgent>
+		<ru>СРОЧНАЯ</ru>
+		<en>URGENT</en></ticket.closed.urgent>	
+	<ticket.closed.fio>
+		<ru>Лицевой счет/Заявитель</ru>
+		<en>Account/Name</en></ticket.closed.fio>
+
+	
+	
+
+	<ticket.closed.history>
+		<ru>Хронология выполнения заявки</ru>
+		<en>Ticket history</en></ticket.closed.history>
+	<ticket.closed.ticket>
+		<ru>Заявка №</ru>
+		<en>Ticket #</en></ticket.closed.ticket>
+	<ticket.closed.column.time>
+		<ru>Время</ru>
+		<en>Date</en></ticket.closed.column.time>
+	<ticket.closed.column.event>
+		<ru>Событие</ru>
+		<en>Event</en></ticket.closed.column.event>
+	<ticket.closed.column.charge>
+		<ru>Выполнил</ru>
+		<en>Charge</en></ticket.closed.column.charge>
+	<ticket.closed.column.comment>
+		<ru>Комментарий</ru>
+		<en>Comment</en></ticket.closed.column.comment>		
+	<ticket.btn.closed>
+		<ru>Закрыть</ru>
+		<en>Close</en></ticket.btn.closed>	
+	<dialog.title.ticket>
+		<ru>Карточка заявки</ru>
+		<en>Ticket</en></dialog.title.ticket>
+	
+</dictionary>	

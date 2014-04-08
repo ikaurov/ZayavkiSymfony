@@ -89,7 +89,6 @@ a.a_notify:hover { font-family : "Arial";font-size:16px; font-weight: bolder; co
 
 .t_l_person {width:120px; margin-top: 2px;}
 .t_status {float: left;font-family: Arial;font-size: 16px;font-weight: bolder;color: #777;margin-right: 10px;}
-.t_nr {font-family: Arial; font-size: 18px; margin-left: 10px;float: left;display: inline-block;width: 180px;}
 
 .alert_text {font-size:14px;display: inline;}
 
@@ -101,7 +100,7 @@ a.a_notify:hover { font-family : "Arial";font-size:16px; font-weight: bolder; co
 .t_address{font-weight:bolder;font-family: Arial;font-size:12px;padding-top: 4px; display:inline-block; width:350px; height:15px; overflow:hidden}
 .t_l_person {width:120px; margin-top: 2px;}
 .t_status {float: left;font-family: Arial;font-size: 16px;font-weight: bolder;color: #777;margin-right: 10px;}
-.t_nr {font-family: Arial; font-size: 18px; margin-left: 10px;float: left;display: inline-block;width: 180px;}
+.t_nr {font-family: Arial; font-size: 18px; margin-left: 10px;float: left;display: inline-block;width: 300px;}
 .t_kv{width: 200px;font-size: 12px;font-weight: bolder;margin-top:8px;}
 .t_change{ display: inline-block;font-family: Arial;margin-top:10px;margin-right: 5px;float:right;}
 .ticket_col1{width:195px;}
@@ -110,7 +109,15 @@ a.a_notify:hover { font-family : "Arial";font-size:16px; font-weight: bolder; co
 .ticket_text{width: 500px; }
 .ticket_textarea{width: 500px; margin-top: 10px;}
 .ticket_btn{display: inline-block;font-family: Arial;margin-left:10px;float:right; margin-right:25px;}
+.top_section{font-family : "Arial";background:rgb(250, 250, 250);border-bottom: 1px #dedede dotted;}
+.dop_section{display:inline-block; width: 600px;height: 50px;}
+.dop_title{display:inline-block; width:105px;float: left;margin-left: 5px;}
+.dop_text{display:inline-block;width: 450px; height:40px; padding:3px;border:1px solid #efefef}
+.info_section{display:inline-block;float:right;margin-top: 10px;}
+.tablo_section{width: 900px;}
 
+.spacer5_ul{display : block;height: 5px; clear: both;	padding-top : 0px;border-bottom: 1px #888 solid;}
+.tickets_btn{display:inline-block; width:450px;font-size:16px;font-weight: bolder;}
 .tstate_msg{ font-size:12px;margin-left:10px; color:#f00; display:none;}
 .ticket_hd{height: 30px;margin-top: 10px;margin-right: 10px;}
 .ticket_hist {font-family : "Arial"; background:rgb(250, 250, 250); margin: 10px; width: 645px;}
@@ -119,8 +126,8 @@ a.a_notify:hover { font-family : "Arial";font-size:16px; font-weight: bolder; co
 .closed_nr{font-weight:bolder;font-size:16px;display: inline-block; width:200px;}
 .closed_status{font-weight:bolder;font-size:16px;display: inline;}
 .closed_alert{font-weight:bolder;font-size:16px;display: inline;float:right;}
-.closed_event{border-bottom: 1px solid #efefef; margin: 10px;}
+.closed_event{border-bottom: 1px solid #efefef; margin: 10px; font-family : "Arial"; font-size:14px;}
 .closed_history{height: 20px;margin: 10px;}
-
+.closed_row_even{background:#dedede}
 
 

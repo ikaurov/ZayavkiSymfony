@@ -37,15 +37,15 @@
 			$("#username").validatebox({
 				required: true,
 				validType:'minLength[1]',
-				missingMessage:'Введите пользователя',
-				invalidMessage:'Ошибочное имя пользователя'
+				missingMessage:'{{ translate['login.message.nouser'] }}',
+				invalidMessage:'{{ translate['login.message.baduser'] }}'
 			});
 			
 			$("#password").validatebox({
 				required: true,
 				validType:'minLength[1]',
-				missingMessage:'Введите пароль',
-				invalidMessage:'Ошибочный пароль'
+				missingMessage:'{{ translate['login.message.nopassword'] }}',
+				invalidMessage:'{{ translate['login.message.badpassword'] }}'
 			});			
 			
 		
@@ -76,15 +76,14 @@
 			$('#login_card').show();
 
             $('#login_card').dialog({
-				title: 'Регистрация в системе', 
+				title: '{{ translate['login.dialog.title'] }}', 
 				width: 400, 
 				height: 210, 
 				closed: false, 
 				cache: false, 
 				modal: true,
-				buttons:[ {text:'Вход в систему',id:'blogin', handler:function(){ 
-				//flogin(); 
-				$('#logform').submit();
+				buttons:[ {text:'{{ translate['login.btn.login'] }}',id:'blogin', handler:function(){ 
+					$('#logform').submit();
 				}} ],
 				onBeforeOpen:function(){
 					$('#blogin').css("float","left");
@@ -100,13 +99,13 @@
                    var uname = $("#username").val();
                    var pname = $("#password").val();
                    if (uname.length == 0) {
-                   		$('#errmsg').html('Введите имя пользователя');
+                   		$('#errmsg').html('{{ translate['login.message.nouser'] }}');
                       	$('#errmsg').show();
                         $("#username").focus();
                    	   return false;
                    }
                    if (pname.length == 0) {
-                   		$('#errmsg').html('Введите пароль');
+                   		$('#errmsg').html('{{ translate['login.message.nopassword'] }}');
                       	$('#errmsg').show();
                         $("#password").focus();
                    	   return false;
@@ -114,20 +113,6 @@
                    return true;
               },
               success:function(data){
-			  console.log(data);
-			//  console.log(data);
-			//	window.open('index','_self')
-                //  var data = eval('(' + data + ')');  // change the JSON string to javascript object
-                //  if (data.success){
-                //      $('#login_card').dialog('close');
-                //      fx.setCredit("login", $("#username").val());
-                //      window.open('index','_self')
-                //  }
-                //  else {
-	            //      $('#errmsg').html('Пользователь не найден');
-                //      $('#errmsg').show();
-				//      $("#uname").focus();
-                //  }
              }
           });
 		}		

@@ -1,6 +1,9 @@
 acme_zayavki_homepage:
     pattern:  /index
     defaults: { _controller: AcmeZayavkiBundle:Default:index }
+import:
+    pattern:  /import
+    defaults: { _controller: AcmeZayavkiBundle:Import:index }	
 bye:
     path:     /bye/{name}
     defaults: { _controller: AcmeZayavkiBundle:Default:index }
@@ -18,6 +21,9 @@ title:
 tickets:
     path:     /tickets
     defaults: { _controller: AcmeZayavkiBundle:Default:tickets }
+tickets_resize:
+    path:     /tickets_resize/{userid}/{name}/{width}
+    defaults: { _controller: AcmeZayavkiBundle:Default:resize }	
 alerts:
     path:     /alerts
     defaults: { _controller: AcmeZayavkiBundle:Default:alerts }
@@ -36,12 +42,9 @@ filter_act:
 mail:
     path:     /mail/{id}/{msg}
     defaults: { _controller: AcmeZayavkiBundle:Default:mail }	
-test:
-    path:     /test
-    defaults: { _controller: AcmeZayavkiBundle:Report:test }
 rpttickets:
     path:     /rpttickets/{params}
-    defaults: { _controller: AcmeZayavkiBundle:Report:rpttickets }	
+    defaults: { _controller: AcmeZayavkiBundle:Report:rpttickets, params:'' }	
 rptusers:
     path:     /rptusers
     defaults: { _controller: AcmeZayavkiBundle:Report:rptusers }
@@ -104,8 +107,8 @@ workers:
     path:     /workers
     defaults: { _controller: AcmeZayavkiBundle:Workers:index }	
 workers_data:
-    path:     /workers_data/{tsg}/{kind}/{options}
-    defaults: { _controller: AcmeZayavkiBundle:Workers:data, tsg:0, kind:0, options:'' }		
+    path:     /workers_data/{tsg}/{kind}/{options}/{incl}
+    defaults: { _controller: AcmeZayavkiBundle:Workers:data, tsg:0, kind:0, incl:0, options:'' }		
 workers_id:
     path:     /workers_id/{tsg}/{id}
     defaults: { _controller: AcmeZayavkiBundle:Workers:entity }
@@ -156,6 +159,9 @@ ticket_id:
     defaults: { _controller: AcmeZayavkiBundle:Tickets:entity }	
 ticket_closed:
     path:     /ticket_closed/{id}
+    defaults: { _controller: AcmeZayavkiBundle:Tickets:closed }	
+ticket_print:
+    path:     /ticket_print/{id}
     defaults: { _controller: AcmeZayavkiBundle:Tickets:closed }	
 ticket_save:
     path:     /ticket_save/{id}

@@ -9,10 +9,9 @@ class ProfType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('name', 'text', array(
-						'label' => 'Название',
+						'label' => $options['data']['translate']['column.name'],
 						'attr'  => array("class" => "Category_textClass"),						
-					));
-					
+					));							
 	}
 	
 	public function getName()

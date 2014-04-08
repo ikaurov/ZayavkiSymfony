@@ -1,33 +1,53 @@
 <div id="efilter" class="easyui-panel" href="ftickets" style="height:50px;background:#fafafa;border:1px solid #fafafa;" ></div>
-<div style='font-family : "Arial";background:rgb(250, 250, 250);border-bottom: 1px #dedede dotted;'>
-<div style="width: 900px;">
-	<div style="display:inline-block; width: 450px;height: 50px;"><div style="display:inline-block; width:120px;float: left;margin-left: 5px;">Доп. параметры</div><div id="f_dop" style="display:inline-block;width: 300px;"></div></div>
-  	<div style="display:inline-block;float:right;margin-top: 10px;">
-		<div><div class="alert_text">Новых заявок :<a class = "a_notify" id="n_new" href="javascript:select_predef(1);"></a></div></div>
-	   	<div><div class="alert_text">В работе заявок всего<a class = "a_notify" id="n_total" href="javascript:select_predef(2);"></a> (из них <img width="16" height="16" alt="" src="{{ asset('bundles/acmezayavki/images/y16.png') }}"> срочных <a id="n_urgent" class = "a_notify" href="javascript:select_predef(4);"></a>)</div></div>
-	   	<div><div class="alert_text">в т.ч.:<div style="color:#f00;font-weight:bolder;display: inline;">просроченных</div></div><a class = "a_notify" id="n_alert" href="javascript:select_predef(3);"></a></div>
-	   	<div><div class="alert_text">со сроком <div style="color:#00f;font-weight:bolder;display: inline;">выполнения сегодня</div><a class = "a_notify" id="n_today" href="javascript:select_predef(5);"></a></div></div>
+<div class="top_section">
+	<div class="tablo_section">
+		<div class="dop_section">
+			<div class="dop_title">{{ translate['tickets.description'] }}</div>
+			<div id="f_dop" class="dop_text"></div>
+		</div>
+  	<div class="info_section">
+		<div><div class="alert_text">{{ translate['tickets.new'] }} :<a class = "a_notify" id="n_new" href="javascript:select_predef(1);"></a></div></div>
+	   	<div><div class="alert_text">{{ translate['tickets.total'] }}<a class = "a_notify" id="n_total" href="javascript:select_predef(2);"></a></div>
+				<div class="alert_text">( {{ translate['tickets.among'] }} <img width="16" height="16" alt="" src="{{ asset('bundles/acmezayavki/images/y16.png') }}"> {{ translate['tickets.urgent'] }} <a id="n_urgent" class = "a_notify" href="javascript:select_predef(4);"></a>)</div></div>
+	   	<div><div class="alert_text">{{ translate['tickets.incl'] }} :<div style="color:#f00;font-weight:bolder;display: inline;">{{ translate['tickets.overdue'] }}</div></div>
+				<a class = "a_notify" id="n_alert" href="javascript:select_predef(3);"></a></div>
+	   	<div><div class="alert_text">{{ translate['tickets.withperiod'] }} <div style="color:#00f;font-weight:bolder;display: inline;">{{ translate['tickets.today'] }}</div><a class = "a_notify" id="n_today" href="javascript:select_predef(5);"></a></div></div>
 	</div>
 </div>
-<div id="tb_tickets2" style="display:inline-block; width:450px"><div class="spacer5h"></div>
-	<a id="create_btn" href="#" class="easyui-linkbutton"  style="font-size:16px;font-weight: bolder;">Создать</a>
-	<a id="edit_btn" href="#"   class="easyui-linkbutton"  style="font-size:16px;font-weight: bolder;">Редактировать</a>
+<div id="tb_tickets2" class="tickets_btn"><div class="spacer5h"></div>
+	<a id="create_btn" href="javascript:void(0)" class="easyui-linkbutton" style="font-size:16px;font-weight: bolder;">{{ translate['tickets.create'] }}</a>
+	<a id="edit_btn" href="javascript:void(0)"   class="easyui-linkbutton"  style="font-size:16px;font-weight: bolder;">{{ translate['tickets.edit'] }}</a>
 	{% if ( prop_head == 1) %}
-		<a href="javascript:show_reportmenu();" class="easyui-linkbutton"  style="font-size:16px;font-weight: bolder;">Отчеты</a>
+		<a href="javascript:show_reportmenu();" class="easyui-linkbutton"  style="font-size:16px;font-weight: bolder;">{{ translate['tickets.report'] }}</a>
 	{% endif %}
-	
 </div>
-<div class="spacer5" style="border-bottom: 1px #888 solid;"></div>
+<div class="spacer5_ul"></div>
 <div id="tb_menu" class="easyui-menu" style="width:120px;" data-options="onClick:menuHandler">
-	<div data-options="name:1">Список заявок</div>
-	<div data-options="name:2">Итого за период</div>
-	<div data-options="name:3">Список пользователей</div>				
+	<div data-options="name:1">{{ translate['tickets.report1'] }}</div>
+	<div data-options="name:2">{{ translate['tickets.report2'] }}</div>
+	<div data-options="name:3">{{ translate['tickets.report3'] }}</div>				
 </div>
-  <table id="tickets_list" singleSelect="true" border="false" autoRowHeight="true" rownumbers="true" pagination="true" pagePosition="top" pageSize="20" sortName="nr" sortOrder="desc">
-  </table></div>
-<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/tickets.js') }}"></script>
-<script>
+  <table id="tickets_list" singleSelect="true" border="false" autoRowHeight="true" rownumbers="true" pagination="true" pagePosition="top" pageSize="20" sortName="nr" sortOrder="desc"></table>
 
+ <script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/tickets.js') }}"></script>
+
+<script>
+	var translate = new Array();	
+	translate['dialog.title.ticket'] = '{{ translate['dialog.title.ticket'] }}';	
+	translate['tickets.delete']      = '{{ translate['tickets.delete'] }}';	
+	translate['tickets.print']       = '{{ translate['tickets.print'] }}';	
+	translate['tickets.closed']      = '{{ translate['tickets.closed'] }}';	
+	translate['tickets.warning']     = '{{ translate['tickets.warning'] }}';	
+	translate['tickets.yes']         = '{{ translate['tickets.yes'] }}';	
+	translate['tickets.no']          = '{{ translate['tickets.no'] }}';	
+	translate['tickets.create']      = '{{ translate['tickets.create'] }}';
+	translate['tickets.cancel']      = '{{ translate['tickets.cancel'] }}';
+	translate['tickets.ok']          = '{{ translate['tickets.ok'] }}';	
+	translate['tickets.message.delete']        = '{{ translate['tickets.message.delete'] }}';	
+	translate['tickets.message.selectcompany'] = '{{ translate['tickets.message.selectcompany'] }}';	
+	translate['tickets.message.category']      = '{{ translate['tickets.message.category'] }}';	
+	translate['tickets.message.selecttext']    = '{{ translate['tickets.message.selecttext'] }}';	
+	console.log(translate);
 	$(function(){	
 
 		var client_h=document.body.clientHeight;
@@ -41,7 +61,7 @@
 				{field:'astate',hidden:'true'},
 				{field:'fopen',hidden:'true'},
 				{field:'status',hidden:'true',title:'...'},
-				{field:'state',width:40,title:'...',
+				{field:'state',width:'{{ colsize['state'] }}',title:'...',
 					formatter: function(value,row,index){
 						var state = '';
 						if ((row.alert == 1)&&(row.statusid == 1)){
@@ -57,17 +77,17 @@
 						return state;
 					}				
 				},
-				{field:'tsgname',width:150,sortable:true,title:'Организация'},
-				{field:'nr',width:70,sortable:true,title:'Номер'},
-				{field:'dstart',width:110,sortable:true,title:'Создана'},
-				{field:'cname',width:130,sortable:true,title:'Категория'},
-				{field:'sname',width:130,sortable:true,title:'Состояние'},
-				{field:'account',width:50,title:'Л.счет'},
-				{field:'fio',width:130,sortable:true,title:'ФИО'},
-				{field:'address',width:180,sortable:true,title:'Адрес'},
-				{field:'message',width:200,title:'Заявка'},
-				{field:'wname',width:110,sortable:true,title:'Ответственный'},
-				{field:'dplan',width:130,sortable:true,title:'План/Факт',
+				{field:'tsgname',width:'{{ colsize['tsgname'] }}',sortable:true,title:'{{ translate['column.tickets.company'] }}'},
+				{field:'nr',width:'{{ colsize['nr'] }}',sortable:true,      title:'{{ translate['column.tickets.nr']      }}'},
+				{field:'dstart',width:'{{ colsize['dstart'] }}',sortable:true, title:'{{ translate['column.tickets.created'] }}'},
+				{field:'cname',width:'{{ colsize['cname'] }}',sortable:true,  title:'{{ translate['column.tickets.category']}}'},
+				{field:'sname',width:'{{ colsize['sname'] }}',sortable:true,  title:'{{ translate['column.tickets.status']  }}'},
+				{field:'account',width:'{{ colsize['account'] }}',               title:'{{ translate['column.tickets.account'] }}'},
+				{field:'fio',width:'{{ colsize['fio'] }}',sortable:true,    title:'{{ translate['column.tickets.fio']     }}'},
+				{field:'address',width:'{{ colsize['address'] }}',sortable:true,title:'{{ translate['column.tickets.address'] }}'},
+				{field:'message',width:'{{ colsize['message'] }}',              title:'{{ translate['column.tickets.message'] }}'},
+				{field:'wname',width:'{{ colsize['wname'] }}',sortable:true,  title:'{{ translate['column.tickets.charge']  }}'},
+				{field:'dplan',width:'{{ colsize['dplan'] }}',sortable:true,  title:'{{ translate['column.tickets.dates']   }}',
 					styler: function(value,row,index){
 						if ((row.overdue == "0")&&(row.statusid == 1)){		
 							return 'font-weight:bolder; color:blue;';
@@ -83,41 +103,31 @@
 						return 'font-weight:bolder;';
 				}
 			},
+			onResizeColumn: function (field, width) {
+				$.ajax({ type: "GET", url: 'tickets_resize/{{ userid }}/'+field+'/'+width, dataType: "json"});
+			},			
 			onDblClickRow: function(index, data) {
 				edit_ticket();
 			}
 		});
 		fx.getAlerts(0);
-
-		
 		
 	});
 	
 	$('#create_btn').bind('click', function(){
-		open_ticket(0, 1, $('#tickets_list'));
+		open_ticket(0, 1, $('#tickets_list'), translate);
 	});
 	
 	$('#edit_btn').bind('click', function(){
 		edit_ticket();
 	});	
-
+	
 	function menuHandler(item){
 		if (item.name == "1") {
-			window.open('export/'+fx.buildPar(), "_self");
+			window.open('rpttickets/'+fx.buildPar($('#tickets_list').datagrid('options').sortName, $('#tickets_list').datagrid('options').sortOrder), "_self");
 		}
 		if (item.name == "2") {
-
-	     	 $('#ccard').dialog({
-				title: '', width: 555,height: 200,closed: false,cache: false, modal: true,
-	            href: 'reportpar/2',
-	            buttons:[{text:'Выбрать',
-   		    		          handler:function(){
-   		    		          	var d1 = $('#rpt_d1').datebox('getValue');
-   		    		          	var d2 = $('#rpt_d2').datebox('getValue');
-								window.open('rpttotal/'+d1+'/'+d2, "_self");
-  		    		          }
-   				       },
-   		     			   {text:'Закрыть', handler:function(){ $('#ccard').dialog('close'); } }  ] });
+			window.open('rpttotal/01.01.2014/01.01.2015', "_self");
 		}
 		if (item.name == "3") {
 			window.open('rptusers', "_self");
@@ -136,7 +146,8 @@
 					row.fopen = 1;
 					$('#tickets_list').datagrid('refreshRow', $('#tickets_list').datagrid('getRowIndex', row) );
 				}
-				open_ticket(row.id, row.status, $('#tickets_list'));
+				
+				open_ticket(row.id, row.statusid, $('#tickets_list'), translate);
 			}
 	}
 
@@ -149,6 +160,6 @@
         $('#f_predef').val(id);
         fx.search["predef"] = id;
 		fx.filterInfo();
-        $('#tickets_list').datagrid({"url": '/tickets_data/'+fx.buildPar()});
+        $('#tickets_list').datagrid({"url": 'tickets_data/'+fx.buildPar()});
 	}
  </script>

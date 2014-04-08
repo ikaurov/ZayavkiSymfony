@@ -2,28 +2,28 @@
 // @param id   - worker id
 // @param list - link obj to parent list
 
-function open_worker(tsg, id, list) {
+function open_worker(tsg, id, list, translate) {
 	// list = list to refresh after 
 	if (!$('div').is('#worker_card')) {
 		$('#cardholder').after('<div id="worker_card"></div>');
 	}
 
   $('#worker_card').dialog({
-		title: 'Карточка исполнителя',
+		title: translate['dialog.title.worker'],
         height: 200,			
         width: 600,
         closed: false,
         cache: false,
         href: 'workers_id/'+tsg+'/'+id,
         modal: true,			
-        buttons:[  {text:'Сохранить',
+        buttons:[  {text:translate['basic.save'],
 					handler:function(){
                         var name = fx.strCheck($('#worker_name').val());					
  	                    $('#formcard_workers').form('submit', {
         		            url:'workers_save/'+tsg+'/'+id,
 		                    onSubmit: function(){
                                 if (name.length == 0) {
-	                      			$.messager.alert("Внимание !", "Название не может быть пустым", "info");
+	                      			$.messager.alert(translate['basic.warning'], translate['message.nameisempty'], "info");
 	                       			return false;
                                 }
         		                return true;
@@ -41,13 +41,13 @@ function open_worker(tsg, id, list) {
 								
     			                    $('#worker_card').dialog('close');
             		            }  else {
-                    		        $.messager.alert('Внимание !', data.message, 'info');
+                    		        $.messager.alert(translate['basic.warning'], data.message, 'info');
                         		}
 							}
                     	});
    		    		}
    			       },
-   	    {text:'Отменить',  handler:function(){ $('#worker_card').dialog('close'); } } ],
+   	    {text:translate['basic.cancel'],  handler:function(){ $('#worker_card').dialog('close'); } } ],
 		onBeforeOpen:function(){
 			$('#worker_card').dialog('dialog').attr('tabIndex','-1').bind('keydown',function(e){
 				if (e.keyCode == 27){
@@ -57,4 +57,3 @@ function open_worker(tsg, id, list) {
 		}
     });
 }
-

@@ -16,7 +16,8 @@ class TsgsController extends Controller
 */
     public function indexAction()
     {
-        return $this->render('AcmeZayavkiBundle:Tsginfo:index.html.twig');
+        return $this->render('AcmeZayavkiBundle:Tsginfo:index.html.twig',
+				array('translate' => $this->get('transloc')->getTranslated() ) );
     }
 /**
 * list of tsgs	
@@ -37,10 +38,13 @@ class TsgsController extends Controller
 	public function entityAction($id)
     {
 		$entity = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->findEntity($id);	
+		$entity['translate'] = $this->get('transloc')->getTranslated();
+		
 		$form = $this->createForm(new TsginfoType(), $entity);	
 		
 		return $this->render('AcmeZayavkiBundle:Tsginfo:tsgs.html.twig', array(
 			'form' => $form->createView(),
+			'translate' => $entity['translate'],
 			'tsg_id' => $id, 
 			'lk' => $entity['lk'] 
 		));
@@ -63,8 +67,8 @@ class TsgsController extends Controller
 * @return json encoded array of workers
 */	
 	public function worklistAction($id)
-	{
-		$list = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersForTsg($id, '', 'easyui');	
+	{   
+		$list = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersForTsg($id, '', -1, 'easyui');	
         return new Response(json_encode($list));	
 	}	
 /**

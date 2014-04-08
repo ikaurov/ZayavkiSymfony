@@ -12,12 +12,15 @@ class DefaultController extends Controller
 {
 	/**
 	* Main entrance
-	*
+	* access to language definer: $lang = ($this->container->hasParameter('app.language')) ? $this->container->getParameter('app.language') : 'ru';
 	*/
     public function indexAction()
     {
 		$user = $this->get('security.context')->getToken()->getUser();
-        return $this->render('AcmeZayavkiBundle:Default:index.html.twig', array('prop_head' => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($user->getId())));
+        return $this->render('AcmeZayavkiBundle:Default:index.html.twig', 
+				array( 'prop_head' => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($user->getId()),
+					   'translate' => $this->get('transloc')->getTranslated('A'),
+				));
     }
 	/**
 	* Title panel. User credentials
@@ -25,14 +28,15 @@ class DefaultController extends Controller
 	*/
     public function titleAction()
     {
-		$user = $this->get('security.context')->getToken()->getUser();
-		$name = $user->getName();
+		$user = $this->get('security.context')->getToken()->getUser();	
 		$list = current($this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->findTsgsListForUser($user->getId(), 'array'));
-		if ($list) {
-			$name .= ' \ '.$list['name'];
-		}
+		
+		$name = $user->getName().(($list)? ' \ '.$list['name'] : '');
 
-        return $this->render('AcmeZayavkiBundle:Default:title.html.twig', array('name' => $name));
+        return $this->render('AcmeZayavkiBundle:Default:title.html.twig', 
+					array('name' => $name, 
+					  	  'translate' => $this->get('transloc')->getTranslated(),
+				));
     }
 	/**
 	* Tickets panel
@@ -40,8 +44,14 @@ class DefaultController extends Controller
 	*/
 	public function ticketsAction()
     {
+	
 		$user = $this->get('security.context')->getToken()->getUser();
-        return $this->render('AcmeZayavkiBundle:Default:tickets.html.twig', array('prop_head' => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($user->getId())));
+        return $this->render('AcmeZayavkiBundle:Default:tickets.html.twig', 
+					array('prop_head' => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($user->getId()),
+						  'userid'    => $user->getId(),
+						  'translate' => $this->get('transloc')->getTranslated('P'),
+						  'colsize'   => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->getColumnsSize($user->getId()),
+					));
     }
 	/**
 	* Alert announce	
@@ -70,7 +80,10 @@ class DefaultController extends Controller
 			$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->findTsgsListForUser($user->getId(),'array');
 		}
 		
-        return $this->render('AcmeZayavkiBundle:Default:ftickets.html.twig', array('tsgs' => $tsgs));
+        return $this->render('AcmeZayavkiBundle:Default:ftickets.html.twig', 
+				array('tsgs' => $tsgs,
+					  'translate' => $this->get('transloc')->getTranslated('S'),
+				));
     }
 /**
 * Filter extended action
@@ -83,6 +96,7 @@ class DefaultController extends Controller
 		$data = array( 'status'  => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(2,  'N'),
 					   'period'  => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(4,  'N'),
 					   'category'=> $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Category')->findCategoryListHash('N'),
+					   'translate' => $this->get('transloc')->getTranslated('S'),
 		);
 		$form = $this->createForm(new FilterType(), $data);
 	
@@ -113,31 +127,32 @@ class DefaultController extends Controller
     {	
 		$apar = json_decode($params);
 		$message = '';
+		$translate = $this->get('transloc')->getTranslated('S');
 		
 		if ($apar->f_status > 0 ) {
 			$row = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findEntityByUin(2, $apar->f_status);
-			$message .= 'Статус: <B>'.$row['name'].'</B>; ';
+			$message .= $translate['filter.status'].': <B>'.$row['name'].'</B>; ';
 		}
 
 		if ($apar->f_categs > 0 ) {
 			$row = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Category')->findEntity($apar->f_categs);
-			$message .= 'Категория: <B>'.$row['name'].'</B>; ';
+			$message .= $translate['filter.category'].': <B>'.$row['name'].'</B>; ';
 		}	
 
 		if ($apar->f_cbperiod > 0 ) {
 			$period = '<B>'.$apar->f_d1.' - '.$apar->f_d2.'</B>; ';
 			switch ($apar->f_cbperiod) {
-				case 1: $message .= 'Период подачи заявки: '.$period;
+				case 1: $message .= $translate['filter.dstart'].': '.$period;
 						break;
-				case 2: $message .= 'Период передачи в работу: '.$period;
+				case 2: $message .= $translate['filter.dplan'].': '.$period;
 						break;
-				case 3: $message .= 'Период закрытия: '.$period;
+				case 3: $message .= $translate['filter.dstop'].': '.$period;
 						break;
 			}
 		}
 
-		$message .= (($apar->f_closed > 0) ? '<B>Включая закрытые заявки</B>; ' : '<B>Только открытые заявки</B>; ').
-					((strlen($apar->f_poisk) > 0)?'Поиск текста:<B>"'.$apar->f_poisk.'"</B>; ':'');
+		$message .= '<B>'.(($apar->f_closed > 0) ? $translate['filter.inclclosed']: $translate['filter.onlyopen'] ).'</B>'.
+					((strlen($apar->f_poisk) > 0)? $translate['filter.text'].':<B>"'.$apar->f_poisk.'"</B>; ':'');
 
         return new Response(json_encode(array('message' => $message, 'params' => $apar)));
     }		
@@ -147,17 +162,33 @@ class DefaultController extends Controller
 		$data = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->getMailProperties($id);
 		$data['info'] = $msg;
 		
+		$translate = $this->get('transloc')->getTranslated('M');
+		
+		$from = ($this->container->hasParameter('app.email')) ? $this->container->getParameter('app.email') : 'noreply@example.com';
+		
 		$message = \Swift_Message::newInstance()
 			->setContentType("text/html")
-			->setSubject('Уведомление об изменении в заявке № '.$data['nr'])
-			->setFrom('cosmoservice@cosmoservice.spb.ru')
-			->setTo('ikaurov@gmail.com')
+			->setSubject($translate['mail.subject'].$data['nr'])
+			->setFrom($from)
+			->setTo('ikaurov@gmail.com') // $data['email']
 			->setBody(	
-				$this->renderView('AcmeZayavkiBundle:Default:mailtemplate.html.twig', array('data' => $data))
+				$this->renderView('AcmeZayavkiBundle:Default:mailtemplate.html.twig', array('data' => $data,
+																							'translate' => $translate))
 			);
 		$this->get('mailer')->send($message);
 	
 		return new Response(Resanswer::getRetJSON('',true, 0));		
 	}	
+	
+	/**
+	* Title panel. User credentials
+	*
+	*/
+    public function resizeAction($userid, $name, $width)
+    {
+		$this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->setColumnWidth($userid, $name, $width);
+
+		return new Response(Resanswer::getRetJSON('',true, 0));
+    }	
 	
 }

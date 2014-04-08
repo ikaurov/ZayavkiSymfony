@@ -8,22 +8,21 @@
 	{{ form_widget(form.tsgcode) }}
 </div>
 <div class="long">
-	<label>ЛК: подача заявок</label>
+	{{ form_label(form.lk) }}
 	<img id = "img_lk" width="16" height="16" alt="" src=" 
 		{% if(lk == 1) %}  
 			{{asset('bundles/acmezayavki/images/ok.png') }} 
 		{%else%} 
 			{{asset('bundles/acmezayavki/images/blank.png') }}  
 		{%endif%} " />
-		
-	<input id = 'tsg_lk' type="hidden" value="{{lk}}"></input>
-	<a href="#" class="easyui-linkbutton" id="set_lk" ></a>
+	{{ form_widget(form.lk) }}	
+	<a href="javascript:void(0)" class="easyui-linkbutton" id="set_lk" ></a>
 </div>
 
-<h4>Локальные пользователи</h4>
+<h4>{{ translate['caption.users'] }}</h4>
 <table id="tsg_users"  rownumbers="true" singleSelect="true" style="height:100px"></table>
 
-<h4>Исполнители</h4>
+<h4>{{ translate['caption.workers'] }}</h4>
 <table id="tsg_works"  rownumbers="true" singleSelect="true" style="height:150px"></table>
 
 {{ form_rest(form) }}
@@ -31,7 +30,8 @@
 
 <script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/workers.js') }}"></script> 
 <script>
-	var ar_act = [ "Включить", "Выключить"];
+
+	var ar_act = [ "{{ translate['basic.on'] }}", "{{ translate['basic.off'] }}"];
 	item = {"tsgid": 0,
 		"init" : function (tsgid) {
 			this.tsgid = tsgid;
@@ -78,9 +78,9 @@
     	       url: 'tsgs_oplist/{{tsg_id}}',
 				columns:[[
 					{field:'id',hidden:'true'},
-					{field:'name',width:200,title:'Пользователь'},
-					{field:'lname',width:100,title:'Логин'},
-					{field:'pname',width:100,title:'Пароль'}
+					{field:'name',width:200,title:'{{ translate['column.user'] }}'},
+					{field:'lname',width:100,title:'{{ translate['column.login'] }}'},
+					{field:'pname',width:100,title:'{{ translate['column.password'] }}'}
 				]]
 	    });	
 		
@@ -88,17 +88,17 @@
     	        url: 'tsgs_worklist/{{tsg_id}}',
 				columns:[[
 					{field:'id',hidden:'true'},
-					{field:'name',width:200,title:'Исполнитель'},
-					{field:'pname',width:200,title:'Профессия'}
+					{field:'name',width:200,title:'{{ translate['column.worker'] }}'},
+					{field:'pname',width:200,title:'{{ translate['column.profession'] }}'}
 				]],			
 				toolbar: [{
-					text: 'Добавить',
+					text: '{{ translate['entity.menu.add'] }}',
 					iconCls: 'icon-add',
 					handler: function(){
 						open_worker({{tsg_id}}, 0, item);
 					}
 				},{
-					text: 'Изменить',
+					text: '{{ translate['entity.menu.edit'] }}',
 					iconCls: 'icon-edit',
 					handler: function(){
 						var row = $('#tsg_works').datagrid('getSelected');
@@ -107,14 +107,14 @@
 						}
 					}
 				},'-',{
-					text: 'Удалить',
+					text: '{{ translate['entity.menu.delete'] }}',
 					iconCls: 'icon-remove',
 					handler: function(){
 						var row = $('#tsg_works').datagrid('getSelected');
 						if (row){
-						$.messager.defaults.ok = 'Да';
-						$.messager.defaults.cancel = 'Нет';			
-						$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+						$.messager.defaults.ok = '{{ translate['basic.yes'] }}';
+						$.messager.defaults.cancel = '{{ translate['basic.no'] }}';
+						$.messager.confirm('{{ translate['basic.warning'] }}','{{ translate['ask.delete'] }}',function(r){
 						if (r){
 							$.ajax({
 								type: "GET",
@@ -125,7 +125,7 @@
 									if (data.success){
 										$('#tsg_works').datagrid('reload');
 									} else {
-										$.messager.alert('Внимание', data.message, 'info');
+										$.messager.alert('{{ translate['basic.warning'] }}', data.message, 'info');
 									}
 								}
 							});

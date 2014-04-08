@@ -16,32 +16,6 @@ use PHPExcel_Style_Alignment;
 
 class ReportController extends Controller
 {
-	public function ticketsAction($params, Request $request)
-	{
-		$excel = new \PHPExcel();
-		$excel->setActiveSheetIndex(0);
-		$sht = $excel->getActiveSheet();
-        $excel->getDefaultStyle()->getFont()->setName('Calibri')->setBold(false)->setSize(12);
-        $sht->getDefaultRowDimension()->setRowHeight(15);
-        $sht->setCellValue('B2', 'Список заявок');
-        $sht->getStyle('B2')->getFont()->setName('Calibri')->setBold(true)->setSize(14);
-
-		$objWriter = PHPExcel_IOFactory::createWriter($excel, 'Excel5');
-		$objWriter->save('/var/www/tmp/demo.xls');		
-		
- // Redirect output to a client’s web browser (Excel5)
-		// $response = new Response();
-		// $response->headers->set('Content-Type', 'application/vnd.ms-excel');
-		// $response->headers->set('Content-Disposition', 'attachment;filename="demo.xls"');
-		// $response->headers->set('Cache-Control', 'max-age=0');	
-		
-		// $response->prepare($request);
-		// $response->sendHeaders();
-		// $objWriter = PHPExcel_IOFactory::createWriter($excel, 'Excel5');
-		// $objWriter->save('php://output');
-		exit();	
-	}
-	
 	public function setHat($oExcel, $caption, $cols) 
 	{
 		$sht = $oExcel->getActiveSheet();
@@ -68,29 +42,46 @@ class ReportController extends Controller
 		return $nr;
 	}
 	
-	public function setFooter($oExcel) 
+	public function setFooter($oExcel, $filename, $request) 
 	{
     	for ($i = 0; $i <= 15; $i++) {
             $cell = substr('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $i, 1);
             $oExcel->getActiveSheet()->getColumnDimension($cell)->setAutoSize(true);
 	    }
+		
+		$response = new Response();
+		$response->headers->set('Content-Type', 'application/vnd.ms-excel');
+		$response->headers->set('Content-Disposition', 'attachment;filename="'.$filename.'"');
+		$response->headers->set('Cache-Control', 'max-age=0');	
+		
+		$response->prepare($request);
+		$response->sendHeaders();
+		$objWriter = PHPExcel_IOFactory::createWriter($oExcel, 'Excel5');
+		$objWriter->save('php://output');				
 	}	
 	
 	public function rptticketsAction($params, Request $request)
 	{
-		$params = json_decode($params, true);
+		if ($request->getMethod() == 'POST') {
+			$var = $request->request->all();
+		} else {
+			$var = array('reports_filter' => '');
+		}
+		
+		$params = json_decode($var['reports_filter'], true);
+		
 		$user = $this->get('security.context')->getToken()->getUser();
-			 
-		$list = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->getTicketList( $params, $array(
-				  'sort'  => $params['sort'],
-				  'order' => $params['order'],
+		
+		
+		$list = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->getTicketList( $params, array(
+				  'sort'  => 'nr',//$params['sort'],
+				  'order' => 'ASC',//$params['order'],
 				  'offset'=> 0, 
 				  'to'    => 99999999,
 				  'head'  => 1, 
 				  'userid'=> $user->getId()
-				  );
+				  )
 				);		
-		
 		
 		$oExcel = new \PHPExcel();
 		$oExcel->setActiveSheetIndex(0);		
@@ -105,24 +96,22 @@ class ReportController extends Controller
 		'ДАТА И ВРЕМЯ ПОСТУПЛЕНИЯ ЗАЯВКИ ДИСПЕТЧЕРУ ОБЪЕКТА','ДАТА И ВРЕМЯ ПЕРЕДАЧИ ЗАЯВКИ ИСПОЛНИТЕЛЮ','ФИО ИСПОЛНИТЕЛЯ заявки',
 		'ОТМЕТКА ОБ УСТРАНЕНИИ (ДАТА И ВРЕМЯ) (в работе, деталь заказана и др.)','ДАТА И ВРЕМЯ СООБЩЕНИЯ ЗАЯВИТЕЛЮ об устранении','Примечание'));
 		
-       	foreach ($rlis as $rs){
+       	foreach ($list['rows'] as $rs){
 		    $sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(1).$nr, $rs['nr']);
 		    $sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(2).$nr, $rs['kv']);
 		    $sht->getStyle(PHPExcel_Cell::stringFromColumnIndex(2).$nr)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-		    $sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(3).$nr, $rs['descr']);
+		    $sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(3).$nr, $rs['message']);
             $sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(4).$nr, $rs['phone']);
             $sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(5).$nr, $rs['disp']);
 			$sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(6).$nr, $rs['dstart']);
-			$sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(7).$nr, $rs['dwork']);
+			$sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(7).$nr, $rs['dplan']);
 			$sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(8).$nr, $rs['wname']);
-			$sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(9).$nr, $rs['sname'].'     '.$rs['dstop']);
+			$sht->setCellValue(PHPExcel_Cell::stringFromColumnIndex(9).$nr, $rs['sname'].'     '.$rs['dfact']);
 		
 		    $nr++;
     	}			
-		$this->setFooter($oExcel);
-		
-		$objWriter = PHPExcel_IOFactory::createWriter($oExcel, 'Excel5');
-		$objWriter->save('/var/www/tmp/demo2.xls');	
+			$this->setFooter($oExcel, 'Список_заявок_'.date('d-m-Y').'.xls', $request);		
+
 		exit();			
 	}
 	
@@ -151,11 +140,9 @@ class ReportController extends Controller
 			$sht->getStyle(PHPExcel_Cell::stringFromColumnIndex(4).$nr)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);		
 		    $tsgid = $rs['tsgid'];
 		    $nr++;
-    	}			
-		$this->setFooter($oExcel);
-		
-		$objWriter = PHPExcel_IOFactory::createWriter($oExcel, 'Excel5');
-		$objWriter->save('/var/www/tmp/demo2.xls');	
+    	}	
+
+		$this->setFooter($oExcel, 'Cписок_пользователей_'.date('d-m-Y').'.xls', $request);	
 		exit();			
 	}	
 	
@@ -197,10 +184,7 @@ class ReportController extends Controller
 			$sht->setCellValue($col.$nr, '=SUM('.$col.'4:'.$col.$l.')');
 		}
 				
-		$this->setFooter($oExcel);
-		
-		$objWriter = PHPExcel_IOFactory::createWriter($oExcel, 'Excel5');
-		$objWriter->save('/var/www/tmp/demo3.xls');	
+		$this->setFooter($oExcel, 'Итоговый_отчет_'.date('d-m-Y').'.xls', $request);
 		exit();			
 	}		
 	

@@ -1,0 +1,32 @@
+<dictionary Version="1.0">
+	<mail.subject>
+		<ru>Уведомление об изменении в заявке № </ru>
+		<en>Notification of change in ticket # </en></mail.subject>	
+	<mail.email>
+		<ru>Email</ru>
+		<en>Эл.почта</en></mail.email>		
+	<mail.phone>
+		<ru>Тел. диспетчера</ru>
+		<en>Office phone</en></mail.phone>			
+	<mail.info>
+		<ru>Краткая информация о заявке</ru>
+		<en>About ticket</en></mail.info>	
+	<mail.message>
+		<ru>Сообщение</ru>
+		<en>Message</en></mail.message>	
+	<mail.created>
+		<ru>Подана</ru>
+		<en>Created by</en></mail.created>	
+	<mail.address>
+		<ru>Адрес</ru>
+		<en>Address</en></mail.address>	
+	<mail.appeal>
+		<ru>Уважаемый(ая)</ru>
+		<en>Dear Mrs/Mr</en></mail.appeal>		
+	<mail.inticket>
+		<ru>в заявке № </ru>
+		<en>in ticket # </en></mail.inticket>
+	<mail.changeshappens>
+		<ru>произошли изменения</ru>
+		<en>changes happens</en></mail.changeshappens>		
+</dictionary>

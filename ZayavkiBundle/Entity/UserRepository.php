@@ -19,13 +19,6 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 			array('username' => $username)
 		);
 	
-		// $query = $this->getEntityManager()->createQuery(
-			// 'SELECT u.id FROM AcmeZayavkiBundle:User u WHERE u.username = :username '
-			// );
-		// $query->setParameter('username', $username);		
-		// $res = current($query->getResult());
-		// $id = ($res) ? $res['id'] : 0;
-		// $user = $this->find($id);
         return $user;
     }
 	/**
@@ -144,21 +137,15 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 	*/		
 	public function findEntity($id)
 	{	
-	    // $query = $this->getEntityManager()->createQuery(
-			// 'SELECT u.id, u.name, u.username, u.password FROM AcmeZayavkiBundle:User u WHERE u.id = :id'
-			// );
-		// $query->setParameter('id', $id);
-		// $entity = current($query->getResult());
-		
-		// if (!$entity) {
-			// $entity = array('name'     => '',
-							// 'username' => '',
-							// 'password' => '',					  
-							// 'id'       => 0
-				// );
-		// }
 		$entity = $this->find($id);
-		return $entity;
+		if (!$entity) {
+			$entity = new User(); 
+		}
+		return array('name'     => $entity->getName(),
+					 'username' => $entity->getUsername(),
+					 'password' => $entity->getPassword(),					  
+					 'id'       => $entity->getId()
+				 );
 	}	
 	
 	/**
@@ -208,5 +195,51 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 	{	
 		$this->getEntityManager()->getConnection()->executeUpdate('update User set deleted = 1 where id = :id', array('id' => $id));			 
 		return $id;
-	}		
+	}	
+
+	/**
+	* Remember specified column width for user
+	*
+	* @param int $userid
+	* @param string $name
+	* @param int $width
+	*/
+	public function setColumnWidth($userid, $name, $width)
+	{	
+		$stmt = $this->getEntityManager()->getConnection()->prepare('CALL Setcolwidth(:userid, :name, :width );');
+		$stmt->bindValue('userid', $userid);	
+		$stmt->bindValue('name', $name);	
+		$stmt->bindValue('width', $width);	
+		$stmt->execute(); 
+
+	}	
+	
+	public function getColumnsSize($userid)
+	{
+		$colsize = array( 'state' => 40,
+						'tsgname' => 150,
+						'nr'      => 70,
+						'dstart'  => 110,
+						'cname'   => 130,
+						'sname'   => 130,
+						'account' => 50,
+						'fio'	 => 130,
+						'address' => 180,
+						'message' => 200,
+						'wname'   => 110,
+						'dplan'   => 130
+					);
+		
+		$stmt = $this->getEntityManager()->getConnection()->prepare('select * from Usercol where userid = :userid');
+		$stmt->bindValue('userid', $userid);	
+		$stmt->execute(); 
+		
+		$rows = $stmt->fetchAll();
+       	foreach ($rows as $rs){
+       		$colsize[ $rs['name'] ] = $rs['width'];
+   		}
+		
+		return $colsize;
+	}
+	
 }

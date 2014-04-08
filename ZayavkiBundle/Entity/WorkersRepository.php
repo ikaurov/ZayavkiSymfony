@@ -9,18 +9,22 @@ class WorkersRepository extends EntityRepository
 	* Get all Workers defined for specified Tsg
 	*
 	* @param int $tsgid	
-	* @param string $options {A=all, N- none}
+	* @param string $options {A=all, N- none, H - include workers for head office}
 	* @param string $output {'easyui','hash','array' - default}		
 	* @return array $list: easyui json format ["total", "rows"]
 	*/
-	public function findWorkersForTsg($tsgid, $options, $output)
+	public function findWorkersForTsg($tsgid, $options, $incl, $output)
 	{
-		$query =  $this->getEntityManager()->createQuery(
-			'SELECT w.name, w.id, p.name as pname FROM AcmeZayavkiBundle:Workers w, AcmeZayavkiBundle:Profs p where w.deleted=0 and w.ownid =  :id and w.profid = p.id order by w.name'
-			);
-		$query->setParameter('id', $tsgid);
-		$rows = $query->getResult();	
-		
+					 
+		$stmt = $this->getEntityManager()->getConnection()->prepare(
+					'SELECT w.name, w.id, (SELECT name from Profs where id = w.profid) as pname, w.deleted FROM Workers w 
+					 WHERE (w.deleted=0 or w.id=:incl) and (w.ownid =  :id OR w.ownid = :head) ORDER BY w.name');
+		$stmt->bindValue(':id', $tsgid);
+		$stmt->bindValue(':incl', $incl);
+		$stmt->bindValue(':head', ((substr_count($options, 'H') > 0)? 0 : -1) );
+		$stmt->execute();
+		$rows = $stmt->fetchAll();
+			
 		if (substr_count($options, 'N') > 0) {
 			array_unshift($rows, array('id' => 0, 'name' => 'НЕТ'));																	  		
 		}	
@@ -38,7 +42,6 @@ class WorkersRepository extends EntityRepository
 			default:		
 					$list = $rows;
 		}	
-
         return $list;	
 	}
 	

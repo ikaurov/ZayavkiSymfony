@@ -1,0 +1,121 @@
+<dictionary Version="1.0">	
+	<tickets.create>
+		<ru>Создать</ru>
+		<en>Create</en></tickets.create>
+	<tickets.edit>
+		<ru>Редактировать</ru>
+		<en>Edit</en></tickets.edit>
+	<tickets.report>
+		<ru>Отчеты</ru>
+		<en>Reports</en></tickets.report>	
+	<tickets.report1>
+		<ru>Список заявок</ru>
+		<en>Tickets list</en></tickets.report1>
+	<tickets.report2>
+		<ru>Итого за период</ru>
+		<en>Summary for period</en></tickets.report2>
+	<tickets.report3>
+		<ru>Список пользователей</ru>
+		<en>Users listReports</en></tickets.report3>		
+	<tickets.description>
+		<ru>Доп. параметры</ru>
+		<en>Search conditions</en></tickets.description>		
+	<tickets.new>
+		<ru>Новых заявок</ru>
+		<en>New tickets</en></tickets.new>	
+	<tickets.total>
+		<ru>В работе заявок всего</ru>
+		<en>Total open tickets</en></tickets.total>
+	<tickets.incl>
+		<ru>в т.ч.</ru>
+		<en>including</en></tickets.incl>
+	<tickets.withperiod>
+		<ru>со сроком</ru>
+		<en>finishing</en></tickets.withperiod>		
+	<tickets.today>
+		<ru>выполнения сегодня</ru>
+		<en>today</en></tickets.today>
+	<tickets.overdue>
+		<ru>просроченных</ru>
+		<en>overdue</en></tickets.overdue>
+	<tickets.urgent>
+		<ru>срочных</ru>
+		<en>urgent</en></tickets.urgent>		
+	<tickets.among>
+		<ru>из них</ru>
+		<en>incl.</en></tickets.among>			
+	<column.tickets.company>
+		<ru>Организация</ru>
+		<en>Company</en></column.tickets.company>
+	<column.tickets.nr>
+		<ru>Номер</ru>
+		<en>Nr</en></column.tickets.nr>
+	<column.tickets.created>
+		<ru>Создана</ru>
+		<en>Created</en></column.tickets.created>
+	<column.tickets.category>
+		<ru>Категория</ru>
+		<en>Category</en></column.tickets.category>
+	<column.tickets.status>
+		<ru>Состояние</ru>
+		<en>Status</en></column.tickets.status>	
+	<column.tickets.account>
+		<ru>Л.счет</ru>
+		<en>Account</en></column.tickets.account>
+	<column.tickets.fio>
+		<ru>ФИО</ru>
+		<en>Name</en></column.tickets.fio>
+	<column.tickets.address>
+		<ru>Адрес</ru>
+		<en>Address</en></column.tickets.address>	
+	<column.tickets.message>
+		<ru>Заявка</ru>
+		<en>Message</en></column.tickets.message>
+	<column.tickets.charge>
+		<ru>Ответственный</ru>
+		<en>In charge</en></column.tickets.charge>		
+	<column.tickets.dates>
+		<ru>План/Факт</ru>
+		<en>Plan/Fact</en></column.tickets.dates>	
+		
+	<dialog.title.ticket>
+		<ru>Карточка заявки</ru>
+		<en>Ticket</en></dialog.title.ticket>		
+	<tickets.delete>
+		<ru>Удалить</ru>
+		<en>Delete</en></tickets.delete>	
+	<tickets.print>
+		<ru>Печать</ru>
+		<en>Print</en></tickets.print>
+	<tickets.closed>
+		<ru>Закрыть</ru>
+		<en>Close</en></tickets.closed>		
+	<tickets.ok>
+		<ru>OK</ru>
+		<en>OK</en></tickets.ok>	
+	<tickets.cancel>
+		<ru>Отменить</ru>
+		<en>Cancel</en></tickets.cancel>				
+	<tickets.warning>
+		<ru>Внимание</ru>
+		<en>Warning</en></tickets.warning>		
+	<tickets.yes>
+		<ru>Да</ru>
+		<en>Yes</en></tickets.yes>
+	<tickets.no>
+		<ru>Нет</ru>
+		<en>No</en></tickets.no>
+	<tickets.message.delete>
+		<ru>Вы уверены, что желаете удалить заявку ?</ru>
+		<en>Are you sure to delete the ticket ?</en></tickets.message.delete>		
+	<tickets.message.selectcompany>
+		<ru>Выберите организацию</ru>
+		<en>Please, select the company</en></tickets.message.selectcompany>
+	<tickets.message.category>
+		<ru>Выберите категорию заявки</ru>
+		<en>Please, select the category</en></tickets.message.category>
+	<tickets.message.selecttext>
+		<ru>Введите текст заявки</ru>
+		<en>Please input ticket message</en></tickets.message.selecttext>		
+								  
+</dictionary>		

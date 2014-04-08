@@ -13,7 +13,9 @@ class CustomDateFormat
 		$today = getdate();
 		$y = $today['year'];
 		$d = $today['mday'];
+		$d = (strlen($d) == 1) ? '0'.$d : $d;
 		$m = $today['mon'];
+		$m = (strlen($m) == 1) ? '0'.$m : $m;
 		
 		if (strlen($orig) > 9) {
 

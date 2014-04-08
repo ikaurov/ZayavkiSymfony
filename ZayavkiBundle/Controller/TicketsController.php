@@ -28,20 +28,22 @@ public function dataAction($params, Request $request)
 		$var = $request->request->all();
 	}
 	
-	$page = (isset($var['page'])  ? $var['page'] : "0");
+	$page = (isset($var['page'])  ? $var['page']-1 : "0");
 	$rows = (isset($var['rows'])  ? $var['rows'] : "20");
 	
 	$user = $this->get('security.context')->getToken()->getUser();
 	
 	$env = array( 'sort'  => (isset($var['sort'])  ? $var['sort'] : ''),
 				  'order' => (isset($var['order']) ? $var['order'] :''),
-				  'offset'=> 0, //(int)($page * $rows)
+				  'offset'=> $page * $rows, 
 				  'to'    => $rows,
 				  'head'  => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($user->getId()), 
 				  'userid'=> $user->getId()
 				  );		
 				 
    	$list = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->getTicketList( $params, $env );
+	$list['sort']  = $var['sort'];
+	$list['order'] = $var['order'];
 	return new Response(json_encode($list));
 }
 
@@ -71,26 +73,27 @@ public function dataAction($params, Request $request)
 		$entity['cats']   = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Category')->findCategoryListHash('N');	
 		$entity['alerts'] = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(3,  '');
 
-		$entity['dplan_fmt'] = CustomDateFormat::dateAnsiToRus($entity['dplan']);
-		
+		$entity['dplan_fmt'] = (strlen($entity['dplan']) > 9) ? CustomDateFormat::dateAnsiToRus($entity['dplan']) : '';
+		$entity['translate'] = $this->get('transloc')->getTranslated('T');
 		$form = $this->createForm(new TicketType(), $entity);
 		
-		$var = array('nr' 	  => $entity['nr'],
-					'fio'	  => $entity['fio'],
-					'account' => $entity['account'],
-					'address' => $entity['address'],
-					'debt' 	  => $entity['debt'],
-					'subname' => $entity['subname'],
-					'id' 	  => $entity['id'],
-					'tsgid'   => $entity['tsgid'],	
-					'lastnote'=> $entity['lastnote'],
-					'creator' => $entity['creator'],
-					'defemail'=> $entity['defemail'],
-					'defphone'=> $entity['defphone']
-		);
+		$var = array('nr' 	   => $entity['nr'],
+					'fio'	   => $entity['fio'],
+					'account'  => $entity['account'],
+					'address'  => $entity['address'],
+					'debt' 	   => $entity['debt'],
+					'subname'  => $entity['subname'],
+					'id' 	   => $entity['id'],
+					'workerid' => $entity['workerid'],
+					'tsgid'    => $entity['tsgid'],	
+					'dstart'   => CustomDateFormat::dateAnsiToRus($entity['dstart']),
+					'creator'  => $entity['creator'],					
+		);	
 		
 		return $this->render('AcmeZayavkiBundle:Ticket:ticket.html.twig', array(
-			'form' => $form->createView(), 'data' => $var
+			'form' => $form->createView(), 
+			'data' => $var,
+			'translate'=> $entity['translate'],
 		));
 	}
 	
@@ -109,29 +112,11 @@ public function dataAction($params, Request $request)
 		$head = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($user->getId());
 		$userid = $user->getId(); 
 		$entity  = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->findEntity( $id, $userid);
-		
-		$rows = array();
-		$rows[] = array('key' => 'Организация', 'name' => $entity['tsgname']);
-		$rows[] = array('key' => 'Категория', 'name' => $entity['cname']);
-		$rows[] = array('key' => 'Лицевой счет/Заявитель', 'name' => $entity['account'].' / '.$entity['fio']);
-		$rows[] = array('key' => 'Адрес', 'name' => $entity['address']);
-		$rows[] = array('key' => 'Телефон', 'name' => $entity['phone']);
-		$rows[] = array('key' => 'Электронный адрес', 'name' => $entity['email']);
-		$rows[] = array('key' => 'Заявка', 'name' => $entity['message']);
-		$rows[] = array('key' => 'Исполнитель', 'name' => $entity['wname']);
-		$rows[] = array('key' => 'Время', 'name' => $entity['preftime']);
-		$rows[] = array('key' => 'Заявку завел', 'name' => $entity['creator']);
-			
-		$var = array('nr' 	  => $entity['nr'],
-					'alert'	  => $entity['fio'],
-					'subname' => $entity['subname'],
-					'id' 	  => $entity['id'],
-					'rows'    => $rows,	
-					'comments'=> $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->getHistory( $id ),
-		);
 			
 		return $this->render('AcmeZayavkiBundle:Ticket:ticketclosed.html.twig', array(
-			 'data' => $var
+			 'translate' => $this->get('transloc')->getTranslated('T'),
+			 'entity'    => $entity,
+			 'comments'  => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->getHistory( $id )			 
 		));
 	}
 	
@@ -172,11 +157,12 @@ public function dataAction($params, Request $request)
 	
 		$data = array(	'statusid' => $entity['substatusid'], 
 						'status'   => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(2, ''),
-						'');
+						'translate' => $this->get('transloc')->getTranslated('T'));
 		$form = $this->createForm(new TicketStateType(), $data);
 	
 		return $this->render('AcmeZayavkiBundle:Ticket:ticketstate.html.twig', array(
 			'form' => $form->createView(),
+			'translate' => $data['translate']
 		));
     }
 /**
@@ -208,9 +194,12 @@ public function dataAction($params, Request $request)
 */	
 	public function dplanAction($dplan)
     {
-		$form = $this->createForm(new TicketDplanType(), array());
+		$translate = $this->get('transloc')->getTranslated('T');
+		$form = $this->createForm(new TicketDplanType(), array('translate' => $translate));
 		return $this->render('AcmeZayavkiBundle:Ticket:ticketdplan.html.twig', array(
-			'form' => $form->createView(), 'dplan' => ((strlen($dplan) < 10) ? CustomDateFormat::dateAnsiToRus(date("Y-m-d")) : $dplan )
+			'form' => $form->createView(), 
+			'translate' => $translate,
+			'dplan' => ((strlen($dplan) < 10) ? CustomDateFormat::dateAnsiToRus(date("Y-m-d")) : $dplan )
 		));
     }	
 	

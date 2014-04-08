@@ -1,0 +1,26 @@
+<dictionary Version="1.0">
+	<login.message.nouser>
+		<ru>Введите пользователя</ru>
+		<en>Imput user</en></login.message.nouser>	
+	<login.message.baduser>
+		<ru>Ошибочное имя пользователя</ru>
+		<en>Wrong user name</en></login.message.baduser>	
+	<login.message.nopassword>
+		<ru>Введите пароль</ru>
+		<en>Input password</en></login.message.nopassword>	
+	<login.message.badpassword>
+		<ru>Ошибочный пароль</ru>
+		<en>Wrong password</en></login.message.badpassword>	
+	<login.label.user>
+		<ru>Пользователь</ru>
+		<en>User name</en></login.label.user>
+	<login.label.password>
+		<ru>Пароль</ru>
+		<en>Password</en></login.label.password>		
+	<login.dialog.title>
+		<ru>Регистрация в системе</ru>
+		<en>Authentication</en></login.dialog.title>		
+	<login.btn.login>
+		<ru>Вход в систему</ru>
+		<en>Log In</en></login.btn.login>		
+</dictionary>

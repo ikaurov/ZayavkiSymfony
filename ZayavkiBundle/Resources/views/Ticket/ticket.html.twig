@@ -1,6 +1,7 @@
 <form id="formcard_ticket" class="ticketform" method="post" {{ form_enctype(form) }}>
 {{ form_widget(form.id) }}
 {{ form_widget(form.userid) }}
+{{ form_widget(form.tsgidold) }}
 {{ form_widget(form.perenos) }}
 <input type="hidden" id="t_tsgidold" value="{{data['tsgid']}}">
 
@@ -8,13 +9,13 @@
 
 	<div class="ticket_hd">
 		<div class="t_nr">
-			{% if (data['nr'] > 0) %} Номер № <B>{{data['nr']}}</B>	
-			{% else %}	Новая заявка  
+			{% if (data['nr'] > 0) %} {{ translate['ticket.nr'] }} <B>{{data['nr']}}</B> {{ translate['ticket.at'] }} <B>{{data['dstart']}}</B>
+			{% else %}	{{ translate['ticket.newticket'] }} 
 			{% endif %} 	
 		</div>
 		{% if (data['nr'] > 0) %} 
 			<div id="t_status" class="t_status">{{data['subname']}}</div>
-			<div class="ticket_btn"><a id="b_s203"  href="#" class="easyui-linkbutton">Изменить</a></div>
+			<div class="ticket_btn"><a id="b_s203"  href="#" class="easyui-linkbutton">{{ translate['ticket.change'] }}</a></div>
 		{% endif %} 
 	</div>
 
@@ -29,11 +30,11 @@
 								{% else %}	 
 									class = "t_private" 
 								{% endif %} >
-			<label for="t_kv" class="t_kv">Квартира</label>
+			<label for="t_kv" class="t_kv">{{ translate['ticket.apartment']}}</label>
 				<input type="text" id="t_kv" name="t_kv" size="5" maxlength="10" autocomplete="off" value="" />
 				<input id="t_selflat" name="t_selflat" value="">
-			<a id="b_src"  href="#" class="easyui-linkbutton"  >Поиск</a>
-			<a id="b_notsrc"  href="javascript:show_flat(0);" class="easyui-linkbutton"  >Отменить</a>
+			<a id="b_src"  href="#" class="easyui-linkbutton"  >{{ translate['ticket.search'] }}</a>
+			<a id="b_notsrc"  href="javascript:show_flat(0);" class="easyui-linkbutton"  >{{ translate['ticket.cancel']}}</a>
 		</div>
 	{# Show apartment number and owner #}	
 		<div id = "t_person" {% if (data['nr'] == 0) %} 
@@ -43,11 +44,11 @@
 	                         {% endif %} >
 			<div class = "t_private_inner">
 				<div class="t_private_inner_col1">
-					<div><label class="t_l_person">ФИО</label><div id="p_fio"  class="t_fio" >{{ data['account']}} / {{data['fio']}}</div></div>
-					<div><label class="t_l_person">Адрес</label><div id="p_adr" class="t_address" >{{ data['address']}}</div></div>
-					<div><label class="t_l_person">Баланс</label><div id="p_debt" class="t_address" >{{data['debt']}}</div></div>
+					<div><label class="t_l_person">{{ translate['ticket.fio'] }}</label><div id="p_fio"  class="t_fio" >{{ data['account']}} / {{data['fio']}}</div></div>
+					<div><label class="t_l_person">{{ translate['ticket.address'] }}</label><div id="p_adr" class="t_address" >{{ data['address']}}</div></div>
+					<div><label class="t_l_person">{{ translate['ticket.balance'] }}</label><div id="p_debt" class="t_address" >{{data['debt']}}</div></div>
 				</div>
-				<div class="t_change"><a id="b_edit"  href="#" class="easyui-linkbutton" >Изменить</a></div>
+				<div class="t_change"><a id="b_edit"  href="#" class="easyui-linkbutton" >{{ translate['ticket.change'] }}</a></div>
 			</div>
 		</div>
 	{# Ticket properties #}	
@@ -57,19 +58,19 @@
 		<div class="tlong"> {{ form_label(form.preftime) }}   	{{ form_widget(form.preftime) }}</div>
 		<div class="tlong_text"> {{ form_label(form.message) }} {{ form_widget(form.message) }} </div>
 		<div class="tlong"> {{ form_label(form.workerid) }}   	{{ form_widget(form.workerid) }}
-			<div class="ticket_btn"><a id="b_wadd"  href="#" class="easyui-linkbutton" >Добавить исполнителя</a></div>	
+			<div class="ticket_btn"><a id="b_wadd"  href="#" class="easyui-linkbutton" >{{ translate['ticket.addcharge'] }}</a></div>	
 		</div>
 		<div class="tlong"> {{ form_label(form.dplan) }}      {{ form_widget(form.dplan) }} 
-							<div class="ticket_btn"> <a id="b_wadd"  href="javascript:set_dplan();" class="easyui-linkbutton">Установить дату</a> </div>
+							<div class="ticket_btn"> <a id="b_wadd"  href="javascript:set_dplan();" class="easyui-linkbutton">{{ translate['ticket.setdplan'] }}</a> </div>
 		</div>
 </div>
 
 {# Optional part of ticket #}
 	<div class="tlong_text"> {{ form_label(form.note) }} {{ form_widget(form.note) }} </div>		  
 
-	<div class="ticket_creator"><h3>Ранее поданные заявки по этому адресу</h3></div>
+	<div class="ticket_creator"><h3>{{ translate['ticket.previous'] }}</h3></div>
 	<div class="ticket_hist"><table id="history"></table></div>
-	<div class="ticket_creator">Заявку зарегистрировал: <B>{{ data['creator'] }}</B></div>
+	<div class="ticket_creator">{{ translate['ticket.creator'] }}: <B>{{ data['creator'] }}</B></div>
 
 </form> 
 
@@ -81,7 +82,7 @@
 			this.tsgid = tsgid;
 		},
 		"worker_add": function(id) {
-			$('#ticket_workerid').combobox({url: 'workers_data/'+this.tsgid+'/1/N'});
+			$('#ticket_workerid').combobox({url: 'workers_data/'+this.tsgid+'/1/HN/'+id});
 			$('#ticket_workerid').combobox('setValue', id);
 		}
 	};
@@ -90,7 +91,7 @@
 		
 		$('#ticket_email').validatebox({
 			validType:'email',
-			invalidMessage:'Укажите правильный электронный адрес'
+			invalidMessage:'{{ translate['ticket.message.invalidemail'] }}'
 		});
 	
 
@@ -104,13 +105,13 @@
 		 columns:[[
 		    {field:'code',hidden:true},
 			{field:'debt',hidden:true},
-		    {field:'fio',title:'ФИО',width:150},
-		    {field:'address',title:'Адрес',width:200},
-		    {field:'account',title:'Лицевой счет',width:80}
+		    {field:'fio',title:'{{ translate['ticket.fio'] }}',width:150},
+		    {field:'address',title:'{{ translate['ticket.address'] }}',width:200},
+		    {field:'account',title:'{{ translate['ticket.account'] }}',width:80}
 		 ]],
 		 onLoadSuccess: function(data){
 			switch ( data.total ) {
-				case 0: $.messager.alert('Внимание', 'Номер квартиры не найден.', 'info');
+				case 0: $.messager.alert('{{ translate['ticket.warning'] }}', '{{ translate['ticket.message.appnotfound'] }}', 'info');
 						break;
 				case 1: askflat(0, data.rows[0].account+' / '+data.rows[0].fio, data.rows[0].address, data.rows[0].debt, data.rows[0].userid, data.rows[0].email, data.rows[0].phone);
 						$('#ticket_categs').focus();
@@ -129,28 +130,48 @@
 		
 		var tsgid = $('#ticket_tsgid').val();
 		$('#ticket_workerid').combobox({
-	    	url:'workers_data/'+tsgid+'/1/N',
+	    	url:'workers_data/'+tsgid+'/1/HN/{{ data['workerid'] }}',
 		    editable:false,
 		    valueField:'id',
-		    textField:'name'
+		    textField:'name',		
+			onSelect: function(record){
+				if (record.deleted == 1) {
+					$.messager.alert('{{ translate['ticket.warning'] }}', '{{ translate['ticket.message.chargedeleted'] }}', 'info');
+					return false;
+				}
+			}			
 		});	
 		
 		var userid = $('#ticket_userid').val();
 
 		$('#history').datagrid({
-			height:110,
+			height:90,
 			singleSelect:true,
 			url: 'ticket_history/'+userid+'/'+$('#ticket_id').val(),
 			columns:[[
 				{field:'id',hidden:true},
 				{field:'status',hidden:true},
-				{field:'dstart',title:'Дата создания',width:110},
-				{field:'dstop',title:'Закрыта',width:110},
-				{field:'nr',title:'Номер',width:70},
-				{field:'message',title:'Заявление',width:300}
+				{field:'dstart',title:'{{ translate['ticket.dstart'] }}',width:110},
+				{field:'dstop',title:'{{ translate['ticket.closed'] }}',width:110},
+				{field:'nr',title:'{{ translate['ticket.nr'] }}',width:70},
+				{field:'message',title:'{{ translate['ticket.message'] }}',width:300}
 			]],
 			onDblClickRow: function(index, data) {
-				//open_tpreview(data.id);
+			
+				if (!$('div').is('#closed_card')) {
+					$('#cardholder').after('<div id="closed_card"></div>');
+				}
+			
+				$('#closed_card').dialog({ title: '{{ translate['dialog.title.ticket'] }}',  
+					width: 600, 
+					height: 700, 
+					closed: false, 
+					cache: false, 
+					href: 'ticket_closed/'+data.id, 
+					modal: true,
+        		    buttons:[ {text:'{{ translate['ticket.btn.closed'] }}',id:"btc_close", handler:function(){  
+						$('#closed_card').dialog('close'); } }
+					]}); 				
 			}
 		});		
 	});
@@ -184,14 +205,14 @@
 	});	
 
 	$('#ticket_tsgid').bind('change', function(){
-		var t_old = document.getElementById('t_tsgidold').value;
+		var t_old = document.getElementById('ticket_tsgidold').value;
 		if (t_old > 0) {
-			$.messager.defaults.ok = 'Подтвердить';
-			$.messager.defaults.cancel = 'Отмена';
-			$.messager.confirm('Внимание !','Вы уверены, что желаете изменить организацию ? Информация о жильце будет потеряна.',function(r){
+			$.messager.defaults.ok = '{{ translate['ticket.confirm'] }}';
+			$.messager.defaults.cancel = '{{ translate['ticket.cancel'] }}';
+			$.messager.confirm('{{ translate['ticket.warning'] }}','{{ translate['ticket.message.companychange'] }}',function(r){	
 				if (r){
 					askflat(1, '', '', 0, 0, '', '');
-					$('#t_tsgidold').val( $('#ticket_tsgid').val() );
+					$('#ticket_tsgidold').val( $('#ticket_tsgid').val() );
 				}
 				else {
 					$('#ticket_tsgid').val(t_old);
@@ -227,11 +248,11 @@
 	  	var flat = document.getElementById('t_kv').value;
   		var tsgid = $('#ticket_tsgid').val();
   		if (tsgid == 0) {
-  			$.messager.alert('Внимание !', 'Организация на выбрана. Поиск жильца невозможен', 'info');
+  			$.messager.alert('{{ translate['ticket.warning'] }}', '{{ translate['ticket.message.nocompany'] }}', 'info');
   			return;
   		}
   		if (flat == 0) {
-  			$.messager.alert('Внимание !', 'Квартира на выбрана. Поиск жильца невозможен', 'info');
+  			$.messager.alert('{{ translate['ticket.warning'] }}', '{{ translate['ticket.message.noapp'] }}', 'info');
   			return;
   		}
 		$('#t_selflat').combogrid({url : 'tickets_finduser/'+tsgid+'/'+flat});
@@ -260,21 +281,21 @@
 		 }
 
      	 $('#dplan_card').dialog({
-			title: 'Установка даты выполнения заявки',
+			title: '{{ translate['dialog.title.dplan'] }}',
             width: 555,
             height: 200,
             closed: false,
             cache: false,
             href: 'ticket_dplan/'+dplan2,
             modal: true,
-            buttons:[ {text:'Подтвердить', handler:function(){
+            buttons:[ {text:'{{ translate['ticket.confirm'] }}', handler:function(){
 
 				var ctext = $("#ticketdplan_comment").val();
                 var dplan = $('#ticketdplan_dplan').datebox('getValue');
    		    	ctext = fx.strCheck( ctext );
 								
                 if ((ctext.length == 0)&&(dplan2.length > 0)) {
-                  	$.messager.alert('Выполнить', 'Комментарий должен быть заполнен', 'info');
+                  	$.messager.alert('{{ translate['ticket.warning'] }}', '{{ translate['ticket.message.nocomment'] }}', 'info');
                    	return false;
                 }			    	
 				
@@ -282,7 +303,7 @@
 				$('#ticket_perenos').val(ctext);
 				$('#dplan_card').dialog('close');
    				}},
-   	     		{text:'Отменить', handler:function(){ $('#dplan_card').dialog('close'); } } ]
+   	     		{text:'{{ translate['ticket.cancel'] }}', handler:function(){ $('#dplan_card').dialog('close'); } } ]
             });
   	}
 
@@ -292,14 +313,14 @@
 			$('#cardholder').after('<div id="state_card"></div>');
 		}
      	 $('#state_card').dialog({
-			title: 'Изменение состояния заявки',
+			title: '{{ translate['dialog.title.status'] }}',
             width: 555,
             height: 200,
             closed: false,
             cache: false,
             href: 'ticket_state/{{data['id']}}',
             modal: true,
-            buttons:[ {text:'Подтвердить',
+            buttons:[ {text:'{{ translate['ticket.confirm'] }}',
    		    		          handler:function(){
 							   var state = $('#ticketstate_statusid').val();
                     	       $('#formcard_state').form('submit', {
@@ -317,7 +338,7 @@
                    				});
    		    		          }
    				       },
-   	     			   {text:'Отменить',
+   	     			   {text:'{{ translate['ticket.cancel'] }}',
    		    		          handler:function(){
    		    		             $('#state_card').dialog('close');
    		    		           }
@@ -325,5 +346,4 @@
    				   ]
             });
 	}
-
 </script>

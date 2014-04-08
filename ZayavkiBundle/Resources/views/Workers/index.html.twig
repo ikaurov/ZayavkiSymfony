@@ -1,13 +1,13 @@
 <div id="tb_workers" style="display:none">
-	<a href="#" id="w_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">Создать</a>
-	<a href="#" id="w_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">Редакт</a>
-	<a href="#" id="w_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">Удалить</a>
-	<a href="#" id="w_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">Обновить</a>
+	<a href="javascript:void(0)" id="w_btn1" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">{{ translate['entity.menu.create'] }}</a>
+	<a href="javascript:void(0)" id="w_btn2" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">{{ translate['entity.menu.edit'] }}</a>
+	<a href="javascript:void(0)" id="w_btn3" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">{{ translate['entity.menu.delete'] }}</a>
+	<a href="javascript:void(0)" id="w_btn4" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true">{{ translate['entity.menu.refresh'] }}</a>
 </div>
 
 <table id="workers_list"  singleSelect="true" autoRowHeight="false" rownumbers="true" fit="true"></table>
 
-<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/workers.js') }}"></script> 
+<script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/workers.js') }}"></script>
 <script>
 	var item = {"tsgid": 0,
 		"init" : function (tsgid) {
@@ -18,26 +18,35 @@
 		}
 	};
 
+	var translate = new Array();
+	translate['dialog.title.profs']  = '{{ translate['dialog.title.worker'] }}';
+	translate['basic.save']          = '{{ translate['basic.save'] }}';
+	translate['basic.cancel']        = '{{ translate['basic.cancel'] }}';
+	translate['basic.warning']       = '{{ translate['basic.warning'] }}';	
+	translate['message.nameisempty'] = '{{ translate['message.nameisempty'] }}';	
+	
 
 	$(function(){
 		item.init({{tsgid}});
 		$('#w_btn1').bind('click', function(){
-			open_worker({{tsgid}}, 0, item);
+			open_worker({{tsgid}}, 0, item, translate);
 		});
+		
+		
 		
 		$('#w_btn2').bind('click', function(){
 			var row = $('#workers_list').datagrid('getSelected');
 			if (row){
-				open_worker({{tsgid}}, row.id, item);
+				open_worker({{tsgid}}, row.id, item, translate);
 			}
 		});
 
 		$('#w_btn3').bind('click', function(){
 			var row = $('#workers_list').datagrid('getSelected');
 			if (row){
-			    $.messager.defaults.ok = 'Да';
-			    $.messager.defaults.cancel = 'Нет';				
-				$.messager.confirm('Внимание','Вы уверены, что желаете удалить запись ?',function(r){
+				$.messager.defaults.ok = '{{ translate['basic.yes'] }}';
+			    $.messager.defaults.cancel = '{{ translate['basic.no'] }}';
+				$.messager.confirm('{{ translate['basic.warning'] }}','{{ translate['ask.delete'] }}',function(r){
 					if (r){
 						$.ajax({
 							type: "GET",
@@ -48,7 +57,7 @@
 								if (data.success){
 									$('#workers_list').datagrid('reload');
 								} else {
-									$.messager.alert('Внимание', data.message, 'info');
+									$.messager.alert('{{ translate['basic.warning'] }}', data.message, 'info');
 								}
 							}
 						});
@@ -67,11 +76,11 @@
 		toolbar: '#tb_workers',
 		columns:[[
 			{field:'id',hidden:'true'},
-			{field:'name',width:300,title:'Название'}
+			{field:'name',width:300,title:'{{ translate['column.name'] }}'}
 		]],
 		onDblClickRow: function(index, data) {
 		   		if (fx.head == 1) {
-					open_worker({{tsgid}}, data['id'], item);
+					open_worker({{tsgid}}, data['id'], item, translate);
 		   		}
 		   },	   
   	   onBeforeLoad: function(row, param) {
@@ -83,5 +92,6 @@
   	   }
 	 });
 
+ 
 
 </script>

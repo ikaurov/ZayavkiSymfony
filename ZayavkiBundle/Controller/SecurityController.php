@@ -22,8 +22,9 @@ class SecurityController extends Controller
     {
         $request = $this->getRequest();
         $session = $request->getSession();
-		
-		$form = $this->createForm(new LoginType());
+		$translate = $this->get('transloc')->getTranslated('L');
+		$form = $this->createForm(new LoginType(), 
+								  array('translate' => $translate));
 
         // collect login errors
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
@@ -34,6 +35,7 @@ class SecurityController extends Controller
         // имя, введённое пользователем в последний раз
         return $this->render('AcmeZayavkiBundle:Security:login.html.twig', array(
 			'form' => $form->createView(),
+			'translate' => $translate,			
             'last_username' => $session->get(SecurityContext::LAST_USERNAME),
             'error'         => $request,
         ));

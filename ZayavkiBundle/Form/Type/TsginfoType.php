@@ -9,13 +9,18 @@ class TsginfoType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('tsgname', 'text', array(
-						'label' => 'Название',
+						'label' => $options['data']['translate']['column.name'],
 						'attr'  => array("class" => "category_textClass", "readonly" => "readonly"),						
 					));
 					
 		$builder->add('tsgcode', 'text', array(
-						'label' => 'Код',
+						'label' => $options['data']['translate']['column.code'],
 						'attr'  => array("readonly" => "readonly"),						
+					));	
+
+		$builder->add('lk', 'text', array(
+						'label' => $options['data']['translate']['label.lk'],
+						'attr' => array("hidden" => "true"),					
 					));					
 					
 	}

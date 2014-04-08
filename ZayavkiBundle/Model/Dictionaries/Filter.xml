@@ -1,0 +1,74 @@
+<dictionary Version="1.0">		
+	<filter.search>
+		<ru>Поиск</ru>
+		<en>Search</en></filter.search>			
+	<filter.caption>
+		<ru>Фильтр</ru>
+		<en>Filter</en></filter.caption>	
+	<filter.company>
+		<ru>Организация</ru>
+		<en>Company</en></filter.company>			
+	<filter.bydefault>
+		<ru>По умолчанию</ru>
+		<en>By default</en></filter.bydefault>	
+	<filter.apply>
+		<ru>Поиск</ru>
+		<en>Search</en></filter.apply>	
+	<filter.cancel>
+		<ru>Отменить</ru>
+		<en>Cancel</en></filter.cancel>	
+	<filter.all>
+		<ru>ВСЕ</ru>
+		<en>ALL</en></filter.all>	
+	<filter.new>
+		<ru>Новые заявки</ru>
+		<en>New tickets</en></filter.new>	
+	<filter.process>
+		<ru>Заявка в работе</ru>
+		<en>In progress</en></filter.process>	
+	<filter.overdue>
+		<ru>Просроченные заявки</ru>
+		<en>Overdue tickets</en></filter.overdue>	
+	<filter.urgent>
+		<ru>Срочные заявки</ru>
+		<en>Urgent tickets</en></filter.urgent>	
+	<filter.today>
+		<ru>Срок выполнения сегодня</ru>
+		<en>Today's tickets</en></filter.today>		
+	<filter.more>
+		<ru>Расширить поиск</ru>
+		<en>Extended search</en></filter.more>	
+	<filter.status>
+		<ru>Статус</ru>
+		<en>Status</en></filter.status>
+	<filter.category>
+		<ru>Категория</ru>
+		<en>Category</en></filter.category>
+	<filter.date>
+		<ru>Дата</ru>
+		<en>Date</en></filter.date>
+	<filter.period>
+		<ru>Период</ru>
+		<en>Period</en></filter.period>
+	<filter.text>
+		<ru>Текст</ru>
+		<en>Text</en></filter.text>	
+	<filter.closed>
+		<ru>Показывать закрытые</ru>
+		<en>Show closed</en></filter.closed>	
+	<filter.onlyopen>
+		<ru>Только открытые заявки</ru>
+		<en>Only open tickets</en></filter.onlyopen>	
+	<filter.inclclosed>
+		<ru>Включая закрытые заявки</ru>
+		<en>Include closed tickets</en></filter.inclclosed>	
+	<filter.dstart>
+		<ru>Период подачи заявки</ru>
+		<en>Created between</en></filter.dstart>
+	<filter.dplan>
+		<ru>Период передачи в работу</ru>
+		<en>Period of execution</en></filter.dplan>
+	<filter.dstop>
+		<ru>Период закрытия</ru>
+		<en>Closed between</en></filter.dstop>
+</dictionary>

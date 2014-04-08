@@ -18,7 +18,8 @@ class ProfsController extends Controller
 */
     public function indexAction()
     {
-        return $this->render('AcmeZayavkiBundle:Profs:index.html.twig');
+        return $this->render('AcmeZayavkiBundle:Profs:index.html.twig', 
+					array('translate' => $this->get('transloc')->getTranslated() ));
     }
 	
 /**
@@ -39,11 +40,13 @@ class ProfsController extends Controller
 	public function entityAction($id)
     {							
 		$entity = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Profs')->findEntity($id);
+		$entity['translate'] = $this->get('transloc')->getTranslated();
 		
-		$form = $this->createForm(new ProfType(), $entity);
+		$form = $this->createForm(new ProfType(), $entity); 
 			
 		return $this->render('AcmeZayavkiBundle:Profs:profs.html.twig', array(
-			'form' => $form->createView()
+			'form' => $form->createView(),
+			'translate' => $entity['translate'],
 		));
     }
 /**
