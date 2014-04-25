@@ -74,7 +74,6 @@ function open_ticket(id, status, list, translate) {
         		            return true;
                 	    },
                         success:function(data){
-						console.log(data);
 	                      	var data = eval('(' + data + ')');  // change the JSON string to javascript object
 		                    if (data.success){
 		                          	if (data.id > 0) {

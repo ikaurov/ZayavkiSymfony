@@ -40,7 +40,7 @@ class WorkersController extends Controller
 			$output = 'easyui';
 		}	
 			
-		$rows = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersForTsg($tsg, $options, $incl, $output);	
+		$rows = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersForTsg($tsg, $options, $incl, $output,  $this->get('transloc')->getTranslated());	
 		return new Response(json_encode($rows));	
     }
 
@@ -82,7 +82,12 @@ class WorkersController extends Controller
 	{
 		if ($request->getMethod() == 'POST') {
 			
-			$var = $request->request->all();			
+		// if organization is not specified, then take with head = 1 ()
+			$tsg = ($tsg == 0) ? $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgHeadId() : $tsg;
+			
+			$var = $request->request->all();	
+			$var['worker']['ownid'] = $tsg;	
+			
 			$id = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->saveEntity( $id, $var['worker']);
 					
 			return new Response(Resanswer::getRetJSON('',true, $id));				

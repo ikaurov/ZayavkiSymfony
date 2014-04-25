@@ -101,7 +101,7 @@ profs_id:
     defaults: { _controller: AcmeZayavkiBundle:Profs:entity }
 profs_save:
     path:     /profs_save/{id}
-    defaults: { _controller: AcmeZayavkiBundle:Profs:save }	
+    defaults: { _controller: AcmeZayavkiBundle:Profs:save, id: 0 }	
 profs_delete:
     path:     /profs_delete/{id}
     defaults: { _controller: AcmeZayavkiBundle:Profs:delete }	

@@ -10,10 +10,12 @@ class WorkersRepository extends EntityRepository
 	*
 	* @param int $tsgid	
 	* @param string $options {A=all, N- none, H - include workers for head office}
+	* @param int $incl
 	* @param string $output {'easyui','hash','array' - default}		
+	* @param array $translate
 	* @return array $list: easyui json format ["total", "rows"]
 	*/
-	public function findWorkersForTsg($tsgid, $options, $incl, $output)
+	public function findWorkersForTsg($tsgid, $options, $incl, $output, $translate)
 	{
 					 
 		$stmt = $this->getEntityManager()->getConnection()->prepare(
@@ -26,7 +28,7 @@ class WorkersRepository extends EntityRepository
 		$rows = $stmt->fetchAll();
 			
 		if (substr_count($options, 'N') > 0) {
-			array_unshift($rows, array('id' => 0, 'name' => 'НЕТ'));																	  		
+			array_unshift($rows, array('id' => 0, 'name' => $translate['basic.none']));																	  		
 		}	
 		
 		switch ($output) {
@@ -59,7 +61,7 @@ class WorkersRepository extends EntityRepository
 			$entity = new Workers();
 		}
 				
-		return array(	'id' 	=> $entity->getId(), 
+		return array(	'id' 	=> (int)$entity->getId(), 
 						'name' 	=> $entity->getName(), 
 						'ownid' => $entity->getOwnid(), 
 						'profid'=> $entity->getProfid(),

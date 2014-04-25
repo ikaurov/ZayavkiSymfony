@@ -1,6 +1,6 @@
 {% block head %}
     <link rel="icon" sizes="16x16" href="{{ asset('favicon.ico') }}" />
-	<title>Диспетчер</title>
+	<title>{{ translate['menus.application'] }}р</title>
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmezayavki/css/main.css') }}"/>
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmezayavki/css/easyui/themes/gray/easyui.css') }}"/>
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmezayavki/css/easyui/icon.css') }}"/>
@@ -28,6 +28,7 @@
 		jQuery(function($){
 
 			var translate = new Array();
+			translate['menus.application']= '{{ translate['menus.application'] }}';
 			translate['menus.companies']  = '{{ translate['menus.companies'] }}';
 			translate['menus.users']      = '{{ translate['menus.users'] }}';
 			translate['menus.categories'] = '{{ translate['menus.categories'] }}';

@@ -1,4 +1,7 @@
 <dictionary Version="1.0">	
+	<menus.application>
+		<ru>Диспетчер</ru>
+		<en>Dispatcher</en></menus.application>
 	<menus.title>
 		<ru>Меню</ru>
 		<en>Menus</en></menus.title>		

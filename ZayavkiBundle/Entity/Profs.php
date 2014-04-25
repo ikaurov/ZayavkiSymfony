@@ -36,7 +36,19 @@ class Profs
     private $deleted = '0';
 
 
+    /**
+     * Set id
+     *
+     * @param int $id
+     * @return Profs
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
 
+        return $this;
+    }
+	
     /**
      * Get id
      *

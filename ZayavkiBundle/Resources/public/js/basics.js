@@ -145,7 +145,7 @@ jQuery(function($){
 				},
 				"updateTitle" : function( val ) { // сигнал о неоткрытых заявках
 					this.notopen = (this.head == 0 )? val : 0;
-					document.title = ((this.notopen != 0) ? '('+this.notopen+') ':'') + 'Диспетчер';
+					document.title = ((this.notopen != 0) ? '('+this.notopen+') ':'') + menus['menus.application'];
 				},
 				"setCalendarDate" :	 function (obj, date) {
 					//date = dd.mm.yyyy

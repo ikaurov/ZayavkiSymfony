@@ -20,6 +20,12 @@
 	<entity.menu.refresh>
 		<ru>Обновить</ru>
 		<en>Refresh</en></entity.menu.refresh>	
+	<basic.none>
+		<ru>НЕТ</ru>
+		<en>NONE</en></basic.none>
+	<basic.all>
+		<ru>ВСЕ</ru>
+		<en>ALL</en></basic.all>		
 	<basic.yes>
 		<ru>Да</ru>
 		<en>Yes</en></basic.yes>

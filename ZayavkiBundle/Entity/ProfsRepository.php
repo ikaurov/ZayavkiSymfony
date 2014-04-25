@@ -12,7 +12,7 @@ class ProfsRepository extends EntityRepository
 	* @param string $output {'easyui','hash','array' - default}	
 	* @return array $list in $output format
 	*/
-	public function findProfsList( $options, $output )
+	public function findProfsList( $options, $output, $translate )
 	{
 		$list = ($output == 'easyui')? array("total" => 0, "rows"  => array()) : array();
 		$rows = $this->getEntityManager()->createQuery(
@@ -20,10 +20,10 @@ class ProfsRepository extends EntityRepository
 			)->getResult();
 		
 		if (substr_count($options, 'N') > 0) {
-			array_unshift($rows, array('id' => 0, 'name' => 'НЕТ'));																	  		
+			array_unshift($rows, array('id' => 0, 'name' => $translate['basic.none']));																	  		
 		}		
 		if (substr_count($options, 'A') > 0) {
-			array_unshift($rows, array('id' => -1, 'name' => 'ВСЕ'));																	  		
+			array_unshift($rows, array('id' => -1, 'name' => $translate['basic.all']));																	  		
 		}			
 
 		switch ($output) {
@@ -53,6 +53,7 @@ class ProfsRepository extends EntityRepository
 		$entity = $this->find($id);		
 		if (!$entity) {
 			$entity = new Profs(); 
+			$entity->setId(0)->setName('');
 		}
 		
 		return array('id' 		=> $entity->getId(), 

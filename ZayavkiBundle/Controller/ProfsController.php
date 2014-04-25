@@ -29,7 +29,7 @@ class ProfsController extends Controller
 */
     public function dataAction()
     {
-		$list = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Profs')->findProfsList('','easyui');	
+		$list = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Profs')->findProfsList('','easyui', $this->get('transloc')->getTranslated('B'));	
         return new Response(json_encode($list));
     }
 /**
