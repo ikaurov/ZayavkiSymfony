@@ -44,6 +44,10 @@ class ImportTables
 	
 	public function addTsginfo($rs)
 	{
+		$rs['TSGName']    = $this->encodeTSGName();
+		$rs['TSGAddress'] = $this->encodeTSGAddress();
+	
+	
 		$this->target->exec(
 			"INSERT INTO `TSGInfo` (TSGId, TSGCode, TSGName, TSGAddress, OpenPeriod, oldDBId, Mode, head, rootid, DateUpdate, DateSetMode, lk) VALUES (".
 				(int)$rs['TSGId'].",".
@@ -94,6 +98,8 @@ class ImportTables
 	
 	public function addComprop($rs)
 	{
+		$rs['name'] = $this->encodeTranslit($rs['name']);
+	
 		$this->target->exec(
 			"INSERT INTO `Comprop` (id, name, uin, kind) VALUES (".
 				(int)$rs['id'].",".
@@ -137,6 +143,8 @@ class ImportTables
 	
 	public function addProf($rs)
 	{
+		$rs['name'] = $this->encodeTranslit($rs['name']);
+			
 		$this->target->exec(
 			"INSERT INTO `Profs` (id, name, deleted) VALUES (".
 				(int)$rs['id'].",".
@@ -179,6 +187,9 @@ class ImportTables
 	
 	public function addCategory($rs)
 	{
+	
+		$rs['name'] = $this->encodeTranslit($rs['name']);
+			
 		$this->target->exec(
 			"INSERT INTO `Category` (id, name, parentid, deleted) VALUES (".
 				(int)$rs['id'].",".
@@ -222,6 +233,8 @@ class ImportTables
 	
 	public function addWorkers($rs)
 	{
+		$rs['name'] = $this->encodeTranslit($rs['name']);
+			
 		$this->target->exec(
 			"INSERT INTO `Workers` (id, name, ownid, profid, deleted) VALUES (".
 				(int)$rs['id'].",".
@@ -256,6 +269,8 @@ class ImportTables
 	
 	public function addUsers($rs)
 	{
+		$rs['UserName'] = $this->encodeTranslit($rs['UserName']);
+	
 		$this->target->exec(
 			"INSERT INTO `Users` (UserId, TSGCode, UserName, Password, isBlocked, Type, isReset, NewPassword, failedCount, FrozenDate, WaitRegistry) VALUES (".
 				(int)$rs['UserId'].",".
@@ -297,6 +312,22 @@ class ImportTables
 	
 	public function addAccounts($rs)
 	{
+		$rs['UserName'] = $this->encodeTranslit($rs['UserName']);
+		
+		$rs['Question'] = '';
+		$rs['Answer']   = '';
+		$rs['Address']  = '';	
+		$rs['ObjectAddress']  = '';
+		$rs['FIO']      = $this->encodeTranslit($rs['FIO']);
+		$rs['Email']    = 'person@example.com';
+		$rs['RegistryFIO']    = $rs['FIO'];
+		$rs['OwnerFIO']       = $rs['FIO'];
+		$rs['RegistryEmail']  = 'person@example.com';			
+		$rs['RegistryMobile'] = '911 000 2334';
+		$rs['Mobile']         = '911 000 2334';
+		$rs['Phones']         = '911 000 2334';				
+	
+	
 		$this->target->exec(
 			"INSERT INTO `Accounts` (AccountId, UserId , Account, DisplayNumber, Question, Answer, Address, AddressId, ObjectAddress, 
 						RoomType, RoomNumber, DoubleCntr, FIO, Email, Debt, isUpdated, RegistryFIO,OwnerFIO, RegistryEmail, RegistrySquare, 
@@ -494,10 +525,37 @@ class ImportTables
 		$this->target->exec("UPDATE `Tickets` set dstart = NULL WHERE dstart='00.00.0000'");
 		$this->target->exec("UPDATE `Tickets` set dplan = NULL WHERE dplan='00.00.0000'");
 		$this->target->exec("UPDATE `Tickets` set dwork = NULL WHERE dwork='00.00.0000'");
-		$this->target->exec("UPDATE `Tickets` set dstop = NULL WHERE dstop='00.00.0000'");	
+		$this->target->exec("UPDATE `Tickets` set dstop = NULL WHERE dstop='00.00.0000'");	    
 		$this->target->exec("UPDATE Tickets INNER JOIN Accounts ON Tickets.userid = Accounts.UserId SET Tickets.address = CONCAT(Accounts.ObjectAddress, ',', Accounts.RoomType,Accounts.RoomNumber)");
 	}
+	// Encoding part
+	public function encodeTSGName()
+	{
+		$names = array('Workers','Cleaners','Profs','Construction','Masters','Supply','Maintenance','Super','Ace','Perfect');
+		$suf   = array('AS','LTD','INC','OOO','ZAO','AB','GMBH','FGUP','GP','FIN');
+		$pref  = array('Red','Blue','Green','Gray','White','Black','Navy','Orange','Magenta','Transparent');		
+	
+		return $pref[ rand( 0 , 9 )].' '.$name[ rand( 0 , 9 )].' '.$suf[ rand( 0 , 9 )];
+	}
+	
+	public function encodeTSGAddress()
+	{
+		$names = array('Berlin','Bohn','Dresden','Bayern','Burnberg','Koln','Rostok','Lubek','Essen','Frankfurt');
+		$pref  = array('Red','Blue','Green','Gray','White','Black','Navy','Orange','Magenta','Transparent');		
+	
+		return $pref[ rand( 0 , 9 )].' '.$name[ rand( 0 , 9 )].' str. '.rand( 1 , 152 );
+	}
+	
+	public function encodeTranslit($value)
+	{	
+		return str_replace('ÀÁÂÃÄÅ¨ÆÇÈÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÛÚÜİŞß', 'ABVGDEEJZIKLMNOPRSTUFHZCSSY``EUY', mb_strtoupper($value));	
+	}	
 
-	
-	
+	public function getAddressForUser($userid)
+	{	
+		$res = $this->source->query("SELECT t.TSGAddress FROM Users u, TSGInfo t WHERE u.TSGCode = t.TSGCode and u.UserId = ".$userid)->fetchAll();
+		$res = current($res);
+		return $res['TSGAddress'];
+	}	
+		
 }

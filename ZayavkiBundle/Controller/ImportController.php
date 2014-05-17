@@ -19,6 +19,10 @@ class ImportController extends Controller
 		$info = array();
 		$import = new ImportTables( $this->container->get('main_database')->getPDO(),	
 									$this->container->get('importsource')->getPDO() );
+									
+									
+		$info[] = array( 'name' => $import->encodeTSGName() );	
+		$info[] = array( 'name' => $import->encodeTSGAddress() );	
 
 		#$info[] = array( 'name' => $this->loadUsers($import) );									
 		#$info[] = array( 'name' => $this->loadTsginfo($import) );
@@ -28,7 +32,7 @@ class ImportController extends Controller
 		#$info[] = array( 'name' => $this->loadCategory($import) );
 		#$info[] = array( 'name' => $this->loadWorkers($import) );
 		#$info[] = array( 'name' => $this->loadUser($import) );
-		$info[] = array( 'name' => $this->loadTickets($import) );
+		#$info[] = array( 'name' => $this->loadTickets($import) );
 		
 	
 		return $this->render('AcmeZayavkiBundle:Import:index.html.twig', array('info' => $info));

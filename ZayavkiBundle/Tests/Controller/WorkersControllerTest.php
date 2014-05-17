@@ -62,7 +62,6 @@ class WorkersControllerTest extends WebTestCase
 		
 	//head = 0
 		$tsg = 23;
-	
 		$id = $this->testOpen(1,0,$tsg);
 		$id = $this->testOpen(1, $id, $tsg); // update
 		$this->testDelete( $id, $tsg );	
@@ -91,7 +90,7 @@ class WorkersControllerTest extends WebTestCase
 							array( 'worker' => $entity) 
 						);
 			$res = TestHelper::check_result( $client->getResponse()->getContent());	
-		
+
 			$this->assertTrue( $res['result'] == 'true' ); 
 			$entity['id'] = $res['id'];
 					

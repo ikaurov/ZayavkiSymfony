@@ -57,11 +57,11 @@ class WorkersController extends Controller
 		$tsg = ($tsg == 0) ? $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgHeadId() : $tsg;
 	
 		$entity = (array)$this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Workers')->findEntity($id);
-		$entity['translate'] = $this->get('transloc')->getTranslated('','en');
+		$entity['translate'] = $this->get('transloc')->getTranslated();
 		
 		$entity['ownid'] = ($entity['ownid'] == 0) ? $tsg : $entity['ownid'];
-		$entity['profs'] = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Profs')->findProfsList('N', 'hash');
-		$entity['tsgs']  = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('all', '', 'hash');
+		$entity['profs'] = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Profs')->findProfsList('N', 'hash', $entity['translate']);
+		$entity['tsgs']  = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('all', '', 'hash', $entity['translate']);
 		
 		$form = $this->createForm(new WorkerType(), $entity);
 		

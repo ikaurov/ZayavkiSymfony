@@ -106,6 +106,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 		foreach ($rows as $rs) {
 				$list[] = array('id'      => $rs['id'], 
 								'name'    => $rs['name'].' ('.$rs['more'].')', 
+								'title'   => $rs['name'],
 								'company' => 2); // 2 is for user
 		}		
         return $list;	
@@ -223,7 +224,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
 						'cname'   => 130,
 						'sname'   => 130,
 						'account' => 50,
-						'fio'	 => 130,
+						'fio'	  => 130,
 						'address' => 180,
 						'message' => 200,
 						'wname'   => 110,

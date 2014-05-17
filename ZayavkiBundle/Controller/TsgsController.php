@@ -26,7 +26,7 @@ class TsgsController extends Controller
 */
     public function dataAction()
     {	
-		$list = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('all','','array');	
+		$list = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('all','','array',$this->get('transloc')->getTranslated());	
         return new Response(json_encode($list));
     }
 /**
@@ -68,7 +68,7 @@ class TsgsController extends Controller
 */	
 	public function worklistAction($id)
 	{   
-		$list = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersForTsg($id, '', -1, 'easyui');	
+		$list = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Workers')->findWorkersForTsg($id, '', -1, 'easyui',  $this->get('transloc')->getTranslated());	
         return new Response(json_encode($list));	
 	}	
 /**

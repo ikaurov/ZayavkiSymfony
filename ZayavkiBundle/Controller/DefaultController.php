@@ -14,11 +14,31 @@ class DefaultController extends Controller
 	* Main entrance
 	* access to language definer: $lang = ($this->container->hasParameter('app.language')) ? $this->container->getParameter('app.language') : 'ru';
 	*/
-    public function indexAction()
+	public function getUserArray(Request $request)
+	{
+		$result = array('id'   => 0, 
+						'name' => '');
+	//	$result['id']   = (int)$request->getSession()->get('userid');
+	//	$result['name'] = $request->getSession()->get('username');
+	//	if ($result['id'] == 0) {
+	//		$user = $this->get('security.context')->getToken()->getUser();
+//
+	//		$request->getSession()->set('userid', $user->getId());
+//			$request->getSession()->set('username', $user->getUsername());
+			
+//			$result['id']   = (int)$request->getSession()->get('userid');
+//			$result['name'] = $request->getSession()->get('username');
+		
+		}
+		return $result;
+	}
+	
+    public function indexAction(Request $request)
     {
-		$user = $this->get('security.context')->getToken()->getUser();
+		$res = $this->getUserArray( $request );
+
         return $this->render('AcmeZayavkiBundle:Default:index.html.twig', 
-				array( 'prop_head' => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($user->getId()),
+				array( 'prop_head' => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($res['id']),
 					   'translate' => $this->get('transloc')->getTranslated('A'),
 				));
     }
@@ -26,13 +46,14 @@ class DefaultController extends Controller
 	* Title panel. User credentials
 	*
 	*/
-    public function titleAction()
+    public function titleAction(Request $request)
     {
-		$user = $this->get('security.context')->getToken()->getUser();	
-		$list = current($this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->findTsgsListForUser($user->getId(), 'array'));
+		$res = $this->getUserArray( $request );
 		
-		$name = $user->getName().(($list)? ' \ '.$list['name'] : '');
+		$list = current($this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->findTsgsListForUser($res['id'], 'array'));
+		$name = $res['name'].(($list)? ' \ '.$list['name'] : '');
 
+		
         return $this->render('AcmeZayavkiBundle:Default:title.html.twig', 
 					array('name' => $name, 
 					  	  'translate' => $this->get('transloc')->getTranslated(),
@@ -42,25 +63,26 @@ class DefaultController extends Controller
 	* Tickets panel
 	*
 	*/
-	public function ticketsAction()
+	public function ticketsAction(Request $request)
     {
+		$res = $this->getUserArray( $request );
 	
-		$user = $this->get('security.context')->getToken()->getUser();
+		//$user = $this->get('security.context')->getToken()->getUser();
         return $this->render('AcmeZayavkiBundle:Default:tickets.html.twig', 
-					array('prop_head' => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($user->getId()),
-						  'userid'    => $user->getId(),
+					array('prop_head' => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($res['id']),
+						  'userid'    => $res['id'],
 						  'translate' => $this->get('transloc')->getTranslated('P'),
-						  'colsize'   => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->getColumnsSize($user->getId()),
+						  'colsize'   => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->getColumnsSize($res['id']),
 					));
     }
 	/**
 	* Alert announce	
 	*
 	*/	
-	public function alertsAction()
+	public function alertsAction(Request $request)
     {
-		$user = $this->get('security.context')->getToken()->getUser();
-		$list = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->getAlerts($user->getId());
+		$res = $this->getUserArray( $request );
+		$list = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->getAlerts($res['id']);
 	
         return new Response(json_encode($list));
     }
@@ -68,16 +90,16 @@ class DefaultController extends Controller
 	* Basic filter Action
 	*
 	*/	
-	public function fticketsAction()
+	public function fticketsAction(Request $request)
     {
-		$user = $this->get('security.context')->getToken()->getUser();
+		$res = $this->getUserArray( $request );
 		
-		$head = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($user->getId());
+		$head = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($res['id']);
 		if ( $head > 0 ) {
 			$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('no_head','A','array');
 		}
 		else {
-			$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->findTsgsListForUser($user->getId(),'array');
+			$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->findTsgsListForUser($res['id'],'array');
 		}
 		
         return $this->render('AcmeZayavkiBundle:Default:ftickets.html.twig', 

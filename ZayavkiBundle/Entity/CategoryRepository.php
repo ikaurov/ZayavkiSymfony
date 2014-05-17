@@ -33,7 +33,7 @@ class CategoryRepository extends EntityRepository
 	* @param string $option
 	* @return array $res: [1] => value
 	*/
-	public function findGroupsOrderedByName($option = '')
+	public function findGroupsOrderedByName($option = '', $translate)
 	{	
 	    $rows = $this->getEntityManager()->createQuery(
 			'SELECT p.id, p.name FROM AcmeZayavkiBundle:Category p WHERE p.deleted=0 and p.parentid=0 ORDER BY p.name ASC'
@@ -41,7 +41,7 @@ class CategoryRepository extends EntityRepository
 		 
 		$res = array();
 		if (substr_count($option, 'N') > 0) {
-			$res = array(0 => 'НЕТ');																				  		
+			$res = array(0 => $translate['basic.none']);																				  		
 		}
 		foreach ($rows as $row) {
 			$res[ $row['id'] ] = $row['name'];
@@ -55,7 +55,7 @@ class CategoryRepository extends EntityRepository
 	* @param string $option {N}
 	* @return hash array $res
 	*/
-	public function findCategoryListHash( $option = '')
+	public function findCategoryListHash( $option = '', $translate)
 	{	
 		$stmt = $this->getEntityManager()->getConnection()->prepare('CALL Category_tree()');
 		$stmt->execute();
@@ -63,7 +63,7 @@ class CategoryRepository extends EntityRepository
 				 
 		$res = array();
 		if (substr_count($option, 'N') > 0) {
-			$res[ 0 ] = 'НЕТ';																				  		
+			$res[ 0 ] = $translate['basic.none'];																				  		
 		}
 		foreach ($rows as $row) {
 			$res[ $row['id'] ] = $row['name'];
@@ -84,7 +84,7 @@ class CategoryRepository extends EntityRepository
 			$entity = new Category(); 
 		}
 		
-		return array('id' 		=> $entity->getId(), 
+		return array('id' 		=> (int)$entity->getId(), 
 					 'name' 	=> $entity->getName(), 
 					 'parentid'	=> $entity->getParentid(), 
 					);

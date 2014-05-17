@@ -11,9 +11,10 @@ class TsginfoRepository extends EntityRepository
 	* @param string $kind {'only_head','no_head','all' - default}
 	* @param string $options 'N' is for "Not" option
 	* @param string $output {'easyui','hash','array' - default}
+	* @param array #translate
 	* @return array $list: easyui json format ["total", "rows"]
 	*/
-	public function getTsgsList($kind, $options, $output)
+	public function getTsgsList($kind, $options, $output, $translate)
 	{
 		$qb = $this->getEntityManager()->createQueryBuilder()
 			->from('AcmeZayavkiBundle:Tsginfo', 't')
@@ -32,10 +33,10 @@ class TsginfoRepository extends EntityRepository
 		$res = $query->getResult();
 		
 		if (substr_count($options, 'N') > 0) {
-			array_unshift($res, array('id' => 0, 'name' => 'НЕТ', 'head' => 0, 'lk' => 0));																	  		
+			array_unshift($res, array('id' => 0, 'name' => $translate['basic.none'], 'head' => 0, 'lk' => 0));																	  		
 		}
 		if (substr_count($options, 'A') > 0) {
-			array_unshift($res, array('id' => -1, 'name' => 'ВСЕ', 'head' => 0, 'lk' => 0));																	  		
+			array_unshift($res, array('id' => -1, 'name' => $translate['basic.all'], 'head' => 0, 'lk' => 0));																	  		
 		}		
 		
 		switch ($output) {
@@ -57,7 +58,7 @@ class TsginfoRepository extends EntityRepository
 	* Get all Tsgs. head=1 is on the top 
 	*
 	* @param int $id - operator id
-	* @param string $output {'easyui','hash','array' - default}	
+	* @param string $output {'easyui','hash','array' - default}		
 	* @return array $list: easyui json format ["total", "rows"]
 	*/
 	public function findTsgsListForUser($id, $output)
@@ -75,6 +76,7 @@ class TsginfoRepository extends EntityRepository
 										 "rows"  => $res);				
 					break;
 			case 'hash':
+					$list = array();
 					foreach($res as $rs) {
 						$list[ $rs['id'] ] = $rs['name'];
 					}
@@ -93,19 +95,7 @@ class TsginfoRepository extends EntityRepository
 	*/
 	public function findTsgsListForUserHash($id)
 	{	
-		// $query = $this->getEntityManager()->createQuery(
-			// 'SELECT p.tsgid as id, p.tsgname as name, p.head as head FROM AcmeZayavkiBundle:Tsginfo p, AcmeZayavkiBundle:Usertsg u 
-			// WHERE p.tsgid = u.tsgid and u.userid = :userid
-			// ORDER BY p.head desc, p.tsgname ASC'
-			// );
-		// $query->setParameter('userid', $id);	
-		// $res = $query->getResult();
-		// $tsgs = array();		
-		// foreach ($res as $row) {
-			// $tsgs[ $row['id'] ] = $row['name'];			
-		// }		
-        // return $tsgs;
-			return $this->findTsgsListForUser($id, 'hash');
+		return $this->findTsgsListForUser($id, 'hash');
 	}	
 	
 	/**
@@ -148,7 +138,7 @@ class TsginfoRepository extends EntityRepository
 	*/
 	public function getTsgHeadId()
 	{
-	    $res = current($this->getTsgsList('only_head', '', 'array'));	
+	    $res = current($this->getTsgsList('only_head', '', 'array', array()));	
 		return ($res)? (int)$res['id']: 0 ;
 	}
 	

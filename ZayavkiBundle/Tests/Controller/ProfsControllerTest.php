@@ -55,7 +55,6 @@ class ProfsControllerTest extends WebTestCase
     public function testOpen($dummy = 0,  $id = 0)
     {			
 		if ($dummy  > 0) {
-			//$entity = new Profs();
 			$client = static::createClient();			
 			
 			$kernel = static::createKernel();

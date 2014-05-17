@@ -36,16 +36,17 @@ class CategoryController extends Controller
 * @return view
 */
 	public function entityAction($id, Request $request)
-    {							
+    {			
+		$tranlate = $this->get('transloc')->getTranslated();
 		$entity = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Category')->findEntity($id);
-		$entity['choice']    = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Category')->findGroupsOrderedByName('N');
-		$entity['translate'] = $this->get('transloc')->getTranslated();
+		$entity['choice']    = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:Category')->findGroupsOrderedByName('N',$tranlate);
+		$entity['translate'] = $tranlate;
 		
 		$form = $this->createForm(new CategoryType(), $entity);
 			
 		return $this->render('AcmeZayavkiBundle:Category:category.html.twig', array(
 			'form' => $form->createView(), 
-			'translate' => $entity['translate'],
+			'translate' => $tranlate,
 		));
     }
 /**
