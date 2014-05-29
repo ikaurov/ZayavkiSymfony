@@ -11,7 +11,7 @@ jQuery(function($){
 					this.head      = head;
 					this.path      = path;
                     this.alertfile = file;
-
+					this.title     = menus['menus.application'];
 					try {
 						var snd = new Audio(this.alertfile); // buffers automatically when created
 					}
@@ -145,7 +145,7 @@ jQuery(function($){
 				},
 				"updateTitle" : function( val ) { // сигнал о неоткрытых заявках
 					this.notopen = (this.head == 0 )? val : 0;
-					document.title = ((this.notopen != 0) ? '('+this.notopen+') ':'') + menus['menus.application'];
+					document.title = ((this.notopen != 0) ? '('+this.notopen+') ':'') + this.title;
 				},
 				"setCalendarDate" :	 function (obj, date) {
 					//date = dd.mm.yyyy

@@ -535,7 +535,7 @@ class ImportTables
 		$suf   = array('AS','LTD','INC','OOO','ZAO','AB','GMBH','FGUP','GP','FIN');
 		$pref  = array('Red','Blue','Green','Gray','White','Black','Navy','Orange','Magenta','Transparent');		
 	
-		return $pref[ rand( 0 , 9 )].' '.$name[ rand( 0 , 9 )].' '.$suf[ rand( 0 , 9 )];
+		return $pref[ rand( 0 , 9 )].' '.$names[ rand( 0 , 9 )].' '.$suf[ rand( 0 , 9 )];
 	}
 	
 	public function encodeTSGAddress()
@@ -543,12 +543,15 @@ class ImportTables
 		$names = array('Berlin','Bohn','Dresden','Bayern','Burnberg','Koln','Rostok','Lubek','Essen','Frankfurt');
 		$pref  = array('Red','Blue','Green','Gray','White','Black','Navy','Orange','Magenta','Transparent');		
 	
-		return $pref[ rand( 0 , 9 )].' '.$name[ rand( 0 , 9 )].' str. '.rand( 1 , 152 );
+		return $pref[ rand( 0 , 9 )].' '.$names[ rand( 0 , 9 )].' str. '.rand( 1 , 152 );
 	}
 	
 	public function encodeTranslit($value)
-	{	
-		return str_replace('�����Ũ�������������������������', 'ABVGDEEJZIKLMNOPRSTUFHZCSSY``EUY', mb_strtoupper($value));	
+	{		
+		
+		return 	str_replace(array('А','Б','В','Г','Д','Е','Ё','Ж','З','И','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ы','Ъ','Ь','Э','Ю','Я','а','б','в','г','д','е','ё','ж','з','и','к','л','м','н','о','п','р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю','я'), 
+					   array('A','B','V','G','D','E','E','J','Z','I','K','L','M','N','O','P','R','S','T','U','F','H','Z','C','S','S','Y','`','`','E','U','Y','a','b','v','g','d','e','e','j','z','i','k','l','m','n','o','p','r','s','t','u','f','h','z','c','s','s','y','`','`','e','u','y'),
+					   $value);
 	}	
 
 	public function getAddressForUser($userid)

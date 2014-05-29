@@ -18,16 +18,16 @@ class DefaultController extends Controller
 	{
 		$result = array('id'   => 0, 
 						'name' => '');
-	//	$result['id']   = (int)$request->getSession()->get('userid');
-	//	$result['name'] = $request->getSession()->get('username');
-	//	if ($result['id'] == 0) {
-	//		$user = $this->get('security.context')->getToken()->getUser();
-//
-	//		$request->getSession()->set('userid', $user->getId());
-//			$request->getSession()->set('username', $user->getUsername());
+		$result['id']   = (int)$request->getSession()->get('userid');
+		$result['name'] = $request->getSession()->get('username');
+		if ($result['id'] == 0) {
+			$user = $this->get('security.context')->getToken()->getUser();
+
+			$request->getSession()->set('userid', $user->getId());
+			$request->getSession()->set('username', $user->getUsername());
 			
-//			$result['id']   = (int)$request->getSession()->get('userid');
-//			$result['name'] = $request->getSession()->get('username');
+			$result['id']   = (int)$request->getSession()->get('userid');
+			$result['name'] = $request->getSession()->get('username');
 		
 		}
 		return $result;
@@ -93,10 +93,10 @@ class DefaultController extends Controller
 	public function fticketsAction(Request $request)
     {
 		$res = $this->getUserArray( $request );
-		
+
 		$head = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($res['id']);
 		if ( $head > 0 ) {
-			$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('no_head','A','array');
+			$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('no_head','A','array', $this->get('transloc')->getTranslated('B'));
 		}
 		else {
 			$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->findTsgsListForUser($res['id'],'array');
