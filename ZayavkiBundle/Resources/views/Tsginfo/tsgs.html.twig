@@ -51,6 +51,14 @@
 	};	
 	
 	$(function(){
+		var translate = new Array();
+		translate['dialog.title.worker']  = '{{ translate['dialog.title.worker'] }}';
+		translate['basic.save']          = '{{ translate['basic.save'] }}';
+		translate['basic.cancel']        = '{{ translate['basic.cancel'] }}';
+		translate['basic.warning']       = '{{ translate['basic.warning'] }}';	
+		translate['message.nameisempty'] = '{{ translate['message.nameisempty'] }}';
+		
+	
 		item.init({{ tsg_id }});
 		uitem.init({{ tsg_id }});
 		$('#set_lk').linkbutton({
@@ -95,7 +103,7 @@
 					text: '{{ translate['entity.menu.add'] }}',
 					iconCls: 'icon-add',
 					handler: function(){
-						open_worker({{tsg_id}}, 0, item);
+						open_worker({{tsg_id}}, 0, item, translate);
 					}
 				},{
 					text: '{{ translate['entity.menu.edit'] }}',
@@ -103,7 +111,7 @@
 					handler: function(){
 						var row = $('#tsg_works').datagrid('getSelected');
 						if (row){
-							open_worker({{tsg_id}}, row.id, item);
+							open_worker({{tsg_id}}, row.id, item, translate);
 						}
 					}
 				},'-',{
@@ -135,7 +143,7 @@
 					}
 				}],
            onDblClickRow: function(index, data) {
-				open_worker({{tsg_id}}, data['id'], item);
+				open_worker({{tsg_id}}, data['id'], item, translate);
            }
 	    });			
 	});

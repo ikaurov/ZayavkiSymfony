@@ -24,22 +24,21 @@ class ImportController extends Controller
 	//	$info[] = array( 'name' => $import->encodeTSGName() );	
 	//	$info[] = array( 'name' => $import->encodeTSGAddress() );	
 	
-	$var = str_replace(array('А','Б','В','Г','Д','Е','Ё','Ж','З','И','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ы','Ъ','Ь','Э','Ю','Я','а','б','в','г','д','е','ё','ж','з','и','к','л','м','н','о','п','р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю','я'), 
-					   array('A','B','V','G','D','E','E','J','Z','I','K','L','M','N','O','P','R','S','T','U','F','H','Z','C','S','S','Y','`','`','E','U','Y','a','b','v','g','d','e','e','j','z','i','k','l','m','n','o','p','r','s','t','u','f','h','z','c','s','s','y','`','`','e','u','y'),
-					   'Юдин');
+//	$var = str_replace(array('А','Б','В','Г','Д','Е','Ё','Ж','З','И','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ы','Ъ','Ь','Э','Ю','Я','а','б','в','г','д','е','ё','ж','з','и','к','л','м','н','о','п','р','с','т','у','ф','х','ц','ч','ш','щ','ъ','ы','ь','э','ю','я'), 
+//					   array('A','B','V','G','D','E','E','J','Z','I','K','L','M','N','O','P','R','S','T','U','F','H','Z','C','S','S','Y','`','`','E','U','Y','a','b','v','g','d','e','e','j','z','i','k','l','m','n','o','p','r','s','t','u','f','h','z','c','s','s','y','`','`','e','u','y'),
+//					   'Юдин');
 	
-		$info[] = array( 'name' => $import->encodeTranslit('Юдин') );
-	#	$info[] = array( 'name' => $var );
-	#	$info[] = array( 'name' => $this->loadUsers($import) );									
-	#	$info[] = array( 'name' => $this->loadTsginfo($import) );
-	#	$info[] = array( 'name' => $this->loadAccounts($import) );		
-	#	$info[] = array( 'name' => $this->loadComprop($import) );
-	#	$info[] = array( 'name' => $this->loadProfs($import) );
-	#	$info[] = array( 'name' => $this->loadCategory($import) );
-	#	$info[] = array( 'name' => $this->loadWorkers($import) );
-	#	$info[] = array( 'name' => $this->loadUser($import) );
-	#	$info[] = array( 'name' => $this->loadTickets($import) );
-		
+	
+		$info[] = array( 'name' => $this->loadUsers($import) );									
+		$info[] = array( 'name' => $this->loadTsginfo($import) );
+		$info[] = array( 'name' => $this->loadAccounts($import) );		
+		$info[] = array( 'name' => $this->loadComprop($import) );
+		$info[] = array( 'name' => $this->loadProfs($import) );
+		$info[] = array( 'name' => $this->loadCategory($import) );
+		$info[] = array( 'name' => $this->loadWorkers($import) );
+		$info[] = array( 'name' => $this->loadUser($import) );
+		$info[] = array( 'name' => $this->loadTickets($import) );
+
 	
 		return $this->render('AcmeZayavkiBundle:Import:index.html.twig', array('info' => $info));
 		

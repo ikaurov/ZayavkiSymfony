@@ -48,7 +48,8 @@
 
 	function open_tsg(id, list, translate) {
 
-		 var client_h = ((document.body.clientHeight > 720) ? 720 : document.body.clientHeight - 200);
+		var client_h = ((document.body.clientHeight > 720) ? 720 : document.body.clientHeight - 200);
+	
 	
 		if (!$('div').is('#tsgs_card')) {
 			$('#cardholder').after('<div id="tsgs_card"></div>');
@@ -58,7 +59,7 @@
 			title: translate['dialog.title.company'],  width: 600, height: client_h, closed: false, cache: false, href: 'tsgs_id/'+id,
 			resizable: true,
 			modal: true,
-            buttons:[ {text: translate['basic.close'],  
+            buttons:[ {text: '{{ translate['basic.close'] }}',  
 				handler:function(){ 
 					try {
 						list.datagrid('reload'); 

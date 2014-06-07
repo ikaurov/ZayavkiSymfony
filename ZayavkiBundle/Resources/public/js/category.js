@@ -1,6 +1,7 @@
 //
-// @param id   - category id
-// @param list - link obj to parent list
+// @param id        - category id
+// @param list      - link obj to parent list
+// @param translate - dictionary 
 
 	function open_categ(id, list, translate) {
 	// list = list to refresh after 

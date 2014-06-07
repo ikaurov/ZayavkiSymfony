@@ -114,10 +114,12 @@ class DefaultController extends Controller
 	public function filter_moreAction($params)
     {
 		$apar = json_decode($params);
-			
-		$data = array( 'status'  => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(2,  'N'),
-					   'period'  => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(4,  'N'),
-					   'category'=> $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Category')->findCategoryListHash('N'),
+		
+		$translate = $this->get('transloc')->getTranslated();
+		
+		$data = array( 'status'    => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(2,  'N', $translate),
+					   'period'    => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(4,  'N', $translate),
+					   'category'  => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Category')->findCategoryListHash('N', $translate),
 					   'translate' => $this->get('transloc')->getTranslated('S'),
 		);
 		$form = $this->createForm(new FilterType(), $data);

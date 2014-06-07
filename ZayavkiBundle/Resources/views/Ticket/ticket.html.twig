@@ -323,9 +323,15 @@
             buttons:[ {text:'{{ translate['ticket.confirm'] }}',
    		    		          handler:function(){
 							   var state = $('#ticketstate_statusid').val();
+							   var comm  = $('#ticketstate_comment').val();
                     	       $('#formcard_state').form('submit', {
        		                     url:'ticket_setstate/{{data['id']}}',
-	                             onSubmit: function(){							
+	                             onSubmit: function(){				
+									if ((state == 202) && (comm.length == 0)) {
+										$.messager.alert('{{ translate['ticket.warning'] }}', '{{ translate['ticket.message.nocomment'] }}', 'info'); 
+										return false;
+									}
+
        		                        return true;
                		             },
                        		     success:function(data){

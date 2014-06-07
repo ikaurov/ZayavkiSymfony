@@ -51,11 +51,11 @@ class UserController extends Controller
 */
 	public function entityAction($id)
     {
-	
-		$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('all', '', 'array');
+		$tranlate = $this->get('transloc')->getTranslated('','en');
+		$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('all', '', 'array', $tranlate);
 		
 		$entity = $this->getDoctrine()->getManager()->getRepository('AcmeZayavkiBundle:User')->findEntity($id);	
-		$entity['translate'] = $this->get('transloc')->getTranslated('','en');
+		$entity['translate'] = $tranlate;
 		$form = $this->createForm(new UserType(), $entity);
 					
 		return $this->render('AcmeZayavkiBundle:User:user.html.twig', array(

@@ -106,10 +106,13 @@
 		
 	<ticket.label.status>
 		<ru>Статус</ru>
-		<en>Status</en></ticket.label.status>		
+		<en>Status</en></ticket.label.status>
+	<ticket.label.comment>
+		<ru>Комментарий</ru>
+		<en>Comments</en></ticket.label.comment>		
 	<ticket.message.cancel>
-		<ru><B>Вы выбрали режим отмены заявки.</B> Укажите причину отмены.</ru>
-		<en><B>You select ticket cancellation.</B> Please notify the reason.</en></ticket.message.cancel>
+		<ru>Вы выбрали режим отмены заявки. Укажите причину отмены.</ru>
+		<en>You select ticket cancellation. Please notify the reason.</en></ticket.message.cancel>
 	<ticket.message.invalidemail>
 		<ru>Укажите правильный электронный адрес</ru>
 		<en>Email is invalid. Please check</en></ticket.message.invalidemail>	

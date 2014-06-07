@@ -69,6 +69,8 @@ class Transloc extends ContainerAware
 			case 'T': $filename = 'Ticket.xml';
 					  break;	
 			case 'L': $filename = 'Login.xml';
+					  break;	
+			case 'B': $filename = 'Basic.xml';
 					  break;					  
 			default:
 					  $filename = 'Basic.xml';				  

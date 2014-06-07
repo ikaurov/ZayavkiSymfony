@@ -38,7 +38,7 @@ class TsgsController extends Controller
 	public function entityAction($id)
     {
 		$entity = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->findEntity($id);	
-		$entity['translate'] = $this->get('transloc')->getTranslated();
+		$entity['translate'] = $this->get('transloc')->getTranslated('B');
 		
 		$form = $this->createForm(new TsginfoType(), $entity);	
 		

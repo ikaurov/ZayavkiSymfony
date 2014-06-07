@@ -1,0 +1,4 @@
+acme_zayavki:
+    resource: "@AcmeZayavkiBundle/Resources/config/routing.yml"
+    prefix:   /
+

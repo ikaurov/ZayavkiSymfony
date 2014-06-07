@@ -10,23 +10,25 @@
 <script type="text/javascript" src="{{ asset('bundles/acmezayavki/js/category.js') }}"></script>
 <script>
 	$(function(){
-		$('#c_btn1').bind('click', function(){
-			open_categ(0, $('#categs_list'));
-		});
-		
-		$('#c_btn2').bind('click', function(){
-			var row = $('#categs_list').treegrid('getSelected');
-			if (row){
-				open_categ(row.id, $('#categs_list'));
-			}
-		});
-		
 		var translate = new Array();
 		translate['dialog.title.category']  = '{{ translate['dialog.title.category'] }}';
 		translate['basic.save']          = '{{ translate['basic.save'] }}';
 		translate['basic.cancel']        = '{{ translate['basic.cancel'] }}';
 		translate['basic.warning']       = '{{ translate['basic.warning'] }}';	
-		translate['message.nameisempty'] = '{{ translate['message.nameisempty'] }}';		
+		translate['message.nameisempty'] = '{{ translate['message.nameisempty'] }}';
+		
+		$('#c_btn1').bind('click', function(){
+			open_categ(0, $('#categs_list'), translate );
+		});
+		
+		$('#c_btn2').bind('click', function(){
+			var row = $('#categs_list').treegrid('getSelected');
+			if (row){
+				open_categ(row.id, $('#categs_list'), translate);
+			}
+		});
+		
+		
 
 		$('#c_btn3').bind('click', function(){
 			var row = $('#categs_list').treegrid('getSelected');
@@ -68,7 +70,7 @@
   	   toolbar: '#tb_categ',
 	   onDblClickRow: function(row) {
 		   if ((fx.head == 1) && (row)) {
-				open_categ(row.id, $('#categs_list'));
+				open_categ(row.id, $('#categs_list'), translate);
 		   }
 	   },
   	   onBeforeLoad: function(row, param) {

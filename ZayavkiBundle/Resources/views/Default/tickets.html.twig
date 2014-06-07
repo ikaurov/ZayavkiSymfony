@@ -104,7 +104,10 @@
 				}
 			},
 			onResizeColumn: function (field, width) {
-				$.ajax({ type: "GET", url: 'tickets_resize/{{ userid }}/'+field+'/'+width, dataType: "json"});
+				var column = $('#tickets_list').datagrid('getColumnOption', field);
+				if (column.hidden == false) {
+					$.ajax({ type: "GET", url: 'tickets_resize/{{ userid }}/'+field+'/'+width, dataType: "json"});
+				}
 			},			
 			onDblClickRow: function(index, data) {
 				edit_ticket();

@@ -52,7 +52,7 @@ class CompropRepository extends EntityRepository
 *
 *
 */
-	public function findCompropListHash($kind, $options)
+	public function findCompropListHash($kind, $options, $translate)
 	{
 		$query = $this->getEntityManager()->createQuery(
 			'SELECT c.id, c.name, c.uin FROM AcmeZayavkiBundle:Comprop c WHERE c.kind = :kind ORDER BY c.uin ASC'
@@ -62,7 +62,7 @@ class CompropRepository extends EntityRepository
 	
 		$list = array();
 		if (substr_count($options, 'N') > 0) {
-			$list[ 0 ] = 'НЕТ';																				  		
+			$list[ 0 ] = $translate['basic.none'];																				  		
 		}
 		
 		foreach ($rows as $row) {

@@ -61,8 +61,9 @@ public function dataAction($params, Request $request)
 		
 		$head = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:User')->cntHeadUser($user->getId());
 		$userid = $user->getId(); 
+		$translate = $this->get('transloc')->getTranslated();
 		if (  $head > 0 ) {
-			$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('no_head','N','hash');
+			$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->getTsgsList('no_head','N','hash', $translate);
 		}
 		else {
 			$tsgs = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tsginfo')->findTsgsListForUser($userid, 'hash');
@@ -70,8 +71,8 @@ public function dataAction($params, Request $request)
 	
 		$entity  = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->findEntity( $id, $userid);
 		$entity['tsgs']   = $tsgs;
-		$entity['cats']   = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Category')->findCategoryListHash('N');	
-		$entity['alerts'] = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(3,  '');
+		$entity['cats']   = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Category')->findCategoryListHash('N', $translate);	
+		$entity['alerts'] = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(3,  '', $translate);
 
 		$entity['dplan_fmt'] = (strlen($entity['dplan']) > 9) ? CustomDateFormat::dateAnsiToRus($entity['dplan']) : '';
 		$entity['translate'] = $this->get('transloc')->getTranslated('T');
@@ -156,7 +157,7 @@ public function dataAction($params, Request $request)
 		$entity  = $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Tickets')->findEntity( $id, $user->getId());
 	
 		$data = array(	'statusid' => $entity['substatusid'], 
-						'status'   => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(2, ''),
+						'status'   => $this->getDoctrine()->getRepository('AcmeZayavkiBundle:Comprop')->findCompropListHash(2, '',$translate),
 						'translate' => $this->get('transloc')->getTranslated('T'));
 		$form = $this->createForm(new TicketStateType(), $data);
 	

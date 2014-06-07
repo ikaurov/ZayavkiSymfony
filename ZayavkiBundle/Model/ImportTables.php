@@ -311,15 +311,13 @@ class ImportTables
 	}	
 	
 	public function addAccounts($rs)
-	{
-		$rs['UserName'] = $this->encodeTranslit($rs['UserName']);
-		
+	{	
 		$rs['Question'] = '';
 		$rs['Answer']   = '';
-		$rs['Address']  = '';	
-		$rs['ObjectAddress']  = '';
-		$rs['FIO']      = $this->encodeTranslit($rs['FIO']);
-		$rs['Email']    = 'person@example.com';
+		$rs['Address']  	  = $this->getAddressForUser((int)$rs['UserId']);
+		$rs['ObjectAddress']  = $this->getAddressForUser((int)$rs['UserId']);
+		$rs['FIO']            = $this->encodeTranslit($rs['FIO']);
+		$rs['Email']          = 'person@example.com';
 		$rs['RegistryFIO']    = $rs['FIO'];
 		$rs['OwnerFIO']       = $rs['FIO'];
 		$rs['RegistryEmail']  = 'person@example.com';			
@@ -341,7 +339,7 @@ class ImportTables
 				$this->target->quote($rs['Address']).",".	
 				(int)$rs['AddressId'].",".
 				$this->target->quote($rs['ObjectAddress']).",".
-				$this->target->quote($rs['RoomType']).",".
+				$this->target->quote("app.").",".
 				$this->target->quote($rs['RoomNumber']).",".
 				(int)$rs['DoubleCntr'].",".
 				$this->target->quote($rs['FIO']).",".
@@ -413,7 +411,7 @@ class ImportTables
 				(int)$rs['userid'].",".
 				$this->target->quote($rs['login']).",".
 				$this->target->quote($rs['pwd']).",".
-				$this->target->quote($rs['name']).",".
+				$this->target->quote($this->encodeTranslit($rs['name'])).",".
 				(int)$rs['deleted'].");"
 		);
 		
@@ -485,7 +483,7 @@ class ImportTables
  				(int)$rs['categoryid'].",".
  				$this->target->quote($rs['email']).",". 
 				$this->target->quote($rs['phone']).",". 
- 				$this->target->quote($rs['preftime']).",". 
+ 				$this->target->quote($this->encodeTranslit($rs['preftime'])).",". 
  				(int)$rs['userid'].",". 
 				$this->target->quote($rs['tsgcode']).",".
 				$this->target->quote($rs['dstart']).",". 
@@ -494,16 +492,16 @@ class ImportTables
 				$this->target->quote($rs['dplan']).",".
  				(int)$rs['workerid'].",".
  				$this->target->quote($rs['usernote']).",".
-				$this->target->quote($rs['message']).",".
+				$this->target->quote($this->encodeTranslit($rs['message'])).",".
  				(int)$rs['tsgid'].",".
  				(int)$rs['dispid'].",".
- 				$this->target->quote($rs['lastnote']).",".
+ 				$this->target->quote($this->encodeTranslit($rs['lastnote'])).",".
  				$this->target->quote($rs['address']).",".
- 				$this->target->quote($rs['note']).",". 
+ 				$this->target->quote($this->encodeTranslit($rs['note'])).",". 
  				(int)$rs['fopen'].",".
   				(int)$rs['stopid'].",".
  				(int)$rs['rootid'].",".
- 				$this->target->quote($rs['podal']).",". 
+ 				$this->target->quote($this->encodeTranslit($rs['podal'])).",". 
  				(int)$rs['deleted'].");"
 		);
 		
@@ -511,7 +509,7 @@ class ImportTables
 			 $this->target->exec(
 				 "INSERT INTO `Tickets_comment` (ticketid, message, dcreate, userid, kind) VALUES (".
 					 (int)$rs['ticketid'].",".
-					 $this->target->quote($rec['message']).",".
+					 $this->target->quote($this->encodeTranslit($rec['message'])).",".
 					 $this->target->quote($rec['dcreate']).",".
 					 (int)$rec['userid'].",".
 					 (int)$rec['kind'].");"
@@ -523,9 +521,9 @@ class ImportTables
 	public function finalizeTickets()
 	{	
 		$this->target->exec("UPDATE `Tickets` set dstart = NULL WHERE dstart='00.00.0000'");
-		$this->target->exec("UPDATE `Tickets` set dplan = NULL WHERE dplan='00.00.0000'");
-		$this->target->exec("UPDATE `Tickets` set dwork = NULL WHERE dwork='00.00.0000'");
-		$this->target->exec("UPDATE `Tickets` set dstop = NULL WHERE dstop='00.00.0000'");	    
+		$this->target->exec("UPDATE `Tickets` set dplan = NULL  WHERE dplan='00.00.0000'");
+		$this->target->exec("UPDATE `Tickets` set dwork = NULL  WHERE dwork='00.00.0000'");
+		$this->target->exec("UPDATE `Tickets` set dstop = NULL  WHERE dstop='00.00.0000'");	    
 		$this->target->exec("UPDATE Tickets INNER JOIN Accounts ON Tickets.userid = Accounts.UserId SET Tickets.address = CONCAT(Accounts.ObjectAddress, ',', Accounts.RoomType,Accounts.RoomNumber)");
 	}
 	// Encoding part
@@ -556,7 +554,7 @@ class ImportTables
 
 	public function getAddressForUser($userid)
 	{	
-		$res = $this->source->query("SELECT t.TSGAddress FROM Users u, TSGInfo t WHERE u.TSGCode = t.TSGCode and u.UserId = ".$userid)->fetchAll();
+		$res = $this->target->query("SELECT t.TSGAddress FROM Users u, TSGInfo t WHERE u.TSGCode = t.TSGCode and u.UserId = ".$userid)->fetchAll();
 		$res = current($res);
 		return $res['TSGAddress'];
 	}	
